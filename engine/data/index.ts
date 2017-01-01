@@ -13,6 +13,7 @@ export * from './scene';
 export * from './screen-image';
 export * from './screen-subtitle';
 export * from './screen-widget';
+export * from './scripting-result';
 export * from './sound';
 export * from './timer';
 export * from './variable';

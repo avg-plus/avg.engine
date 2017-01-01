@@ -1,11 +1,18 @@
+import { ResourcePath, Resource } from "..";
+import * as path from "path";
+
 export class ResourceData {
     public filename: string;
 
-    constructor(filename?: string) {
-        this.filename = filename;
+    constructor(filename?: string, dir?: ResourcePath) {
+        if (dir !== undefined) {
+            this.filename = path.join(Resource.getPath(dir), filename);
+        } else {
+            this.filename = filename;
+        }
     }
 
-    public static from(filename: string) {
-        return new ResourceData(filename);
+    public static from(filename: string, dir?: ResourcePath) {
+        return new ResourceData(filename, dir);
     }
 }

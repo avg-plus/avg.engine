@@ -1,19 +1,18 @@
-import * as fs from 'fs';
+import * as fs from "fs";
 
-import { AVGStory } from '../scripting/story';
+import { AVGStory } from "../scripting/story";
 // import { AVGScriptingLoop } from '../scripting/scripting-loop';
-import { AVGScriptUnit } from '../scripting/script-unit';
+import { AVGScriptUnit } from "../scripting/script-unit";
 
-import * as path from 'path';
-import { Screen } from '../const/model';
-import { Transition } from './transition';
-import { PluginManager } from '../index';
-import { Setting } from './setting';
-import { Resource } from './resource';
+import * as path from "path";
+import { Screen } from "../const/model";
+import { Transition } from "./transition";
+import { PluginManager } from "../index";
+import { Setting } from "./setting";
+import { Resource } from "./resource";
 
 export class AVGGame {
-
-    private static DEFAULT_ENTRY_SCRIPT = 'start.avs';
+    private static DEFAULT_ENTRY_SCRIPT = "start.avs";
 
     private _entryStory: AVGStory;
     // private _scriptingLoop: AVGScriptingLoop;
@@ -43,33 +42,15 @@ export class AVGGame {
     }
 
     public async start(entryScript?: string) {
-
         // Init plugins
         PluginManager.init();
 
-        let scriptDir = this._scriptDir || './';
-        entryScript = entryScript || path.join(scriptDir, AVGGame.DEFAULT_ENTRY_SCRIPT);
+        let scriptDir = this._scriptDir || "./";
+        entryScript =
+            entryScript || path.join(scriptDir, AVGGame.DEFAULT_ENTRY_SCRIPT);
 
         await this._entryStory.loadFromFile(entryScript);
         await this._entryStory.run();
-        // this._scriptingLoop.addStory(this._entryStory);
-        // this._run();
-    }
-
-    // public startFromAPIs(scripts: Array<AVGScriptUnit>) {
-    //     this._entryStory.loadFromScripts(scripts);
-    //     this._entryStory.run();
-    //     // this._scriptingLoop.addStory(this._entryStory);
-
-    //     this._run();
-    // }
-
-    private _run() {
-        // this._scriptingLoop.run().on(LoopEvents.OnLoopData, (data) => {
-        //     console.log(`Received data: `, data);
-        // }).on(LoopEvents.OnLoopEnd, () => {
-        //     console.log(`Loop ended. Game End.`);
-        // });
     }
 }
 

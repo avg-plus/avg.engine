@@ -13,7 +13,7 @@ export class AVGStory {
     private _compiled: string;
     private _scriptFile: string;
 
-    constructor() { }
+    constructor() {}
 
     public async loadFromFile(filename: string) {
         return new Promise((resolve, reject) => {
@@ -42,7 +42,6 @@ export class AVGStory {
     public async run() {
         return new Promise((resolve, reject) => {
             try {
-
                 AVGStory.sanbox.done = () => {
                     console.log("Script execute done");
                     resolve();
@@ -52,9 +51,10 @@ export class AVGStory {
                 script.runInNewContext(vm.createContext(AVGStory.sanbox), {
                     displayErrors: true
                 });
-
             } catch (err) {
-                reject("AVG Script errror : " + err);
+                const errMessage = "AVG Script errror : " + err;
+                reject(errMessage);
+                // alert(errMessage)
             }
         });
     }

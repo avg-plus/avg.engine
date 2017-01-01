@@ -41,6 +41,7 @@ import { AVGStory } from "../story";
 import { ResourcePath } from "../../core/resource";
 import { APIScreenImage } from "./api-screen-image";
 import { ScreenImage } from "../../data/screen-image";
+import { IDGenerator } from "../../core/id-generator";
 
 function paramCompatible<T extends AVGScriptUnit, U extends AVGData>(
     model: T,
@@ -100,12 +101,23 @@ export namespace api {
         proxy && (await proxy.runner(<APIDialogue>model));
     }
 
-    export async function showCharacter(avatar: Avatar, index: number = 0) {
+    export async function showCharacter(
+        index: number,
+        filename: string,
+        options?: { avatar: Avatar }
+    ) {
         let model = new APICharacter();
-        model.data = avatar;
         model.index = index;
+        model.data = new Avatar();
+        model.data.file = ResourceData.from(
+            filename,
+            ResourcePath.Characters
+        ).filename;
 
-        paramCompatible<APICharacter, Avatar>(model, {});
+        if (options !== undefined) {
+            paramCompatible<APICharacter, Avatar>(model, options.avatar);
+        }
+
         const proxy = APIManager.getImpl(APICharacter.name, OP.ShowCharacter);
         proxy && (await proxy.runner(<APICharacter>model));
     }
@@ -154,7 +166,7 @@ export namespace api {
         model.index = index;
         paramCompatible<APIScene, Scene>(model, options, {
             field: "file",
-            value: ResourceData.from(filename)
+            value: ResourceData.from(filename, ResourcePath.Backgrounds)
         });
 
         return await APIManager.getImpl(APIScene.name, OP.LoadScene).runner(
@@ -177,7 +189,7 @@ export namespace api {
 
         paramCompatible<APISound, SoundBGM>(model, options, {
             field: "file",
-            value: ResourceData.from(filename)
+            value: ResourceData.from(filename, ResourcePath.BGM)
         });
 
         const proxy = APIManager.getImpl(APISound.name, OP.PlayBGM);
@@ -226,7 +238,7 @@ export namespace api {
 
         paramCompatible<APISound, Sound>(model, options, {
             field: "file",
-            value: ResourceData.from(filename)
+            value: ResourceData.from(filename, ResourcePath.Voice)
         });
 
         const proxy = APIManager.getImpl(APISound.name, OP.PlayVoice);
@@ -239,7 +251,7 @@ export namespace api {
 
         paramCompatible<APISound, Sound>(model, options, {
             field: "file",
-            value: ResourceData.from(filename)
+            value: ResourceData.from(filename, ResourcePath.SE)
         });
 
         const proxy = APIManager.getImpl(APISound.name, OP.PlaySE);
@@ -252,7 +264,7 @@ export namespace api {
 
         paramCompatible<APISound, Sound>(model, options, {
             field: "file",
-            value: ResourceData.from(filename)
+            value: ResourceData.from(filename, ResourcePath.BGS)
         });
 
         const proxy = APIManager.getImpl(APISound.name, OP.PlayBGS);
@@ -314,24 +326,19 @@ export namespace api {
         return Promise.resolve(APIVariable.set(name, value));
     }
 
-    export async function showSubtitle(
-        id: string,
-        text: string,
-        options: Subtitle
-    ) {
+    export async function showSubtitle(text: string, options: Subtitle) {
         let model = new APIScreenSubtitle();
-        model.data.id = id;
+        model.data.id = IDGenerator.generate();
         model.data.text = text;
         model.data.animation = new WidgetAnimation();
         model.data.animation.name = ScreenWidgetAnimation.Enter_Appear;
 
         paramCompatible<APIScreenSubtitle, Subtitle>(model, options);
 
-        const proxy = APIManager.getImpl(
+        return await APIManager.getImpl(
             APIScreenSubtitle.name,
             OP.ShowSubtitle
-        );
-        proxy && (await proxy.runner(<APIScreenSubtitle>model));
+        ).runner(<APIScreenSubtitle>model);
     }
 
     export async function animateSubtitle(
@@ -357,6 +364,7 @@ export namespace api {
             APIScreenSubtitle.name,
             OP.UpdateSubtitle
         );
+
         proxy && (await proxy.runner(<APIScreenSubtitle>model));
     }
 
@@ -370,12 +378,11 @@ export namespace api {
             ? options.animation || undefined
             : undefined;
 
-        // paramCompatible<APIScreenSubtitle, WidgetAnimation>(model, options);
-
         const proxy = APIManager.getImpl(
             APIScreenSubtitle.name,
             OP.HideSubtitle
         );
+
         proxy && (await proxy.runner(<APIScreenSubtitle>model));
     }
 
@@ -395,28 +402,29 @@ export namespace api {
 
     export async function call(file: string) {
         let model = new APICallScript();
-        model.scriptFile = file;
+        model.scriptFile = ResourceData.from(
+            file,
+            ResourcePath.Scripts
+        ).filename;
 
         let story = new AVGStory();
-        await story.loadFromFile(Resource.getPath(ResourcePath.Scripts, file));
+        await story.loadFromFile(model.scriptFile);
         return await story.run();
     }
 
-    export async function showImage(
-        id: string,
-        file: string,
-        options: ScreenImage
-    ) {
+    export async function showImage(file: string, options: ScreenImage) {
         let model = new APIScreenImage();
-        model.data.id = id;
+        model.data.id = IDGenerator.generate();
         model.data.file = ResourceData.from(file);
         model.data.animation = new WidgetAnimation();
         model.data.animation.name = ScreenWidgetAnimation.Enter_Appear;
 
         paramCompatible<APIScreenImage, ScreenImage>(model, options);
 
-        const proxy = APIManager.getImpl(APIScreenImage.name, OP.ShowImage);
-        proxy && (await proxy.runner(<APIScreenImage>model));
+        return await APIManager.getImpl(
+            APIScreenImage.name,
+            OP.ShowImage
+        ).runner(<APIScreenImage>model);
     }
 
     export async function removeImage(id: string, options: ScreenImage) {

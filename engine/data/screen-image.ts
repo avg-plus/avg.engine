@@ -9,7 +9,7 @@ export class ScreenImage extends ScreenWidget {
 
     public width: string;
     public height: string;
-    public zoom: string;
+    public scale: string;
 
     public set size(value: string) {
         this._size = value.replace(" ", "");
@@ -20,7 +20,7 @@ export class ScreenImage extends ScreenWidget {
         if (matches && matches.length === 4) {
             this.width = matches[1];
             this.height = matches[2];
-            this.zoom = matches[3];
+            this.scale = matches[3];
         }
     }
 
