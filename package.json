@@ -1,0 +1,14 @@
+{
+  "name": "avg-engine",
+  "scripts": {
+    "build": "tsc",
+    "test": "node build/test/test-engine.js"
+  },
+  "version": "1.0.0",
+  "main": "build/index.js",
+  "author": "AngryPowman",
+  "license": "MIT",
+  "dependencies": {
+    "@types/node": "^8.0.2"
+  }
+}

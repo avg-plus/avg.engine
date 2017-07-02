@@ -1,0 +1,27 @@
+{
+    "compileOnSave": true,
+    "compilerOptions": {
+        "module": "commonjs",
+        "target": "es6",
+        "lib": ["es5", "es6", "es7", "es2015.promise", "es2015.proxy"],
+        "moduleResolution": "node",
+        "declaration": true,
+        "noEmitOnError": true,
+        "noImplicitThis": true,
+        "noImplicitAny": false,
+        "removeComments": false,
+        "preserveConstEnums": true,
+        "experimentalDecorators": true,
+        "emitDecoratorMetadata": true,
+        "forceConsistentCasingInFileNames": true,
+        "pretty": false,
+        "sourceMap": true,
+        "sourceRoot": "./",
+        "typeRoots": [
+            "node_modules/@types"
+        ],
+        "outDir": "./build",
+        "rootDir": "./"
+    },
+    "exclude": ["node_modules", "build"]
+}
