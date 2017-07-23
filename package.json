@@ -9,6 +9,8 @@
   "author": "AngryPowman",
   "license": "MIT",
   "dependencies": {
-    "@types/node": "^8.0.2"
+    "@types/esprima": "^2.1.33",
+    "@types/node": "^8.0.13",
+    "esprima": "^4.0.0"
   }
 }

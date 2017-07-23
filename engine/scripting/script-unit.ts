@@ -1,20 +1,18 @@
 import { EventEmitter } from "events";
-import { GameSandbox } from "../core/game-sanbox";
+import { GameSandbox } from "../core/game-sandbox";
 import { AVGData } from "../data/avg-data";
 
+export type APICallback = (scriptUnit: AVGScriptUnit, data: AVGData) => AVGScriptUnit;
 export class AVGScriptUnit {
-    private _blocking: boolean;
 
-    public Next: AVGScriptUnit = null;
-    public Result: any;
+    public Data: AVGData;
+    // public Callback: Promise<AVGData>;
+    // public JumpTerm: Map<string, Array<AVGScriptUnit>>;
+    public Next: Array<AVGScriptUnit> = [];
 
-    public set Blocking(isBlock: boolean) {
-        this._blocking = isBlock;
-    }
-
-    public execute(): Promise<AVGData> {
+    public execute(): Promise<AVGScriptUnit> {
         return new Promise((resolve, reject) => {
-            resolve(null);
+            resolve(this);
         });
     }
 

@@ -2,6 +2,20 @@
 # yarn lockfile v1
 
 
-"@types/node@^8.0.2":
-  version "8.0.2"
-  resolved "https://registry.yarnpkg.com/@types/node/-/node-8.0.2.tgz#8ab9456efb87d57f11d04f313d3da1041948fb4d"
+"@types/esprima@^2.1.33":
+  version "2.1.33"
+  resolved "https://registry.yarnpkg.com/@types/esprima/-/esprima-2.1.33.tgz#c132313f0d19733e5ddb2054b6853deafe7af63d"
+  dependencies:
+    "@types/estree" "*"
+
+"@types/estree@*":
+  version "0.0.35"
+  resolved "https://registry.yarnpkg.com/@types/estree/-/estree-0.0.35.tgz#8999974b34028686a8d61a719e61c138d3755107"
+
+"@types/node@^8.0.13":
+  version "8.0.14"
+  resolved "https://registry.yarnpkg.com/@types/node/-/node-8.0.14.tgz#4a19dc6bb61d16c01cbadc7b30ac23518fff176b"
+
+esprima@^4.0.0:
+  version "4.0.0"
+  resolved "https://registry.yarnpkg.com/esprima/-/esprima-4.0.0.tgz#4499eddcd1110e0b218bacf2fa7f7f59f55ca804"

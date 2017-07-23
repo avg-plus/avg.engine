@@ -1,53 +1,87 @@
 import { EventEmitter } from "events";
 import { AVGScriptUnit } from "./script-unit";
-import { AVGStory } from "../core/story";
+import { AVGStory } from "./story";
+import { AVGData } from "../data/avg-data";
+
+
+export class LoopEvents {
+    public static OnLoopResume = 'AVGEvent_LoopResume';
+    public static OnLoopData = 'AVGEvent_LoopData';
+    public static OnLoopEnd = 'AVGEvent_LoopEnd';
+};
 
 export class AVGScriptingLoop {
-    private _scripts: Array<AVGScriptUnit> = [];
+
+    private _scriptUnits: Array<AVGScriptUnit> = [];
     private _cursor = 0;
     private _handle = null;
-    private _resumeEvent: EventEmitter;
     private _loopEvent: EventEmitter;
 
     constructor() {
-        this._resumeEvent = new EventEmitter();
         this._loopEvent = new EventEmitter();
     }
 
+    /**
+     * Add an story to the scripting loop system
+     * 
+     * @param {AVGStory} story 
+     * @memberof AVGScriptingLoop
+     */
     public addStory(story: AVGStory) {
-        this._scripts.concat(story.getScripts());
+        let scripts = story.getScripts();
+        this._scriptUnits = this._scriptUnits.concat(scripts);
     }
 
+    /**
+     * Start to dispatch all scripting units
+     * 
+     * @returns {EventEmitter} 
+     * @memberof AVGScriptingLoop
+     */
     public run(): EventEmitter {
+        if (this._scriptUnits.length === 0) {
+            this._loopEvent.emit(LoopEvents.OnLoopEnd);
+            return this._loopEvent;
+        }
+
         this._handle = setInterval(() => {
-            let current = this._scripts[this._cursor];
+            let current = this._scriptUnits[this._cursor];
             if (!current) {
-                this._loopEvent.emit('AVGLoopEnd');
+                this._loopEvent.emit(LoopEvents.OnLoopEnd);
                 this.reset();
                 return;
             }
 
-            if (current.Blocking) {
-                this.waitFor();
-                return;
-            }
+            current.execute && current.execute().then((script: AVGScriptUnit) => {
+                this._loopEvent.emit(LoopEvents.OnLoopData, current);
 
-            current.execute && current.execute().then((data) => {
-                this._cursor++;
-                this._loopEvent.emit('AVGLoopData', current);
+                // if (!script.Callback) {
+                //     this._loopEvent.emit(LoopEvents.OnLoopResume);
+                //     return;
+                // }
+
+                // script.Callback.then((data: AVGData) => {
+                //     this._loopEvent.emit(LoopEvents.OnLoopResume);
+                // }, _ => { });
+
             }, _ => { });
+
+            this.waitFor();
+
         }, 1);
 
         return this._loopEvent;
     }
 
-    public waitFor() {
+    private waitFor() {
+        console.log('Scripting loop was waiting for ...');
+
         this.reset();
 
-        this._resumeEvent.on('AVGLoopResume', () => {
+        this._loopEvent.once(LoopEvents.OnLoopResume, () => {
             this._cursor++;
             this.run();
-        })
+        });
     }
 
     private reset() {

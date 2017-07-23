@@ -1,5 +1,5 @@
 import { AVGGame } from './game';
-import { AVGStory } from "./core/story";
+import { AVGStory } from "./scripting/story";
 
 export module AVG {
     export let Game = AVGGame;

@@ -1,15 +1,15 @@
 import { AVGScriptUnit } from "../script-unit";
-import { GameSandbox } from "../../core/game-sanbox";
+import { GameSandbox } from "../../core/game-sandbox";
 import { Variable } from "../../data/variable";
 
 export class APIVariable extends AVGScriptUnit {
     public set(name: string, value: any) {
-        GameSandbox.Variabls.set(name, value);
+        GameSandbox.Variables.set(name, value);
     }
 
     public get(name: string): any {
-        if (GameSandbox.Variabls.has(name)) {
-            return GameSandbox.Variabls.get(name);
+        if (GameSandbox.Variables.has(name)) {
+            return GameSandbox.Variables.get(name);
         }
 
         return undefined;
@@ -25,7 +25,7 @@ export function API_SetVariable(options: Variable): AVGScriptUnit {
 
 export function API_GetVariable(options: Variable): AVGScriptUnit {
     let api = new APIVariable();
-    api.Result = api.get(options.name);
+    // api.Result = api.get(options.name);
 
     return api;
 }
