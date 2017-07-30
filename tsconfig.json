@@ -20,8 +20,8 @@
         "typeRoots": [
             "node_modules/@types"
         ],
-        "outDir": "./build",
+        "outDir": "./dist",
         "rootDir": "./"
     },
-    "exclude": ["node_modules", "build"]
+    "exclude": ["node_modules", "dist", "doc"]
 }

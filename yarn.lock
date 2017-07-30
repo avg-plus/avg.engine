@@ -2,9 +2,9 @@
 # yarn lockfile v1
 
 
-"@types/esprima@^2.1.33":
-  version "2.1.33"
-  resolved "https://registry.yarnpkg.com/@types/esprima/-/esprima-2.1.33.tgz#c132313f0d19733e5ddb2054b6853deafe7af63d"
+"@types/esprima@^2.1.34":
+  version "2.1.34"
+  resolved "https://registry.yarnpkg.com/@types/esprima/-/esprima-2.1.34.tgz#6e26aadaa60c51304da29a2ad2183a7166a52474"
   dependencies:
     "@types/estree" "*"
 
@@ -12,10 +12,20 @@
   version "0.0.35"
   resolved "https://registry.yarnpkg.com/@types/estree/-/estree-0.0.35.tgz#8999974b34028686a8d61a719e61c138d3755107"
 
-"@types/node@^8.0.13":
-  version "8.0.14"
-  resolved "https://registry.yarnpkg.com/@types/node/-/node-8.0.14.tgz#4a19dc6bb61d16c01cbadc7b30ac23518fff176b"
+"@types/node@^8.0.17":
+  version "8.0.17"
+  resolved "https://registry.yarnpkg.com/@types/node/-/node-8.0.17.tgz#677bc8c118cfb76013febb62ede1f31d2c7222a1"
 
 esprima@^4.0.0:
   version "4.0.0"
   resolved "https://registry.yarnpkg.com/esprima/-/esprima-4.0.0.tgz#4499eddcd1110e0b218bacf2fa7f7f59f55ca804"
+
+node-bin-setup@^1.0.0:
+  version "1.0.6"
+  resolved "https://registry.yarnpkg.com/node-bin-setup/-/node-bin-setup-1.0.6.tgz#4b5c9bb937ece702d7069b36ca78af4684677528"
+
+node@^8.2.1:
+  version "8.2.1"
+  resolved "https://registry.yarnpkg.com/node/-/node-8.2.1.tgz#860b3f57ef778177320f9b5da8171b6249fe4998"
+  dependencies:
+    node-bin-setup "^1.0.0"

@@ -1,11 +1,13 @@
-import { AVGGame } from './game';
-import { AVGStory } from "./scripting/story";
 
-export module AVG {
-    export let Game = AVGGame;
-}
+import { Input } from './core/input';
+import { AVGGame } from "./core/game";
+import { Transition } from './core/transition';
 
-export module Core {
-    export let Story = AVGStory;
-}
 
+// Export class / interface
+export { InputKeys } from './core/input';
+export * from './core/transition';
+
+// Export Instances
+export let input = new Input();
+export let game = new AVGGame();

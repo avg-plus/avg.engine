@@ -1,8 +1,10 @@
-import { AVGStory } from './scripting/story';
-import { AVGScriptingLoop, LoopEvents } from "./scripting/scripting-loop";
-import { AVGScriptUnit } from "./scripting/script-unit";
+import { AVGStory } from '../scripting/story';
+import { AVGScriptingLoop, LoopEvents } from "../scripting/scripting-loop";
+import { AVGScriptUnit } from "../scripting/script-unit";
 
 import * as path from "path";
+import { Screen } from "../const/model";
+import { Transition } from "./transition";
 
 export class AVGGame {
 
@@ -11,10 +13,24 @@ export class AVGGame {
     private _entryStory: AVGStory;
     private _scriptingLoop: AVGScriptingLoop;
     private _scriptDir: string;
+    private _transition: Transition;
 
-    constructor() {
+    private _screen: Screen = {
+        width: 1366,
+        height: 768
+    };
+
+    constructor(name?: string, screen?: Screen) {
         this._entryStory = new AVGStory();
         this._scriptingLoop = new AVGScriptingLoop();
+    }
+
+    public setResolution(screen: Screen) {
+        this._screen = screen;
+    }
+
+    public getResolution(): Screen {
+        return this._screen;
     }
 
     public setScriptDir(dir: string) {
