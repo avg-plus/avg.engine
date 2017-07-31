@@ -3,9 +3,6 @@ import { AVGScriptUnit, APICallback } from "../scripting/script-unit";
 import { Dialogue } from "../data/dialogue";
 import { APIShowDialogue } from "../scripting/api/api-show-dialogue";
 
-
-// require = require;
-// public static console = console;
 export class GameSandbox {
     // Characters Data
     public static Character: Array<Character>;

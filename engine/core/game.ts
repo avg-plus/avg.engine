@@ -2,7 +2,7 @@ import { AVGStory } from '../scripting/story';
 import { AVGScriptingLoop, LoopEvents } from "../scripting/scripting-loop";
 import { AVGScriptUnit } from "../scripting/script-unit";
 
-import * as path from "path";
+import * as path from 'path';
 import { Screen } from "../const/model";
 import { Transition } from "./transition";
 

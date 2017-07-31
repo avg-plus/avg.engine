@@ -3,14 +3,14 @@
   "scripts": {
     "build": "tsc -p tsconfig.json",
     "prepublish": "cp ./package.json ./dist",
-    "test": "node build/test/test-engine.js"
+    "test": "node dist/test/test-engine.js"
   },
-  "version": "1.0.6",
-  "main": "./dist/engine/index.js",
+  "version": "0.1.0",
+  "main": "./engine/index.js",
   "author": "AngryPowman",
   "license": "MIT",
   "files": [
-    "dist/*"
+    "dist/engine"
   ],
   "dependencies": {
     "@types/esprima": "^2.1.34",
@@ -18,5 +18,11 @@
     "esprima": "^4.0.0",
     "node": "^8.2.1"
   },
-  "devDependencies": {}
+  "devDependencies": {
+    "create-index": "^2.2.0",
+    "globby": "^6.1.0",
+    "gulp": "^3.9.1",
+    "shelljs": "^0.7.8",
+    "tslint": "^5.5.0"
+  }
 }

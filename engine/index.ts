@@ -1,6 +1,6 @@
 
 import { Input } from './core/input';
-import { AVGGame } from "./core/game";
+import { AVGGame } from './core/game';
 import { Transition } from './core/transition';
 
 

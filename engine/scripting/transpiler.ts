@@ -1,19 +1,19 @@
-import * as fs from "fs";
-import * as esprima from "esprima";
-import * as estree from "estree";
+import * as fs from 'fs';
+import * as esprima from 'esprima';
+import * as estree from 'estree';
 
 export enum TranspilerError {
     None,
-};
+}
 
 export class Transpiler {
 
     static Error = {
-        UnexpectedReservedKeyword: "UnexpectedReservedKeywordError: "
+        UnexpectedReservedKeyword: 'UnexpectedReservedKeywordError: '
     };
 
     public static async transpile(file: string) {
-        let raw = await this._read(file);
+        const raw = await this._read(file);
         if (raw) {
             let compiled = this._preprocesser(raw);
             console.log(compiled);
