@@ -1,13 +1,8 @@
+//@ Auto-Generated indexing files for avg.engine
 
-import { Input } from './core/input';
-import { AVGGame } from './core/game';
-import { Transition } from './core/transition';
-
-
-// Export class / interface
-export { InputKeys } from './core/input';
-export * from './core/transition';
-
-// Export Instances
-export let input = new Input();
-export let game = new AVGGame();
+export * from './const';
+export * from './core';
+export * from './data';
+export * from './plugin';
+export * from './scripting';
+export * from './scripting/api';
