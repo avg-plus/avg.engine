@@ -4,7 +4,7 @@
     "build": "tsc -p tsconfig.json",
     "test": "node build/test/test-engine.js"
   },
-  "version": "1.0.0",
+  "version": "1.0.1",
   "main": "./dist/engine/index.js",
   "author": "AngryPowman",
   "license": "MIT",
