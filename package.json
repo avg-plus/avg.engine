@@ -5,7 +5,7 @@
     "prepublish": "cp ./package.json ./dist",
     "test": "node dist/test/test-engine.js"
   },
-  "version": "0.1.1",
+  "version": "0.1.2",
   "main": "./engine/index.js",
   "author": "AngryPowman",
   "license": "MIT",
