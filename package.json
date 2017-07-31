@@ -5,12 +5,12 @@
     "prepublish": "cp ./package.json ./dist",
     "test": "node build/test/test-engine.js"
   },
-  "version": "1.0.4",
+  "version": "1.0.5",
   "main": "./dist/engine/index.js",
   "author": "AngryPowman",
   "license": "MIT",
   "files": [
-    "dist/engine/"
+    "dist"
   ],
   "dependencies": {
     "@types/esprima": "^2.1.34",
