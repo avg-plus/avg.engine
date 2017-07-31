@@ -1,6 +1,6 @@
 import { AVGScriptUnit } from "../script-unit";
-import { Sound } from "../../data/sound";
+// import { Sound } from "../../data/sound";
 
 export class APISound extends AVGScriptUnit {
-    public data: Sound;
+    // public data: Sound;
 }

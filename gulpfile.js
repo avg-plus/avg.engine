@@ -5,6 +5,11 @@ const fs = require('fs');
 const index = require('create-index');
 const shelljs = require('shelljs');
 
+gulp.task('compile', () => {
+    shelljs.exec('yarn run build');
+});
+
+
 gulp.task('create-index', () => {
     console.log('Creating indexing files ...');
 
@@ -23,10 +28,10 @@ gulp.task('create-index', () => {
     });
 });
 
-gulp.task('publish', ['create-index'], () => {
+gulp.task('publish', ['create-index', 'compile'], () => {
 
     console.log(`Patching new version ...`);
-    // shelljs.exec('npm version patch --force');
+    shelljs.exec('npm version patch --force');
 
     console.log(`Writing publish package.json ...`);
     const package = fs.readFileSync('./package.json');
@@ -62,9 +67,6 @@ function generateExports(files, saveDir, isDir = false) {
         } else {
             filename = parsedData.name;
         }
-
-        console.log(filename)
-
 
         if (parsedData.base !== 'index.ts') {
             exportData += `export * from './${filename}';\n`;
