@@ -11,5 +11,22 @@ gulp.task('create-index', () => {
 
 
 gulp.task('publish', ['create-index'], () => {
-    shelljs.exec('yarn publish')
+    console.log(`Patching new version ...`);
+    shelljs.exec('npm version patch --force && yarn publish');
+
+    console.log(`Writing publish package.json ...`);
+    const package = fs.readFileSync('./package.json');
+    const packageConfig = JSON.parse(package);
+
+    const distPackageConfig = {};
+
+    distPackageConfig.name = packageConfig.name;
+    distPackageConfig.version = packageConfig.version;
+    distPackageConfig.author = packageConfig.author;
+    distPackageConfig.license = packageConfig.license;
+    distPackageConfig.repository = packageConfig.repository;
+    distPackageConfig.dependencies = packageConfig.dependencies;
+    distPackageConfig.main = './engine/index.js';
+
+    fs.writeFileSync('dist/package.json', JSON.stringify(distPackageConfig, null, 2));
 });
