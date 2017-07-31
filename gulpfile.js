@@ -11,5 +11,5 @@ gulp.task('create-index', () => {
 
 
 gulp.task('publish', ['create-index'], () => {
-    
+    shelljs.exec('yarn publish')
 });
