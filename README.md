@@ -2,7 +2,7 @@ A powerful & lightweight AVG data engine without rendering.
 
 **In Development**
 - In this development phase, many features are far from perfect.
-- An game client renderering implementation that depend on `avg.engine` is planning to open source.
+- A game client renderering implementation that depend on `avg.engine` is planning to open source.
 
 ## About AVGEgine
 `AVG Engine` open source project that aims to provide a powerful and cross platform game data engine to work with your custom game client implementation.
