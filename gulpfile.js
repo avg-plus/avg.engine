@@ -13,19 +13,20 @@ gulp.task('compile', () => {
 gulp.task('create-index', () => {
     console.log('Creating indexing files ...');
 
-    globby(['engine/**/', '!engine/'], {}).then((matches) => {
-        generateExports(matches, 'engine', true);
-    });
-    return;
 
-    globby(['engine/**/', '!index.ts'], {}).then((matches) => {
+
+    globby(['engine/**/', '!engine/'], {}).then((matches) => {
         matches.map((dir) => {
             globby([dir + '*.ts'], {}).then((files) => {
                 generateExports(files, dir, false);
             });
-
         })
     });
+
+    globby(['engine/**/', '!engine/'], {}).then((matches) => {
+        generateExports(matches, 'engine', true);
+    });
+
 });
 
 gulp.task('publish', ['create-index', 'compile'], () => {
