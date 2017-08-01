@@ -3,7 +3,7 @@
   "scripts": {
     "build": "tsc -p tsconfig.json",
     "prepublish": "cp ./package.json ./dist",
-    "test": "node dist/test/test-engine.js"
+    "test": "cp test/*.avs dist/test && node ./dist/test/app.js"
   },
   "version": "0.1.14",
   "main": "./engine/index.js",
