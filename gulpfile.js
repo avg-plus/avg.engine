@@ -49,7 +49,7 @@ gulp.task('publish', ['create-index', 'compile'], () => {
 
     fs.writeFileSync('dist/package.json', JSON.stringify(distPackageConfig, null, 2));
 
-    shelljs.exec('yarn publish');
+    shelljs.exec('cd dist && npm publish');
 });
 
 function generateExports(files, saveDir, isDir = false) {

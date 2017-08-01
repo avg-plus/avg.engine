@@ -14,7 +14,7 @@
   },
   "license": "MIT",
   "files": [
-    "dist/**"
+    "dist/"
   ],
   "repository": {
     "type": "git",
