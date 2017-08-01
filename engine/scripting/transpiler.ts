@@ -16,7 +16,7 @@ export class Transpiler {
         const raw = await this._read(file);
         if (raw) {
             let compiled = this._preprocesser(raw);
-            console.log(compiled);
+            // console.log(compiled);
         }
     }
 
@@ -44,7 +44,7 @@ export class Transpiler {
         let program = esprima.parse(code, {
             range: true
         }, (node, meta) => {
-            console.log(meta);
+            // console.log(meta);
             if (node.type === "CallExpression") {
                 loc_pos.push(node.callee.range[0]);
             }
@@ -59,7 +59,8 @@ export class Transpiler {
             }
         }
 
-        return `+(async() => {try {${generated} } catch (err) { console.error('Game runtime errors');}})();`;
+        // return `+(async() => {try {${generated} } catch (err) { console.error('Game runtime errors');}})();`;
+        return `+(async() => { ${generated} })();`;
     }
 
     private static async _read(file: string): Promise<string> {
