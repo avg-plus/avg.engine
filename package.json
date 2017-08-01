@@ -5,7 +5,7 @@
     "prepublish": "cp ./package.json ./dist",
     "test": "cp test/*.avs dist/test && node ./dist/test/app.js"
   },
-  "version": "0.1.14",
+  "version": "0.1.15",
   "main": "./engine/index.js",
   "author": {
     "name": "AngryPowman",
