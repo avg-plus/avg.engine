@@ -50,6 +50,7 @@ gulp.task('publish', ['create-index', 'compile'], () => {
 
     fs.writeFileSync('dist/package.json', JSON.stringify(distPackageConfig, null, 2));
 
+    shelljs.exec('cp README.md dist/');
     shelljs.exec('cd dist && npm publish');
 });
 
