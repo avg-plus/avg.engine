@@ -63,3 +63,5 @@ export class AVGGame {
         });
     }
 }
+
+export let game = new AVGGame();
