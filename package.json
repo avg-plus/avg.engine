@@ -2,6 +2,7 @@
   "name": "avg-engine",
   "scripts": {
     "build": "tsc -p tsconfig.json",
+    "build:watch": "tsc -p tsconfig.json -w",
     "prepublish": "cp ./package.json ./dist",
     "test": "cp test/*.avs dist/test && node ./dist/test/app.js"
   },

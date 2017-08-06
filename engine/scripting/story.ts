@@ -1,17 +1,17 @@
 import * as vm from "vm";
 import * as fs from "fs";
 import { AVGScriptUnit } from "../scripting/script-unit";
-import { GameSandbox } from "../core/game-sandbox";
+import { Sandbox } from "../core/sandbox";
 import { Transpiler } from "../scripting/transpiler";
 
 export class AVGStory {
     private _scriptUnits: Array<AVGScriptUnit> = [];
     private _cursor: number = 0;
-    private _sanbox: GameSandbox;
+    private _sanbox: Sandbox;
     private _code: string;
 
     constructor() {
-        this._sanbox = new GameSandbox();
+        this._sanbox = new Sandbox();
     }
 
     public loadFromScripts(units: Array<AVGScriptUnit>) {

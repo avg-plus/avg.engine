@@ -52,8 +52,8 @@ export class AVGScriptingLoop {
                 return;
             }
 
-            current.execute && current.execute().then((script: AVGScriptUnit) => {
-                this._loopEvent.emit(LoopEvents.OnLoopData, current);
+            // current.runner && current.runner().then((script: AVGScriptUnit) => {
+                // this._loopEvent.emit(LoopEvents.OnLoopData, current);
 
                 // if (!script.Callback) {
                 //     this._loopEvent.emit(LoopEvents.OnLoopResume);
@@ -64,9 +64,9 @@ export class AVGScriptingLoop {
                 //     this._loopEvent.emit(LoopEvents.OnLoopResume);
                 // }, _ => { });
 
-            }, _ => { });
+            // }, _ => { });
 
-            this.waitFor();
+            // this.waitFor();
 
         }, 1);
 

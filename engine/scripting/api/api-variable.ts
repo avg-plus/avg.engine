@@ -1,15 +1,15 @@
 import { AVGScriptUnit } from "../script-unit";
-import { GameSandbox } from "../../core/game-sandbox";
+import { Sandbox } from "../../core/sandbox";
 import { Variable } from "../../data/variable";
 
 export class APIVariable extends AVGScriptUnit {
     public set(name: string, value: any) {
-        GameSandbox.Variables.set(name, value);
+        Sandbox.Variables.set(name, value);
     }
 
     public get(name: string): any {
-        if (GameSandbox.Variables.has(name)) {
-            return GameSandbox.Variables.get(name);
+        if (Sandbox.Variables.has(name)) {
+            return Sandbox.Variables.get(name);
         }
 
         return undefined;
