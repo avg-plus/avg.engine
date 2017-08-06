@@ -5,6 +5,7 @@ import { Dialogue, Sound, Scene, AVGData, ResourceData } from "../../data";
 
 import { APILoadScene } from "./api-load-scene";
 import { APIShowDialogue } from "./api-show-dialogue";
+import { APISound } from "./api-sound";
 
 
 function paramCompatible<T extends AVGScriptUnit, U extends AVGData>
@@ -37,16 +38,16 @@ export module api {
             value: text
         });
 
-        const proxy = APIManager.getImpl(APIShowDialogue.name);
-        proxy && await proxy(<APIShowDialogue>model);
+        const proxy = APIManager.getImpl(APIShowDialogue.name, 'op_show');
+        proxy && await proxy.runner(<APIShowDialogue>model);
     }
 
-    export async function hideText(text: string, options?: Dialogue) {
+    export async function hideText(options?: Dialogue) {
         let model = new APIShowDialogue();
         paramCompatible<APIShowDialogue, Dialogue>(model, options);
 
-        const proxy = APIManager.getImpl(APIShowDialogue.name);
-        proxy && await proxy(<APIShowDialogue>model);
+        const proxy = APIManager.getImpl(APIShowDialogue.name, 'op_hide');
+        proxy && await proxy.runner(<APIShowDialogue>model);
     }
 
     /**
@@ -56,24 +57,26 @@ export module api {
      * @param {string} filename The background image file of scene
      * @param {Scene} [options] 
      */
-    export async function loadScene(filename: string, options?: {}) {
+    export async function loadScene(filename: string, options?: Scene) {
         let model = new APILoadScene();
         paramCompatible<APILoadScene, Scene>(model, options, {
             field: 'filename',
             value: ResourceData.from(filename)
         });
 
-        const proxy = APIManager.getImpl(APILoadScene.name);
-        proxy && await proxy(<APILoadScene>model);
+        const proxy = APIManager.getImpl(APILoadScene.name, 'op_load');
+        proxy && await proxy.runner(<APILoadScene>model);
     }
 
 
-    export async function playSound(options: Sound) {
-        return await new Promise((resolve, reject) => {
-            setTimeout(() => {
-                console.log('play sound:', options);
-                resolve();
-            }, 1000);
+    export async function playSound(filename: string, options: Sound) {
+        let model = new APISound();
+        paramCompatible<APISound, Sound>(model, options, {
+            field: 'filename',
+            value: ResourceData.from(filename)
         });
+
+        const proxy = APIManager.getImpl(APISound.name, 'op_play_bgm');
+        proxy && await proxy.runner(<APISound>model);
     }
 }
