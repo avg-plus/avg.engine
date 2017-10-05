@@ -1,5 +1,7 @@
 import { ResourceData } from "./resource-data";
 
 export class Scene {
-    public filename: ResourceData;
+    public file: ResourceData;
+    public duration?: number;
+    public block?: boolean;
 }

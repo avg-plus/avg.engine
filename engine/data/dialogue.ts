@@ -2,6 +2,7 @@
 import { Character } from "./character";
 import { AVGData } from "./avg-data";
 import { AVGScriptUnit } from "../scripting/script-unit";
+import { Avatar } from "./avatar";
 
 export class DialogueOption {
     public title: string;
@@ -10,7 +11,8 @@ export class DialogueOption {
 
 export class Dialogue extends AVGData {
     public text: string;
-    public speaker?: Character;
-    public options?: Array<DialogueOption>;
+    public voice?: string;
+    public name?: string;
+    public character?: Character;
 }
 
