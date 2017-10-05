@@ -44,9 +44,15 @@ export class Transpiler {
         let program = esprima.parse(code, {
             range: true
         }, (node, meta) => {
-            // console.log(meta);
-            if (node.type === "CallExpression") {
-                loc_pos.push(node.callee.range[0]);
+            if (node.type === "CallExpression" && node.callee) {
+
+                let callee = node.callee;
+                console.log((<any>callee).object);
+
+                let calleeObj = (<any>callee).object;
+                if (calleeObj && calleeObj.name === 'api') {
+                    loc_pos.push(node.callee.range[0]);
+                }
             }
         });
 
