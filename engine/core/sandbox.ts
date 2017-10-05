@@ -1,7 +1,7 @@
 import { Character } from "../data/character";
 import { AVGScriptUnit } from "../scripting/script-unit";
 import { Dialogue } from "../data/dialogue";
-import { APIShowDialogue } from "../scripting/api/api-show-dialogue";
+import { APIDialogue } from "../scripting/api/api-dialogue";
 import { api } from "../scripting/api";
 
 export class Sandbox {
@@ -13,7 +13,7 @@ export class Sandbox {
     public static Character: Array<Character>;
 
     // Game Variables
-    public static Variables: Map<string, any>;
+    public static Variables: Map<string, any> = new Map<string, any>();
 
 
 }
