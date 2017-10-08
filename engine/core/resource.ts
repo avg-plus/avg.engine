@@ -4,8 +4,9 @@ import * as path from 'path';
 export enum ResourcePath {
     // Audio
     BGM,
+    BGS,
     SE,
-    CV,
+    Voice,
 
     // Graphics
     Backgrounds,
@@ -26,10 +27,10 @@ export enum ResourcePath {
 
 
 export class Resource {
-    private _paths: Map<ResourcePath, string>;
-    private _assetsRoot: string;
+    private static _paths: Map<ResourcePath, string>;
+    private static _assetsRoot: string;
 
-    constructor(rootDir: string) {
+    public static init(rootDir: string) {
 
         this._assetsRoot = rootDir;
 
@@ -54,8 +55,9 @@ export class Resource {
 
         this._paths = new Map<ResourcePath, string>([
             [ResourcePath.BGM, 'audio/bgm'],
+            [ResourcePath.BGS, 'audio/bgs'],
             [ResourcePath.SE, 'audio/se'],
-            [ResourcePath.CV, 'audio/cv'],
+            [ResourcePath.Voice, 'audio/voice'],
             [ResourcePath.Backgrounds, 'graphics/backgrounds'],
             [ResourcePath.Characters, 'graphics/characters'],
             [ResourcePath.UI, 'graphics/ui'],
@@ -69,11 +71,11 @@ export class Resource {
         console.log(`Initialize resource root folder: ${this._assetsRoot}`);
     }
 
-    public getRoot(): string {
+    public static getRoot(): string {
         return this._assetsRoot;
     }
 
-    public getPath(dir: ResourcePath): string {
+    public static getPath(dir: ResourcePath): string {
         let dirPath = this._paths.get(dir);
         if (!dirPath) {
             return undefined;

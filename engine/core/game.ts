@@ -1,3 +1,5 @@
+import * as fs from 'fs';
+
 import { AVGStory } from '../scripting/story';
 import { AVGScriptingLoop, LoopEvents } from "../scripting/scripting-loop";
 import { AVGScriptUnit } from "../scripting/script-unit";
@@ -5,6 +7,9 @@ import { AVGScriptUnit } from "../scripting/script-unit";
 import * as path from 'path';
 import { Screen } from "../const/model";
 import { Transition } from "./transition";
+import { PluginManager } from '../index';
+import { Setting } from './setting';
+import { Resource } from './resource';
 
 export class AVGGame {
 
@@ -38,6 +43,9 @@ export class AVGGame {
     }
 
     public start(entryScript?: string) {
+
+        // Init plugins
+        PluginManager.init();
 
         let scriptDir = this._scriptDir || './';
         entryScript = entryScript || path.join(scriptDir, AVGGame.DEFAULT_ENTRY_SCRIPT);
