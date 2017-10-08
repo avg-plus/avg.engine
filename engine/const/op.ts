@@ -1,0 +1,16 @@
+export enum OP {
+    ShowText = 'ShowText',
+    HideText = 'HideText',
+    PlayBGM = 'PlayBGM',
+    StopBGM = 'StopBGM',
+    PauseBGM = 'PauseBGM',
+    ResumeBGM = 'ResumeBGM',
+    PlayVoice = 'PlayVoice',
+    PlayBGS = 'PlayBGS',
+    PlaySE = 'PlaySE',
+    LoadScene = 'LoadScene',
+    Wait = 'Wait',
+    PlayEffect = 'PlayEffect',
+    StopEffect = 'StopEffect',
+    GotoTitleView = 'GotoTitleView',
+}
