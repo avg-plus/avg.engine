@@ -9,6 +9,7 @@ export class APIManager {
     private static _apis: APITable = new Map<string, OP_RunnerContainer>();
 
     public static extendImpl<T extends AVGScriptUnit>(typename: string, op: string, implRunner: RunnerFunction): void {
+
         if (!op) {
             throw new Error('Invalid OP or runmer');
         }

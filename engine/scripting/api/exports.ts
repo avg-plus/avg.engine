@@ -11,6 +11,8 @@ import { APIVariable } from "./api-variable";
 import { SoundTrack } from "../../const";
 import { Sandbox } from "../../core";
 import { APIEffect } from "./api-effect";
+import { APIGotoTitleView } from "./api-title-view";
+import { OP } from "../../const/op";
 
 
 function paramCompatible<T extends AVGScriptUnit, U extends AVGData>
@@ -46,7 +48,7 @@ export module api {
                 value: content
             });
 
-            const proxy = APIManager.getImpl(APIDialogue.name, 'op_show');
+            const proxy = APIManager.getImpl(APIDialogue.name, OP.ShowText);
             proxy && await proxy.runner(<APIDialogue>model);
         };
 
@@ -63,7 +65,7 @@ export module api {
         let model = new APIDialogue();
         paramCompatible<APIDialogue, Dialogue>(model, options);
 
-        const proxy = APIManager.getImpl(APIDialogue.name, 'op_hide');
+        const proxy = APIManager.getImpl(APIDialogue.name, OP.HideText);
         proxy && await proxy.runner(<APIDialogue>model);
     }
 
@@ -81,7 +83,7 @@ export module api {
             value: ResourceData.from(filename)
         });
 
-        const proxy = APIManager.getImpl(APIScene.name, 'op_load_scene');
+        const proxy = APIManager.getImpl(APIScene.name, OP.LoadScene);
         proxy && await proxy.runner(<APIScene>model);
     }
 
@@ -95,7 +97,7 @@ export module api {
             value: ResourceData.from(filename)
         });
 
-        const proxy = APIManager.getImpl(APISound.name, 'op_play_bgm');
+        const proxy = APIManager.getImpl(APISound.name, OP.PlayBGM);
         proxy && await proxy.runner(<APISound>model);
     }
 
@@ -105,7 +107,7 @@ export module api {
 
         paramCompatible<APISound, SoundBGM>(model, options);
 
-        const proxy = APIManager.getImpl(APISound.name, 'op_stop_bgm');
+        const proxy = APIManager.getImpl(APISound.name, OP.StopBGM);
         proxy && await proxy.runner(<APISound>model);
     }
 
@@ -115,7 +117,7 @@ export module api {
 
         paramCompatible<APISound, SoundBGM>(model, options);
 
-        const proxy = APIManager.getImpl(APISound.name, 'op_pause_bgm');
+        const proxy = APIManager.getImpl(APISound.name, OP.PauseBGM);
         proxy && await proxy.runner(<APISound>model);
     }
 
@@ -131,7 +133,7 @@ export module api {
 
         paramCompatible<APISound, SoundBGM>(model, options);
 
-        const proxy = APIManager.getImpl(APISound.name, 'op_resume_bgm');
+        const proxy = APIManager.getImpl(APISound.name, OP.ResumeBGM);
         proxy && await proxy.runner(<APISound>model);
     }
 
@@ -144,7 +146,7 @@ export module api {
             value: ResourceData.from(filename)
         });
 
-        const proxy = APIManager.getImpl(APISound.name, 'op_play_voice');
+        const proxy = APIManager.getImpl(APISound.name, OP.PlayVoice);
         proxy && await proxy.runner(<APISound>model);
     }
 
@@ -157,7 +159,7 @@ export module api {
             value: ResourceData.from(filename)
         });
 
-        const proxy = APIManager.getImpl(APISound.name, 'op_play_se');
+        const proxy = APIManager.getImpl(APISound.name, OP.PlaySE);
         proxy && await proxy.runner(<APISound>model);
     }
 
@@ -170,7 +172,7 @@ export module api {
             value: ResourceData.from(filename)
         });
 
-        const proxy = APIManager.getImpl(APISound.name, 'op_play_bgs');
+        const proxy = APIManager.getImpl(APISound.name, OP.PlayBGS);
         proxy && await proxy.runner(<APISound>model);
     }
 
@@ -181,8 +183,21 @@ export module api {
             value: time
         });
 
-        const proxy = APIManager.getImpl(APITimer.name, 'op_wait');
+        const proxy = APIManager.getImpl(APITimer.name, OP.Wait);
         proxy && await proxy.runner(<APITimer>model);
+    }
+
+
+    /**
+     * Navigate to game title view
+     * 
+     * @export
+     */
+    export async function gotoTitleView() {
+        let model = new APIGotoTitleView();
+
+        const proxy = APIManager.getImpl(APITimer.name, OP.GotoTitleView);
+        proxy && await proxy.runner(<APIGotoTitleView>model);
     }
 
     export async function playEffect(effectName: string, options: any) {
@@ -192,7 +207,7 @@ export module api {
             value: effectName
         });
 
-        const proxy = APIManager.getImpl(APIEffect.name, 'op_play_effect');
+        const proxy = APIManager.getImpl(APIEffect.name, OP.PlayEffect);
         proxy && await proxy.runner(<APIEffect>model);
     }
 

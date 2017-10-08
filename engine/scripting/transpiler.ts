@@ -16,7 +16,6 @@ export class Transpiler {
         const raw = await this._read(file);
         if (raw) {
             let compiled = this._preprocesser(raw);
-            // console.log(compiled);
         }
     }
 
@@ -47,8 +46,7 @@ export class Transpiler {
             if (node.type === "CallExpression" && node.callee) {
 
                 let callee = node.callee;
-                console.log((<any>callee).object);
-
+                
                 let calleeObj = (<any>callee).object;
                 if (calleeObj && calleeObj.name === 'api') {
                     loc_pos.push(node.callee.range[0]);
