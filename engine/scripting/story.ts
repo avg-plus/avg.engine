@@ -1,8 +1,8 @@
-import * as vm from "vm";
-import * as fs from "fs";
-import { AVGScriptUnit } from "../scripting/script-unit";
-import { Sandbox } from "../core/sandbox";
-import { Transpiler } from "../scripting/transpiler";
+import * as vm from 'vm';
+import * as fs from 'fs';
+import { AVGScriptUnit } from '../scripting/script-unit';
+import { Sandbox } from '../core/sandbox';
+import { Transpiler } from '../scripting/transpiler';
 
 export class AVGStory {
     private _scriptUnits: Array<AVGScriptUnit> = [];
@@ -19,7 +19,7 @@ export class AVGStory {
     }
 
     public loadFromFile(filename: string) {
-        fs.readFile(filename, "utf8", (err, data) => {
+        fs.readFile(filename, 'utf8', (err, data) => {
             if (err) {
                 throw err;
             }

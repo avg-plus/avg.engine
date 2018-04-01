@@ -43,7 +43,7 @@ export class Transpiler {
         let program = esprima.parse(code, {
             range: true
         }, (node, meta) => {
-            if (node.type === "CallExpression" && node.callee) {
+            if (node.type === 'CallExpression' && node.callee) {
 
                 let callee = node.callee;
                 
@@ -69,7 +69,7 @@ export class Transpiler {
 
     private static async _read(file: string): Promise<string> {
         return await new Promise<string>((resolve, reject) => {
-            fs.readFile(file, "utf8", (err, data) => {
+            fs.readFile(file, 'utf8', (err, data) => {
                 if (err) reject(err);
 
                 resolve(data);

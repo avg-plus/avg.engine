@@ -1,4 +1,4 @@
-import { Env } from "./env";
+import { Env } from './env';
 import * as path from 'path';
 
 export enum ResourcePath {
@@ -11,6 +11,7 @@ export enum ResourcePath {
     // Graphics
     Backgrounds,
     Characters,
+    Masks,
     UI,
     Icons,
     Effects,
@@ -40,13 +41,15 @@ export class Resource {
             Root
             ├── audio
             │   ├── bgm
-            │   ├── cv
+            │   ├── bgs
+            │   ├── voice
             │   └── se
             ├── data
             ├── graphics
             │   ├── backgrounds
             │   ├── characters
             │   ├── effects
+            │   ├── masks
             │   ├── icons
             │   └── ui
             ├── plugins
@@ -60,6 +63,7 @@ export class Resource {
             [ResourcePath.Voice, 'audio/voice'],
             [ResourcePath.Backgrounds, 'graphics/backgrounds'],
             [ResourcePath.Characters, 'graphics/characters'],
+            [ResourcePath.Masks, 'graphics/masks'],
             [ResourcePath.UI, 'graphics/ui'],
             [ResourcePath.Icons, 'graphics/icons'],
             [ResourcePath.Effects, 'graphics/effects'],

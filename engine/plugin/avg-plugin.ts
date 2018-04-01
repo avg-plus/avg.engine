@@ -1,6 +1,6 @@
-import { Dialogue } from "../index";
-import { PluginBase } from "./plugin-base";
-import { PluginInfo } from "./plugin-info";
+import { Dialogue } from '../index';
+import { PluginBase } from './plugin-base';
+import { PluginInfo } from './plugin-info';
 
 export enum PluginEvents {
     OnBeforeStartGame,
@@ -21,7 +21,7 @@ export class AVGPlugin implements PluginBase {
     }
 
     onUnload(): void {
-        throw new Error("Method not implemented.");
+        throw new Error('Method not implemented.');
     }
 
     protected OnBeforeDialogue(dialogue: Dialogue) { }

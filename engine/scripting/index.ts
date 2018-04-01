@@ -2,6 +2,5 @@
 
 export * from './api-manager';
 export * from './script-unit';
-export * from './scripting-loop';
 export * from './story';
 export * from './transpiler';

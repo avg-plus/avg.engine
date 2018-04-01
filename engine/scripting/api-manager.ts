@@ -1,4 +1,4 @@
-import { AVGScriptUnit, RunnerFunction } from "./script-unit";
+import { AVGScriptUnit, RunnerFunction } from './script-unit';
 
 export type OP_Runner = { op: string, runner: RunnerFunction };
 export type OP_RunnerContainer = Array<OP_Runner>;

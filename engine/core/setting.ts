@@ -1,15 +1,6 @@
-import { Screen } from "../const/model";
+import { Screen } from '../const/model';
 
 export class Setting {
-    // private static _textSpeed: number = 80;
-    // private static _autoPlay: boolean = false;
-    // private static _autoPlaySpeed: number = 1;
-    // private static _bgmVolume: number = 40;
-    // private static _bgsVolume: number = 100;
-    // private static _seVolume: number = 100;
-    // private static _voiceVolume: number = 100;
-    // private static _screen: Screen = { width: 1366, height: 768 };
-
     private static settings: any = {
         screen: {
             width: 1366,

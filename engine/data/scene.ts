@@ -1,4 +1,4 @@
-import { ResourceData } from "./resource-data";
+import { ResourceData } from './resource-data';
 
 export class Scene {
     public file: ResourceData;

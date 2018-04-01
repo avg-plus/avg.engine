@@ -1,6 +1,6 @@
-import { AVGScriptUnit } from "../script-unit";
-import { Sandbox } from "../../core/sandbox";
-import { Variable } from "../../data/variable";
+import { AVGScriptUnit } from '../script-unit';
+import { Sandbox } from '../../core/sandbox';
+import { Variable } from '../../data/variable';
 
 export class APIVariable extends AVGScriptUnit {
     public static set(name: string, value: any) {

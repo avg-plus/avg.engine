@@ -1,4 +1,4 @@
-import { AVGData } from "./avg-data";
+import { AVGData } from './avg-data';
 
 export class Effect extends AVGData {
     public effectName: string;

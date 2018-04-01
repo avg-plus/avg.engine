@@ -1,4 +1,4 @@
-import { AVGData } from "../data/avg-data";
+import { AVGData } from '../data/avg-data';
 
 export type RunnerFunction = (scriptUnit: AVGScriptUnit) => Promise<AVGScriptUnit>;
 export class AVGScriptUnit {

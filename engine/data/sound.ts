@@ -1,6 +1,6 @@
-import { AVGData } from "./avg-data";
-import { SoundTrack } from "../const";
-import { ResourceData } from "./resource-data";
+import { AVGData } from './avg-data';
+import { SoundTrack } from '../const';
+import { ResourceData } from './resource-data';
 
 export class Sound extends AVGData {
     public file: ResourceData;

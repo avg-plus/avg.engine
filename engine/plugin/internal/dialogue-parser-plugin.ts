@@ -1,15 +1,15 @@
-import { Dialogue } from "../../data";
-import { AVGPlugin } from "../avg-plugin";
-import { PluginInfo } from "../plugin-info";
-import { AVGInternalPlugin } from "../avg-internal-plugin";
-import { APIVariable } from "../../index";
+import { Dialogue } from '../../data';
+import { AVGPlugin } from '../avg-plugin';
+import { PluginInfo } from '../plugin-info';
+import { AVGInternalPlugin } from '../avg-internal-plugin';
+import { APIVariable } from '../../index';
 
 export class DialogueParserPlugin extends AVGInternalPlugin {
     public onLoad(): PluginInfo {
         return {
-            author: "AngryPowman",
-            pluginName: "TextParser",
-            comment: "Text plugin with text highlighting supported."
+            author: 'AngryPowman',
+            pluginName: 'TextParser',
+            comment: 'Text plugin with text highlighting supported.'
         };
     }
 
@@ -59,7 +59,7 @@ export class DialogueParserPlugin extends AVGInternalPlugin {
         dialogue.text = dialogue.text.replace(/\[\/s\]/g, `</font>`);
 
         // Grammar: [emoji=file]
-        dialogue.text = dialogue.text.replace(/\[emoji=([\w\-\. ]+)]/g, `<img src="assets/graphics/emoji/$1" />`);
+        dialogue.text = dialogue.text.replace(/\[emoji=([\w\-\. ]+)]/g, `<img src='assets/graphics/emoji/$1' />`);
 
         // Grammar: ${variable}
         let variableRegex = /\${(.*)}/;
@@ -69,6 +69,6 @@ export class DialogueParserPlugin extends AVGInternalPlugin {
             dialogue.text = dialogue.text.replace(variableRegex, value === undefined ? '' : value)
         }
 
-        console.log("On DialogueParserPlugin called:", dialogue.text);
+        console.log('On DialogueParserPlugin called:', dialogue.text);
     }
 }

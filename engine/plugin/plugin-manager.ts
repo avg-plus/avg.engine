@@ -1,6 +1,6 @@
-import { PluginBase } from "./plugin-base";
-import { DialogueParserPlugin, Dialogue } from "../index";
-import { PluginEvents } from "./avg-plugin";
+import { PluginBase } from './plugin-base';
+import { DialogueParserPlugin, Dialogue } from '../index';
+import { PluginEvents } from './avg-plugin';
 
 export class PluginManager {
     private static _registeredPlugins: Map<string, PluginBase>;
@@ -14,7 +14,7 @@ export class PluginManager {
 
     public static register(plugin: PluginBase) {
         let pluginInfo = plugin.onLoad();
-        console.log("Plugin registered: ", pluginInfo);
+        console.log('Plugin registered: ', pluginInfo);
 
         if (!this._registeredPlugins.has(plugin.constructor.name)) {
             this._registeredPlugins.set(plugin.constructor.name, plugin);

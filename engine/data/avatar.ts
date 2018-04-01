@@ -1,4 +1,4 @@
-import { AVGData } from "./avg-data";
+import { AVGData } from './avg-data';
 
 export class Avatar extends AVGData {
     public file: string;
