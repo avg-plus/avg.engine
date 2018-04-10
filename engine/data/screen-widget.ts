@@ -17,27 +17,54 @@ export enum ScreenWidgetType {
     Text
 }
 
-export enum ScreenWidgetAnimation_Enter {
-    Appear,
-    FadeIn,
-    FlyIn,
-
-    Typewriter // Text Only
+export enum ScreenWidgetAnimation {
+    Enter_Appear = "Appear",
+    Enter_FadeIn = "FadeIn",
+    Enter_FlyIn = "FlyIn",
+    Enter_ScaleIn = "ScaleIn",
+    Leave_Hide = "Hide",
+    Leave_FadeOut = "FadeOut",
+    Leave_FlyOut = "FlyOut",
+    Leave_ScaleOut = "ScaleOut"
 }
 
-export enum ScreenWidgetAnimation_Highlight {}
-
-export enum ScreenWidgetAnimation_Leave {
-    Hide,
-    FadeOut,
-    FlyOut
+export enum AnimationDirection {
+    FromLeft = "Left",
+    FromRight = "Right",
+    FromUp = "Up",
+    FromDown = "Down"
 }
 
-export class ScreenWidget extends AVGData {
+/* Animations */
+export class WidgetAnimationOptions {
+    public duration: number = 5;
+}
+
+export class WidgetAnimation_FadeInOptions extends WidgetAnimationOptions {}
+export class WidgetAnimation_FadeOutOptions extends WidgetAnimationOptions {}
+export class WidgetAnimation_FlyInOptions extends WidgetAnimationOptions {
+    public offset: number = 10;
+    public direction: string = AnimationDirection.FromLeft;
+}
+
+export class WidgetAnimation_FlyOutOptions extends WidgetAnimation_FlyInOptions {}
+
+export class WidgetAnimation {
+    public name: ScreenWidgetAnimation;
+
+    public options:
+        | WidgetAnimation_FadeInOptions
+        | WidgetAnimation_FadeOutOptions
+        | WidgetAnimation_FlyInOptions;
+}
+
+export class ScreenWidget {
+    private _widgetType: ScreenWidgetType;
+
     public position: ScreenPosition = ScreenPosition.Center;
-    public widgetType: ScreenWidgetType;
-    public animation:
-        | ScreenWidgetAnimation_Enter
-        | ScreenWidgetAnimation_Highlight
-        | ScreenWidgetAnimation_Leave;
+    public animation: WidgetAnimation;
+
+    constructor(type: ScreenWidgetType) {
+        this._widgetType = type;
+    }
 }

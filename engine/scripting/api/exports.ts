@@ -13,9 +13,7 @@ import {
     Effect,
     ScreenPosition,
     ScreenWidgetType,
-    ScreenWidgetAnimation_Enter,
-    ScreenWidgetAnimation_Leave,
-    ScreenWidgetAnimation_Highlight
+    WidgetAnimation
 } from "../../data";
 
 import { APIScene } from "./api-scene";
@@ -30,6 +28,7 @@ import { APIGotoTitleView } from "./api-title-view";
 import { OP } from "../../const/op";
 import { APISubtitle } from "./api-subtitle";
 import { Subtitle } from "../../data/subtitle";
+import { ScreenWidgetAnimation } from "../../data/screen-widget";
 
 function paramCompatible<T extends AVGScriptUnit, U extends AVGData>(
     model: T,
@@ -247,7 +246,8 @@ export namespace api {
         let model = new APISubtitle();
         model.data.id = id;
         model.data.text = text;
-        model.data.widgetType = ScreenWidgetType.Text;
+        model.data.animation = new WidgetAnimation();
+        model.data.animation.name = ScreenWidgetAnimation.Enter_Appear;
 
         paramCompatible<APISubtitle, Subtitle>(model, options);
 
@@ -257,12 +257,10 @@ export namespace api {
 
     export async function animateSubtitle(
         id: string,
-        animation: ScreenWidgetAnimation_Highlight
+        animation: WidgetAnimation
     ) {
         let model = new APISubtitle();
         model.data.id = id;
-        model.data.animation = animation;
-        model.data.widgetType = ScreenWidgetType.Text;
 
         const proxy = APIManager.getImpl(APISubtitle.name, OP.AnimateSubtitle);
         proxy && (await proxy.runner(<APISubtitle>model));
@@ -272,7 +270,6 @@ export namespace api {
         let model = new APISubtitle();
         model.data.id = id;
         model.data.text = text;
-        model.data.widgetType = ScreenWidgetType.Text;
 
         const proxy = APIManager.getImpl(APISubtitle.name, OP.UpdateSubtitle);
         proxy && (await proxy.runner(<APISubtitle>model));
@@ -280,12 +277,11 @@ export namespace api {
 
     export async function hideSubtitle(
         id: string,
-        animation: ScreenWidgetAnimation_Leave = ScreenWidgetAnimation_Leave.Hide
+        options: { animation: WidgetAnimation }
     ) {
         let model = new APISubtitle();
         model.data.id = id;
-        model.data.animation= animation;
-        model.data.widgetType = ScreenWidgetType.Text;
+        model.data.animation = options.animation;
 
         const proxy = APIManager.getImpl(APISubtitle.name, OP.HideSubtitle);
         proxy && (await proxy.runner(<APISubtitle>model));
