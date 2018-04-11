@@ -1,15 +1,15 @@
 import { AVGData } from "./avg-data";
 
 export enum ScreenPosition {
-    TopLeft, // 左上
-    TopRight, // 右上
-    BottomLeft, // 左下
-    BottomRight, // 右下
-    Top, // 顶部
-    Left, // 左
-    Right, // 右
-    Bottom, // 下
-    Center // 居中
+    TopLeft = "TopLeft", // 左上
+    TopRight = "TopRight", // 右上
+    BottomLeft = "BottomLeft", // 左下
+    BottomRight = "BottomRight", // 右下
+    Top = "Top", // 顶部
+    Left = "Left", // 左
+    Right = "Right", // 右
+    Bottom = "Bottom", // 下
+    Center = "Center" // 居中
 }
 
 export enum ScreenWidgetType {

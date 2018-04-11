@@ -29,6 +29,8 @@ import { OP } from "../../const/op";
 import { APISubtitle } from "./api-subtitle";
 import { Subtitle } from "../../data/subtitle";
 import { ScreenWidgetAnimation } from "../../data/screen-widget";
+import { APIDialogueChoice } from "./api-dialogue-options";
+import { DialogueChoice } from "../../data/dialogue-choice";
 
 function paramCompatible<T extends AVGScriptUnit, U extends AVGData>(
     model: T,
@@ -85,6 +87,17 @@ export namespace api {
 
         const proxy = APIManager.getImpl(APIDialogue.name, OP.HideText);
         proxy && (await proxy.runner(<APIDialogue>model));
+    }
+
+    export async function showChoices(choices: Array<string>) {
+        let model = new APIDialogueChoice();
+
+        choices.forEach(s => {
+            model.options.push(new DialogueChoice(s));
+        });
+
+        const proxy = APIManager.getImpl(APIDialogueChoice.name, OP.ShowChioce)
+        proxy && (await proxy.runner(<APIDialogueChoice>model));
     }
 
     /**
