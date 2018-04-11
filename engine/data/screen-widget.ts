@@ -40,14 +40,14 @@ export class WidgetAnimationOptions {
     public duration: number = 5;
 }
 
-export class WidgetAnimation_FadeInOptions extends WidgetAnimationOptions {}
-export class WidgetAnimation_FadeOutOptions extends WidgetAnimationOptions {}
+export class WidgetAnimation_FadeInOptions extends WidgetAnimationOptions { }
+export class WidgetAnimation_FadeOutOptions extends WidgetAnimationOptions { }
 export class WidgetAnimation_FlyInOptions extends WidgetAnimationOptions {
     public offset: number = 10;
     public direction: string = AnimationDirection.FromLeft;
 }
 
-export class WidgetAnimation_FlyOutOptions extends WidgetAnimation_FlyInOptions {}
+export class WidgetAnimation_FlyOutOptions extends WidgetAnimation_FlyInOptions { }
 
 export class WidgetAnimation {
     public name: ScreenWidgetAnimation;
@@ -60,8 +60,29 @@ export class WidgetAnimation {
 
 export class ScreenWidget {
     private _widgetType: ScreenWidgetType;
+    private _position: string = ScreenPosition.Center;
 
-    public position: ScreenPosition = ScreenPosition.Center;
+    public x: string;
+    public y: string;
+
+    public get position() {
+        return this._position;
+    }
+
+    public set position(value: string) {
+        // Ignore spaces
+        this._position = value.trim();
+
+        // If custom position
+        let regex = /\((\d+%?),(\d+%?)\)/;
+        let matches = this._position.match(regex);
+
+        if (matches) {
+            this.x = matches[1];
+            this.y = matches[2];
+        }
+    }
+
     public animation: WidgetAnimation;
 
     constructor(type: ScreenWidgetType) {
