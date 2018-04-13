@@ -13,7 +13,8 @@ import {
     Effect,
     ScreenPosition,
     ScreenWidgetType,
-    WidgetAnimation
+    WidgetAnimation,
+    Avatar
 } from "../../data";
 
 import { APIScene } from "./api-scene";
@@ -31,6 +32,8 @@ import { Subtitle } from "../../data/subtitle";
 import { ScreenWidgetAnimation } from "../../data/screen-widget";
 import { APIDialogueChoice } from "./api-dialogue-options";
 import { DialogueChoice } from "../../data/dialogue-choice";
+import { Character } from "../../data/character";
+import { APICharacter } from "./api-character";
 
 function paramCompatible<T extends AVGScriptUnit, U extends AVGData>(
     model: T,
@@ -89,6 +92,21 @@ export namespace api {
         proxy && (await proxy.runner(<APIDialogue>model));
     }
 
+    export async function showCharacter(avatar: Avatar, index: number = 0) {
+        let model = new APICharacter();
+        model.data = avatar;
+        model.index = index;
+
+        paramCompatible<APICharacter, Avatar>(model, {});
+        const proxy = APIManager.getImpl(APICharacter.name, OP.ShowCharacter);
+        proxy && (await proxy.runner(<APICharacter>model));
+    }
+
+    export async function hideCharacter(index: number = 0) {
+        const proxy = APIManager.getImpl(APICharacter.name, OP.HideCharacter);
+        proxy && (await proxy.runner(null));
+    }
+
     export async function showChoices(choices: Array<string>) {
         let model = new APIDialogueChoice();
 
@@ -96,7 +114,7 @@ export namespace api {
             model.options.push(new DialogueChoice(s));
         });
 
-        const proxy = APIManager.getImpl(APIDialogueChoice.name, OP.ShowChioce)
+        const proxy = APIManager.getImpl(APIDialogueChoice.name, OP.ShowChioce);
         proxy && (await proxy.runner(<APIDialogueChoice>model));
     }
 

@@ -1,6 +1,8 @@
 export enum OP {
     ShowText = "ShowText",
     HideText = "HideText",
+    ShowCharacter = "ShowCharacter",
+    HideCharacter = "HideCharacter",
     ShowChioce = "ShowChoice",
     HideChioce = "HideChoice",
     PlayBGM = "PlayBGM",
