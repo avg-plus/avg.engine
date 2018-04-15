@@ -88,7 +88,5 @@ export class DialogueParserPlugin extends AVGInternalPlugin {
 
     public OnBeforeDialogue(dialogue: Dialogue) {
         dialogue.text = DialogueParserPlugin.parseContent(dialogue.text);
-
-        console.log("On DialogueParserPlugin called:", dialogue.text);
     }
 }

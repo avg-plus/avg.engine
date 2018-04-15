@@ -30,7 +30,7 @@ import { OP } from "../../const/op";
 import { APISubtitle } from "./api-subtitle";
 import { Subtitle } from "../../data/subtitle";
 import { ScreenWidgetAnimation } from "../../data/screen-widget";
-import { APIDialogueChoice } from "./api-dialogue-options";
+import { APIDialogueChoice } from "./api-dialogue-choices";
 import { DialogueChoice } from "../../data/dialogue-choice";
 import { Character } from "../../data/character";
 import { APICharacter } from "./api-character";
@@ -102,20 +102,25 @@ export namespace api {
         proxy && (await proxy.runner(<APICharacter>model));
     }
 
-    export async function hideCharacter(index: number = 0) {
+    export async function hideCharacter(index: number = -1) {
+        let model = new APICharacter();
+        model.index = index;
+
+        paramCompatible<APICharacter, Avatar>(model, {});
         const proxy = APIManager.getImpl(APICharacter.name, OP.HideCharacter);
-        proxy && (await proxy.runner(null));
+        proxy && (await proxy.runner(<APICharacter>model));
     }
 
     export async function showChoices(choices: Array<string>) {
         let model = new APIDialogueChoice();
-
         choices.forEach(s => {
-            model.options.push(new DialogueChoice(s));
+            model.choices.push(new DialogueChoice(s));
         });
 
-        const proxy = APIManager.getImpl(APIDialogueChoice.name, OP.ShowChioce);
-        proxy && (await proxy.runner(<APIDialogueChoice>model));
+        return await APIManager.getImpl(
+            APIDialogueChoice.name,
+            OP.ShowChioce
+        ).runner(<APIDialogueChoice>model);
     }
 
     /**
@@ -132,8 +137,9 @@ export namespace api {
             value: ResourceData.from(filename)
         });
 
-        const proxy = APIManager.getImpl(APIScene.name, OP.LoadScene);
-        proxy && (await proxy.runner(<APIScene>model));
+        return await APIManager.getImpl(APIScene.name, OP.LoadScene).runner(
+            <APIScene>model
+        );
     }
 
     export async function playBGM(filename: string, options: Sound) {
@@ -250,12 +256,16 @@ export namespace api {
         proxy && (await proxy.runner(<APIGotoTitleView>model));
     }
 
-    export async function playEffect(effectName: string, options: any) {
+    export async function sceneEffect(
+        index: number,
+        effectName: string,
+        options: any
+    ) {
         let model = new APIEffect();
-        paramCompatible<APIEffect, Effect>(model, options, {
-            field: "effectName",
-            value: effectName
-        });
+        model.index = index;
+        model.data.effectName = effectName;
+
+        paramCompatible<APIEffect, Effect>(model, options);
 
         const proxy = APIManager.getImpl(APIEffect.name, OP.PlayEffect);
         proxy && (await proxy.runner(<APIEffect>model));
