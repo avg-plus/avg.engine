@@ -130,8 +130,9 @@ export namespace api {
      * @param {string} filename The background image file of scene
      * @param {Scene} [options]
      */
-    export async function loadScene(filename: string, options?: Scene) {
+    export async function loadScene(index: number, filename: string, options?: Scene) {
         let model = new APIScene();
+        model.index = index;
         paramCompatible<APIScene, Scene>(model, options, {
             field: "file",
             value: ResourceData.from(filename)
@@ -269,6 +270,10 @@ export namespace api {
 
         const proxy = APIManager.getImpl(APIEffect.name, OP.PlayEffect);
         proxy && (await proxy.runner(<APIEffect>model));
+    }
+
+    export async function animateScene(index: number, animateName: string, options: any) {
+
     }
 
     export async function getVariable(name: string): Promise<any> {

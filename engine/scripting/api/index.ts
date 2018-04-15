@@ -1,5 +1,6 @@
 //@ Auto-Generated indexing files for avg.engine
 
+export * from './api-animate-scene';
 export * from './api-character';
 export * from './api-dialogue-choices';
 export * from './api-dialogue';

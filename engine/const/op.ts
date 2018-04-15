@@ -13,6 +13,7 @@ export enum OP {
     PlayBGS = "PlayBGS",
     PlaySE = "PlaySE",
     LoadScene = "LoadScene",
+    AnimateScene = "AnimateScene",
     Wait = "Wait",
     PlayEffect = "PlayEffect",
     StopEffect = "StopEffect",
