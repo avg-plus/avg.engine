@@ -130,7 +130,11 @@ export namespace api {
      * @param {string} filename The background image file of scene
      * @param {Scene} [options]
      */
-    export async function loadScene(index: number, filename: string, options?: Scene) {
+    export async function loadScene(
+        index: number,
+        filename: string,
+        options?: Scene
+    ) {
         let model = new APIScene();
         model.index = index;
         paramCompatible<APIScene, Scene>(model, options, {
@@ -272,9 +276,11 @@ export namespace api {
         proxy && (await proxy.runner(<APIEffect>model));
     }
 
-    export async function animateScene(index: number, animateName: string, options: any) {
-
-    }
+    export async function animateScene(
+        index: number,
+        animateName: string,
+        options: any
+    ) {}
 
     export async function getVariable(name: string): Promise<any> {
         return Promise.resolve(APIVariable.get(name));
@@ -327,7 +333,10 @@ export namespace api {
     ) {
         let model = new APISubtitle();
         model.data.id = id;
-        model.data.animation = options.animation;
+
+        paramCompatible<APISubtitle, WidgetAnimation>(model, options);
+
+        // model.data.animation = options.animation;
 
         const proxy = APIManager.getImpl(APISubtitle.name, OP.HideSubtitle);
         proxy && (await proxy.runner(<APISubtitle>model));
