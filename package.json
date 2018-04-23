@@ -3,6 +3,7 @@
   "scripts": {
     "build": "tsc -p tsconfig.json",
     "build:watch": "tsc -p tsconfig.json -w",
+    "dts-generate": "dts-generator --name 'avg-engine' --project ./ --out libs/avg-engine.d.ts",
     "prepublish": "cp ./package.json ./dist",
     "test": "cp test/*.avs dist/test && node ./dist/test/app.js"
   },
@@ -30,6 +31,7 @@
   },
   "devDependencies": {
     "create-index": "^2.2.0",
+    "dts-generator": "^2.1.0",
     "globby": "^6.1.0",
     "gulp": "^3.9.1",
     "shelljs": "^0.7.8",

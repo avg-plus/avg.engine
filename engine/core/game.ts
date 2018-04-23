@@ -13,7 +13,7 @@ import { Resource } from './resource';
 
 export class AVGGame {
 
-    private static DEFAULT_ENTRY_SCRIPT = 'start.js';
+    private static DEFAULT_ENTRY_SCRIPT = 'start.avs';
 
     private _entryStory: AVGStory;
     // private _scriptingLoop: AVGScriptingLoop;
