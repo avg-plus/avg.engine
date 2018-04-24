@@ -90,6 +90,7 @@ define("engine/const/op", ["require", "exports"], function (require, exports) {
         OP["UpdateSubtitle"] = "UpdateSubtitle";
         OP["HideSubtitle"] = "HideSubtitle";
         OP["AnimateSubtitle"] = "AnimateSubtitle";
+        OP["ShowInputBox"] = "ShowInputBox";
     })(OP = exports.OP || (exports.OP = {}));
 });
 //@ Auto-Generated indexing files for avg.engine
@@ -290,6 +291,52 @@ define("engine/data/image", ["require", "exports", "engine/data/screen-widget"],
     }
     exports.Image = Image;
 });
+define("engine/core/i18n", ["require", "exports"], function (require, exports) {
+    "use strict";
+    Object.defineProperty(exports, "__esModule", { value: true });
+    class i18n {
+        static load(lang) {
+            this.lang = lang;
+        }
+        static get(key) {
+            return this.lang[key];
+        }
+    }
+    i18n.lang = {
+        INPUT_OK_BUTTON_TEXT: "确认",
+        INPUT_CANCEL_BUTTON_TEXT: "取消"
+    };
+    exports.i18n = i18n;
+});
+define("engine/data/input-data", ["require", "exports", "engine/data/avg-data", "engine/core/i18n"], function (require, exports, avg_data_5, i18n_1) {
+    "use strict";
+    Object.defineProperty(exports, "__esModule", { value: true });
+    var InputType;
+    (function (InputType) {
+        InputType[InputType["String"] = 0] = "String";
+        InputType[InputType["Number"] = 1] = "Number";
+    })(InputType = exports.InputType || (exports.InputType = {}));
+    class InputBoxResult {
+        constructor() {
+            this.isOK = true;
+            this.value = "";
+        }
+    }
+    exports.InputBoxResult = InputBoxResult;
+    class InputData extends avg_data_5.AVGData {
+        constructor() {
+            super(...arguments);
+            this.title = "";
+            this.inputType = InputType.String;
+            this.minLength = 0;
+            this.maxLength = 255;
+            this.allowCancel = false;
+            this.okButtonText = i18n_1.i18n.get("INPUT_OK_BUTTON_TEXT");
+            this.cancelButtonText = i18n_1.i18n.get("INPUT_CANCEL_BUTTON_TEXT");
+        }
+    }
+    exports.InputData = InputData;
+});
 define("engine/data/scene", ["require", "exports", "engine/data/screen-widget", "engine/const/model"], function (require, exports, screen_widget_2, model_2) {
     "use strict";
     Object.defineProperty(exports, "__esModule", { value: true });
@@ -301,10 +348,10 @@ define("engine/data/scene", ["require", "exports", "engine/data/screen-widget", 
     }
     exports.Scene = Scene;
 });
-define("engine/data/sound", ["require", "exports", "engine/data/avg-data"], function (require, exports, avg_data_5) {
+define("engine/data/sound", ["require", "exports", "engine/data/avg-data"], function (require, exports, avg_data_6) {
     "use strict";
     Object.defineProperty(exports, "__esModule", { value: true });
-    class Sound extends avg_data_5.AVGData {
+    class Sound extends avg_data_6.AVGData {
     }
     exports.Sound = Sound;
     class SoundBGM extends Sound {
@@ -325,34 +372,35 @@ define("engine/data/subtitle", ["require", "exports", "engine/data/screen-widget
     }
     exports.Subtitle = Subtitle;
 });
-define("engine/data/timer", ["require", "exports", "engine/data/avg-data"], function (require, exports, avg_data_6) {
+define("engine/data/timer", ["require", "exports", "engine/data/avg-data"], function (require, exports, avg_data_7) {
     "use strict";
     Object.defineProperty(exports, "__esModule", { value: true });
-    class Timer extends avg_data_6.AVGData {
+    class Timer extends avg_data_7.AVGData {
     }
     exports.Timer = Timer;
 });
-define("engine/data/variable", ["require", "exports", "engine/data/avg-data"], function (require, exports, avg_data_7) {
+define("engine/data/variable", ["require", "exports", "engine/data/avg-data"], function (require, exports, avg_data_8) {
     "use strict";
     Object.defineProperty(exports, "__esModule", { value: true });
-    class Variable extends avg_data_7.AVGData {
+    class Variable extends avg_data_8.AVGData {
     }
     exports.Variable = Variable;
 });
 //@ Auto-Generated indexing files for avg.engine
-define("engine/data/index", ["require", "exports", "engine/data/avatar", "engine/data/avg-data", "engine/data/character", "engine/data/dialogue-choice", "engine/data/dialogue", "engine/data/effect", "engine/data/image", "engine/data/resource-data", "engine/data/scene", "engine/data/screen-widget", "engine/data/sound", "engine/data/subtitle", "engine/data/timer", "engine/data/variable"], function (require, exports, avatar_1, avg_data_8, character_1, dialogue_choice_1, dialogue_1, effect_1, image_1, resource_data_1, scene_1, screen_widget_4, sound_1, subtitle_1, timer_1, variable_1) {
+define("engine/data/index", ["require", "exports", "engine/data/avatar", "engine/data/avg-data", "engine/data/character", "engine/data/dialogue-choice", "engine/data/dialogue", "engine/data/effect", "engine/data/image", "engine/data/input-data", "engine/data/resource-data", "engine/data/scene", "engine/data/screen-widget", "engine/data/sound", "engine/data/subtitle", "engine/data/timer", "engine/data/variable"], function (require, exports, avatar_1, avg_data_9, character_1, dialogue_choice_1, dialogue_1, effect_1, image_1, input_data_1, resource_data_1, scene_1, screen_widget_4, sound_1, subtitle_1, timer_1, variable_1) {
     "use strict";
     function __export(m) {
         for (var p in m) if (!exports.hasOwnProperty(p)) exports[p] = m[p];
     }
     Object.defineProperty(exports, "__esModule", { value: true });
     __export(avatar_1);
-    __export(avg_data_8);
+    __export(avg_data_9);
     __export(character_1);
     __export(dialogue_choice_1);
     __export(dialogue_1);
     __export(effect_1);
     __export(image_1);
+    __export(input_data_1);
     __export(resource_data_1);
     __export(scene_1);
     __export(screen_widget_4);
@@ -573,7 +621,18 @@ define("engine/scripting/api/api-effect", ["require", "exports", "engine/scripti
     }
     exports.APIEffect = APIEffect;
 });
-define("engine/scripting/api/api-scene", ["require", "exports", "engine/scripting/script-unit", "engine/data/index"], function (require, exports, script_unit_6, data_3) {
+define("engine/scripting/api/api-input-box", ["require", "exports", "engine/scripting/script-unit", "engine/data/input-data"], function (require, exports, script_unit_6, input_data_2) {
+    "use strict";
+    Object.defineProperty(exports, "__esModule", { value: true });
+    class APIInputBox extends script_unit_6.AVGScriptUnit {
+        constructor() {
+            super(...arguments);
+            this.data = new input_data_2.InputData;
+        }
+    }
+    exports.APIInputBox = APIInputBox;
+});
+define("engine/scripting/api/api-scene", ["require", "exports", "engine/scripting/script-unit", "engine/data/index"], function (require, exports, script_unit_7, data_3) {
     "use strict";
     Object.defineProperty(exports, "__esModule", { value: true });
     class SceneHandle {
@@ -582,7 +641,7 @@ define("engine/scripting/api/api-scene", ["require", "exports", "engine/scriptin
         }
     }
     exports.SceneHandle = SceneHandle;
-    class APIScene extends script_unit_6.AVGScriptUnit {
+    class APIScene extends script_unit_7.AVGScriptUnit {
         constructor() {
             super(...arguments);
             this.index = 0;
@@ -591,10 +650,10 @@ define("engine/scripting/api/api-scene", ["require", "exports", "engine/scriptin
     }
     exports.APIScene = APIScene;
 });
-define("engine/scripting/api/api-sound", ["require", "exports", "engine/scripting/script-unit", "engine/data/index"], function (require, exports, script_unit_7, data_4) {
+define("engine/scripting/api/api-sound", ["require", "exports", "engine/scripting/script-unit", "engine/data/index"], function (require, exports, script_unit_8, data_4) {
     "use strict";
     Object.defineProperty(exports, "__esModule", { value: true });
-    class APISound extends script_unit_7.AVGScriptUnit {
+    class APISound extends script_unit_8.AVGScriptUnit {
         constructor() {
             super(...arguments);
             this.data = new data_4.Sound();
@@ -602,10 +661,10 @@ define("engine/scripting/api/api-sound", ["require", "exports", "engine/scriptin
     }
     exports.APISound = APISound;
 });
-define("engine/scripting/api/api-subtitle", ["require", "exports", "engine/scripting/script-unit", "engine/data/index"], function (require, exports, script_unit_8, data_5) {
+define("engine/scripting/api/api-subtitle", ["require", "exports", "engine/scripting/script-unit", "engine/data/index"], function (require, exports, script_unit_9, data_5) {
     "use strict";
     Object.defineProperty(exports, "__esModule", { value: true });
-    class APISubtitle extends script_unit_8.AVGScriptUnit {
+    class APISubtitle extends script_unit_9.AVGScriptUnit {
         constructor() {
             super(...arguments);
             this.data = new data_5.Subtitle();
@@ -613,10 +672,10 @@ define("engine/scripting/api/api-subtitle", ["require", "exports", "engine/scrip
     }
     exports.APISubtitle = APISubtitle;
 });
-define("engine/scripting/api/api-timer", ["require", "exports", "engine/scripting/script-unit", "engine/data/index"], function (require, exports, script_unit_9, data_6) {
+define("engine/scripting/api/api-timer", ["require", "exports", "engine/scripting/script-unit", "engine/data/index"], function (require, exports, script_unit_10, data_6) {
     "use strict";
     Object.defineProperty(exports, "__esModule", { value: true });
-    class APITimer extends script_unit_9.AVGScriptUnit {
+    class APITimer extends script_unit_10.AVGScriptUnit {
         constructor() {
             super(...arguments);
             this.data = new data_6.Timer();
@@ -624,17 +683,17 @@ define("engine/scripting/api/api-timer", ["require", "exports", "engine/scriptin
     }
     exports.APITimer = APITimer;
 });
-define("engine/scripting/api/api-title-view", ["require", "exports", "engine/scripting/script-unit"], function (require, exports, script_unit_10) {
+define("engine/scripting/api/api-title-view", ["require", "exports", "engine/scripting/script-unit"], function (require, exports, script_unit_11) {
     "use strict";
     Object.defineProperty(exports, "__esModule", { value: true });
-    class APIGotoTitleView extends script_unit_10.AVGScriptUnit {
+    class APIGotoTitleView extends script_unit_11.AVGScriptUnit {
     }
     exports.APIGotoTitleView = APIGotoTitleView;
 });
-define("engine/scripting/api/api-variable", ["require", "exports", "engine/scripting/script-unit", "engine/core/sandbox"], function (require, exports, script_unit_11, sandbox_1) {
+define("engine/scripting/api/api-variable", ["require", "exports", "engine/scripting/script-unit", "engine/core/sandbox"], function (require, exports, script_unit_12, sandbox_1) {
     "use strict";
     Object.defineProperty(exports, "__esModule", { value: true });
-    class APIVariable extends script_unit_11.AVGScriptUnit {
+    class APIVariable extends script_unit_12.AVGScriptUnit {
         static set(name, value) {
             sandbox_1.Sandbox.Variables.set(name, value);
         }
@@ -647,7 +706,7 @@ define("engine/scripting/api/api-variable", ["require", "exports", "engine/scrip
     }
     exports.APIVariable = APIVariable;
 });
-define("engine/scripting/api/exports", ["require", "exports", "engine/scripting/api-manager", "engine/data/index", "engine/scripting/api/api-scene", "engine/scripting/api/api-dialogue", "engine/scripting/api/api-sound", "engine/scripting/api/api-timer", "engine/scripting/api/api-variable", "engine/const/index", "engine/scripting/api/api-effect", "engine/scripting/api/api-title-view", "engine/const/op", "engine/scripting/api/api-subtitle", "engine/data/screen-widget", "engine/scripting/api/api-dialogue-choices", "engine/data/dialogue-choice", "engine/scripting/api/api-character"], function (require, exports, api_manager_2, data_7, api_scene_1, api_dialogue_1, api_sound_1, api_timer_1, api_variable_1, const_1, api_effect_1, api_title_view_1, op_2, api_subtitle_1, screen_widget_5, api_dialogue_choices_1, dialogue_choice_2, api_character_1) {
+define("engine/scripting/api/exports", ["require", "exports", "engine/scripting/api-manager", "engine/data/index", "engine/scripting/api/api-scene", "engine/scripting/api/api-dialogue", "engine/scripting/api/api-sound", "engine/scripting/api/api-timer", "engine/scripting/api/api-variable", "engine/const/index", "engine/scripting/api/api-effect", "engine/scripting/api/api-title-view", "engine/const/op", "engine/scripting/api/api-subtitle", "engine/data/screen-widget", "engine/scripting/api/api-dialogue-choices", "engine/data/dialogue-choice", "engine/scripting/api/api-character", "engine/scripting/api/api-input-box"], function (require, exports, api_manager_2, data_7, api_scene_1, api_dialogue_1, api_sound_1, api_timer_1, api_variable_1, const_1, api_effect_1, api_title_view_1, op_2, api_subtitle_1, screen_widget_5, api_dialogue_choices_1, dialogue_choice_2, api_character_1, api_input_box_1) {
     "use strict";
     Object.defineProperty(exports, "__esModule", { value: true });
     function paramCompatible(model, options, keyField) {
@@ -927,16 +986,26 @@ define("engine/scripting/api/exports", ["require", "exports", "engine/scripting/
                 let model = new api_subtitle_1.APISubtitle();
                 model.data.id = id;
                 paramCompatible(model, options);
-                // model.data.animation = options.animation;
                 const proxy = api_manager_2.APIManager.getImpl(api_subtitle_1.APISubtitle.name, op_2.OP.HideSubtitle);
                 proxy && (yield proxy.runner(model));
             });
         }
         api.hideSubtitle = hideSubtitle;
+        function showInputBox(title, options) {
+            return __awaiter(this, void 0, void 0, function* () {
+                let model = new api_input_box_1.APIInputBox();
+                paramCompatible(model, options, {
+                    field: "title",
+                    value: title
+                });
+                return yield api_manager_2.APIManager.getImpl(api_input_box_1.APIInputBox.name, op_2.OP.ShowInputBox).runner(model);
+            });
+        }
+        api.showInputBox = showInputBox;
     })(api = exports.api || (exports.api = {}));
 });
 //@ Auto-Generated indexing files for avg.engine
-define("engine/scripting/api/index", ["require", "exports", "engine/scripting/api/api-animate-scene", "engine/scripting/api/api-character", "engine/scripting/api/api-dialogue-choices", "engine/scripting/api/api-dialogue", "engine/scripting/api/api-effect", "engine/scripting/api/api-scene", "engine/scripting/api/api-sound", "engine/scripting/api/api-subtitle", "engine/scripting/api/api-timer", "engine/scripting/api/api-title-view", "engine/scripting/api/api-variable", "engine/scripting/api/exports"], function (require, exports, api_animate_scene_1, api_character_2, api_dialogue_choices_2, api_dialogue_2, api_effect_2, api_scene_2, api_sound_2, api_subtitle_2, api_timer_2, api_title_view_2, api_variable_2, exports_1) {
+define("engine/scripting/api/index", ["require", "exports", "engine/scripting/api/api-animate-scene", "engine/scripting/api/api-character", "engine/scripting/api/api-dialogue-choices", "engine/scripting/api/api-dialogue", "engine/scripting/api/api-effect", "engine/scripting/api/api-input-box", "engine/scripting/api/api-scene", "engine/scripting/api/api-sound", "engine/scripting/api/api-subtitle", "engine/scripting/api/api-timer", "engine/scripting/api/api-title-view", "engine/scripting/api/api-variable", "engine/scripting/api/exports"], function (require, exports, api_animate_scene_1, api_character_2, api_dialogue_choices_2, api_dialogue_2, api_effect_2, api_input_box_2, api_scene_2, api_sound_2, api_subtitle_2, api_timer_2, api_title_view_2, api_variable_2, exports_1) {
     "use strict";
     function __export(m) {
         for (var p in m) if (!exports.hasOwnProperty(p)) exports[p] = m[p];
@@ -947,6 +1016,7 @@ define("engine/scripting/api/index", ["require", "exports", "engine/scripting/ap
     __export(api_dialogue_choices_2);
     __export(api_dialogue_2);
     __export(api_effect_2);
+    __export(api_input_box_2);
     __export(api_scene_2);
     __export(api_sound_2);
     __export(api_subtitle_2);
@@ -1281,7 +1351,7 @@ define("engine/core/utils", ["require", "exports", "image-size"], function (requ
     exports.Utils = Utils;
 });
 //@ Auto-Generated indexing files for avg.engine
-define("engine/core/index", ["require", "exports", "engine/core/env", "engine/core/game", "engine/core/input", "engine/core/resource", "engine/core/sandbox", "engine/core/setting", "engine/core/utils"], function (require, exports, env_2, game_1, input_1, resource_1, sandbox_3, setting_1, utils_1) {
+define("engine/core/index", ["require", "exports", "engine/core/env", "engine/core/game", "engine/core/i18n", "engine/core/input", "engine/core/resource", "engine/core/sandbox", "engine/core/setting", "engine/core/utils"], function (require, exports, env_2, game_1, i18n_2, input_1, resource_1, sandbox_3, setting_1, utils_1) {
     "use strict";
     function __export(m) {
         for (var p in m) if (!exports.hasOwnProperty(p)) exports[p] = m[p];
@@ -1289,6 +1359,7 @@ define("engine/core/index", ["require", "exports", "engine/core/env", "engine/co
     Object.defineProperty(exports, "__esModule", { value: true });
     __export(env_2);
     __export(game_1);
+    __export(i18n_2);
     __export(input_1);
     __export(resource_1);
     __export(sandbox_3);
@@ -1428,6 +1499,9 @@ define("engine/plugin/internal/dialogue-parser-plugin", ["require", "exports", "
             text = text.replace(/\[emoji=([\w\-\. ]+)]/g, `<img src='assets/graphics/emoji/$1' />`);
             // Grammar: [br]
             text = text.replace(/\[br]/g, `<br>`);
+            // Grammar: [wait=N]
+            text = text.replace(/\[wait\]/g, `<wait />`);
+            text = text.replace(/\[wait(=(\d+))?\]/g, `<wait time="$2" />`);
             // Grammar: ${variable}
             let variableRegex = /\${(.*)}/;
             let vMatch = null;
@@ -1466,35 +1540,5 @@ define("engine/index", ["require", "exports", "engine/const/index", "engine/core
     __export(internal_1);
     __export(scripting_1);
     __export(api_2);
-});
-define("engine/data/input-data", ["require", "exports", "engine/data/avg-data"], function (require, exports, avg_data_9) {
-    "use strict";
-    Object.defineProperty(exports, "__esModule", { value: true });
-    var InputType;
-    (function (InputType) {
-        InputType[InputType["String"] = 0] = "String";
-        InputType[InputType["Number"] = 1] = "Number";
-    })(InputType = exports.InputType || (exports.InputType = {}));
-    class InputData extends avg_data_9.AVGData {
-        constructor() {
-            super(...arguments);
-            this.data = "";
-            this.inputType = InputType.String;
-            this.minLength = 0;
-            this.maxLength = 255;
-        }
-    }
-    exports.InputData = InputData;
-});
-define("engine/scripting/api/api-input-box", ["require", "exports", "engine/scripting/script-unit", "engine/data/input-data"], function (require, exports, script_unit_12, input_data_1) {
-    "use strict";
-    Object.defineProperty(exports, "__esModule", { value: true });
-    class APIInputBox extends script_unit_12.AVGScriptUnit {
-        constructor() {
-            super(...arguments);
-            this.data = new input_data_1.InputData;
-        }
-    }
-    exports.APIInputBox = APIInputBox;
 });
 //# sourceMappingURL=avg-engine.js.map

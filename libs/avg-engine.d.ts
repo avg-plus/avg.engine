@@ -56,6 +56,7 @@ declare module "engine/const/op" {
         UpdateSubtitle = "UpdateSubtitle",
         HideSubtitle = "HideSubtitle",
         AnimateSubtitle = "AnimateSubtitle",
+        ShowInputBox = "ShowInputBox",
     }
 }
 declare module "engine/const/index" {
@@ -197,6 +198,33 @@ declare module "engine/data/image" {
         file: string;
     }
 }
+declare module "engine/core/i18n" {
+    export class i18n {
+        static lang: {};
+        static load(lang: {}): void;
+        static get(key: string): any;
+    }
+}
+declare module "engine/data/input-data" {
+    import { AVGData } from "engine/data/avg-data";
+    export enum InputType {
+        String = 0,
+        Number = 1,
+    }
+    export class InputBoxResult {
+        isOK: boolean;
+        value: string | number;
+    }
+    export class InputData extends AVGData {
+        title: string;
+        inputType: InputType;
+        minLength: number;
+        maxLength: number;
+        allowCancel: boolean;
+        okButtonText: string;
+        cancelButtonText: string;
+    }
+}
 declare module "engine/data/scene" {
     import { ResourceData } from "engine/data/resource-data";
     import { WidgetAnimation } from "engine/data/screen-widget";
@@ -250,6 +278,7 @@ declare module "engine/data/index" {
     export * from "engine/data/dialogue";
     export * from "engine/data/effect";
     export * from "engine/data/image";
+    export * from "engine/data/input-data";
     export * from "engine/data/resource-data";
     export * from "engine/data/scene";
     export * from "engine/data/screen-widget";
@@ -338,6 +367,13 @@ declare module "engine/scripting/api/api-effect" {
         data: Effect;
     }
 }
+declare module "engine/scripting/api/api-input-box" {
+    import { AVGScriptUnit } from "engine/scripting/script-unit";
+    import { InputData } from "engine/data/input-data";
+    export class APIInputBox extends AVGScriptUnit {
+        data: InputData;
+    }
+}
 declare module "engine/scripting/api/api-scene" {
     import { AVGScriptUnit } from "engine/scripting/script-unit";
     import { Scene } from "engine/data/index";
@@ -385,6 +421,7 @@ declare module "engine/scripting/api/api-variable" {
 declare module "engine/scripting/api/exports" {
     import { Dialogue, Sound, Scene, Timer, WidgetAnimation, Avatar } from "engine/data/index";
     import { Subtitle } from "engine/data/subtitle";
+    import { InputData } from "engine/data/input-data";
     export namespace api {
         /**
          * Show dialogue box
@@ -436,6 +473,7 @@ declare module "engine/scripting/api/exports" {
         function hideSubtitle(id: string, options: {
             animation: WidgetAnimation;
         }): Promise<void>;
+        function showInputBox(title: string, options: InputData): Promise<void>;
     }
 }
 declare module "engine/scripting/api/index" {
@@ -444,6 +482,7 @@ declare module "engine/scripting/api/index" {
     export * from "engine/scripting/api/api-dialogue-choices";
     export * from "engine/scripting/api/api-dialogue";
     export * from "engine/scripting/api/api-effect";
+    export * from "engine/scripting/api/api-input-box";
     export * from "engine/scripting/api/api-scene";
     export * from "engine/scripting/api/api-sound";
     export * from "engine/scripting/api/api-subtitle";
@@ -574,6 +613,7 @@ declare module "engine/core/utils" {
 declare module "engine/core/index" {
     export * from "engine/core/env";
     export * from "engine/core/game";
+    export * from "engine/core/i18n";
     export * from "engine/core/input";
     export * from "engine/core/resource";
     export * from "engine/core/sandbox";
@@ -657,24 +697,4 @@ declare module "engine/index" {
     export * from "engine/plugin/internal/index";
     export * from "engine/scripting/index";
     export * from "engine/scripting/api/index";
-}
-declare module "engine/data/input-data" {
-    import { AVGData } from "engine/data/avg-data";
-    export enum InputType {
-        String = 0,
-        Number = 1,
-    }
-    export class InputData extends AVGData {
-        data: string | number;
-        inputType: InputType;
-        minLength: number;
-        maxLength: number;
-    }
-}
-declare module "engine/scripting/api/api-input-box" {
-    import { AVGScriptUnit } from "engine/scripting/script-unit";
-    import { InputData } from "engine/data/input-data";
-    export class APIInputBox extends AVGScriptUnit {
-        data: InputData;
-    }
 }
