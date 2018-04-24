@@ -34,6 +34,8 @@ import { APIDialogueChoice } from "./api-dialogue-choices";
 import { DialogueChoice } from "../../data/dialogue-choice";
 import { Character } from "../../data/character";
 import { APICharacter } from "./api-character";
+import { InputData } from "../../data/input-data";
+import { APIInputBox } from "./api-input-box";
 
 function paramCompatible<T extends AVGScriptUnit, U extends AVGData>(
     model: T,
@@ -336,9 +338,21 @@ export namespace api {
 
         paramCompatible<APISubtitle, WidgetAnimation>(model, options);
 
-        // model.data.animation = options.animation;
-
         const proxy = APIManager.getImpl(APISubtitle.name, OP.HideSubtitle);
         proxy && (await proxy.runner(<APISubtitle>model));
+    }
+
+    export async function showInputBox(title: string, options: InputData) {
+        let model = new APIInputBox();
+
+        paramCompatible<APIInputBox, InputData>(model, options, {
+            field: "title",
+            value: title
+        });
+
+        return await APIManager.getImpl(
+            APIInputBox.name,
+            OP.ShowInputBox
+        ).runner(<APIInputBox>model);
     }
 }

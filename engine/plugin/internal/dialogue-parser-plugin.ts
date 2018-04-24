@@ -72,6 +72,10 @@ export class DialogueParserPlugin extends AVGInternalPlugin {
         // Grammar: [br]
         text = text.replace(/\[br]/g, `<br>`);
 
+        // Grammar: [wait=N]
+        text = text.replace(/\[wait\]/g, `<wait />`);
+        text = text.replace(/\[wait(=(\d+))?\]/g, `<wait time="$2" />`);
+
         // Grammar: ${variable}
         let variableRegex = /\${(.*)}/;
         let vMatch: RegExpExecArray = null;

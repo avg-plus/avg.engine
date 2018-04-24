@@ -21,5 +21,7 @@ export enum OP {
     ShowSubtitle = "ShowSubtitle",
     UpdateSubtitle = "UpdateSubtitle",
     HideSubtitle = "HideSubtitle",
-    AnimateSubtitle = "AnimateSubtitle"
+    AnimateSubtitle = "AnimateSubtitle",
+    ShowInputBox = "ShowInputBox"
+
 }

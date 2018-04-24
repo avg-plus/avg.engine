@@ -2,6 +2,7 @@
 
 export * from './env';
 export * from './game';
+export * from './i18n';
 export * from './input';
 export * from './resource';
 export * from './sandbox';

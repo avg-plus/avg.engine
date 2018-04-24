@@ -7,6 +7,7 @@ export * from './dialogue-choice';
 export * from './dialogue';
 export * from './effect';
 export * from './image';
+export * from './input-data';
 export * from './resource-data';
 export * from './scene';
 export * from './screen-widget';
