@@ -25,15 +25,18 @@ export class DialogueParserPlugin extends AVGInternalPlugin {
         }
 
         // Grammar: [color=N][/color]
-        text = text.replace(/\[color=([a-zA-Z0-9#]+)\]/g, `<font color=$1>`);
-        text = text.replace(/\[\/color\]/g, `</font>`);
+        text = text.replace(
+            /\[color=([a-zA-Z0-9#]+)\]/g,
+            `<span style="color:$1">`
+        );
+        text = text.replace(/\[\/color\]/g, `</span>`);
 
         // Grammar: [c=N][/c]
         text = text.replace(
             /\[c=([a-zA-Z0-9#]+)\]|\[color=([a-zA-Z0-9#]+)\]/g,
-            `<font color=$1>`
+            `<span style="color:$1">`
         );
-        text = text.replace(/\[\/c\]/g, `</font>`);
+        text = text.replace(/\[\/c\]/g, `</span>`);
 
         // Grammar: [bold][/bold]
         text = text.replace(/\[bold\]/g, `<bold>`);
@@ -56,13 +59,23 @@ export class DialogueParserPlugin extends AVGInternalPlugin {
         text = text.replace(/\[\/del\]/g, `</del>`);
 
         // Grammar: [size=N][/size]
-        text = text.replace(/\[size=(\d+)\]/g, `<font size=$1>`);
-        text = text.replace(/\[\/size\]/g, `</font>`);
+        text = text.replace(
+            /\[size=(\d+)\]/g,
+            `<span style="font-size: $1px;">`
+        );
+        text = text.replace(/\[\/size\]/g, `</span>`);
 
         // Grammar: [s=N][/s]
-        text = text.replace(/\[s=(\d+)\]/g, `<font size=$1>`);
-        text = text.replace(/\[\/s\]/g, `</font>`);
+        text = text.replace(/\[s=(\d+)\]/g, `<span style="font-size: $1px;">`);
+        text = text.replace(/\[\/s\]/g, `</span>`);
 
+        // Grammar: [rt=rt]Content[/rt]
+        text = text.replace(
+            /\[rt=([\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF\w ;]+)\]([\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF\w ;]+)\[\/rt\]/g,
+            `<ruby>$2<rt>$1</rt></ruby>`
+        );
+
+        console.log(text);
         // Grammar: [emoji=file]
         text = text.replace(
             /\[emoji=([\w\-\. ]+)]/g,
