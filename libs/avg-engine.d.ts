@@ -104,7 +104,7 @@ declare module "engine/data/character" {
     import { AVGData } from "engine/data/avg-data";
     import { Avatar } from "engine/data/avatar";
     export class Character extends AVGData {
-        name: string;
+        index?: number;
         avatar?: Avatar;
     }
 }
@@ -418,6 +418,37 @@ declare module "engine/scripting/api/api-variable" {
         static get(name: string): any;
     }
 }
+declare module "engine/scripting/api/api-call-script" {
+    import { AVGScriptUnit } from "engine/scripting/script-unit";
+    export class APICallScript extends AVGScriptUnit {
+        scriptFile: string;
+    }
+}
+declare module "engine/core/resource" {
+    export enum ResourcePath {
+        BGM = 0,
+        BGS = 1,
+        SE = 2,
+        Voice = 3,
+        Backgrounds = 4,
+        Characters = 5,
+        Masks = 6,
+        UI = 7,
+        Icons = 8,
+        Effects = 9,
+        Plugins = 10,
+        Data = 11,
+        Scripts = 12,
+    }
+    export class Resource {
+        private static _paths;
+        private static _assetsRoot;
+        static init(rootDir: string): void;
+        static getRoot(): string;
+        static getPath(dir: ResourcePath, joinPath?: string): string;
+        static readFileText(file: string): string;
+    }
+}
 declare module "engine/scripting/api/exports" {
     import { Dialogue, Sound, Scene, Timer, WidgetAnimation, Avatar } from "engine/data/index";
     import { Subtitle } from "engine/data/subtitle";
@@ -474,6 +505,7 @@ declare module "engine/scripting/api/exports" {
             animation: WidgetAnimation;
         }): Promise<void>;
         function showInputBox(title: string, options: InputData): Promise<void>;
+        function call(file: string): Promise<{}>;
     }
 }
 declare module "engine/scripting/api/index" {
@@ -494,26 +526,25 @@ declare module "engine/scripting/api/index" {
 declare module "engine/core/sandbox" {
     import { api } from "engine/scripting/api/index";
     export class Sandbox {
+        done: () => void;
         console: Console;
         api: typeof api;
         static Variables: Map<string, any>;
     }
 }
 declare module "engine/scripting/story" {
-    import { AVGScriptUnit } from "engine/scripting/script-unit";
     export class AVGStory {
+        private static sanbox;
         private _scriptUnits;
         private _cursor;
-        private _sanbox;
         private _code;
+        private _compiled;
+        private _scriptFile;
         constructor();
-        loadFromScripts(units: Array<AVGScriptUnit>): void;
-        loadFromFile(filename: string): void;
-        getScripts(): Array<AVGScriptUnit>;
+        loadFromFile(filename: string): Promise<{}>;
         loadFromString(code: string): void;
         private compile();
-        addScriptUnit(unit: AVGScriptUnit): void;
-        next(): AVGScriptUnit;
+        run(): Promise<{}>;
     }
 }
 declare module "engine/core/transition" {
@@ -540,32 +571,7 @@ declare module "engine/core/setting" {
         private static NumericRange(value, min, max);
     }
 }
-declare module "engine/core/resource" {
-    export enum ResourcePath {
-        BGM = 0,
-        BGS = 1,
-        SE = 2,
-        Voice = 3,
-        Backgrounds = 4,
-        Characters = 5,
-        Masks = 6,
-        UI = 7,
-        Icons = 8,
-        Effects = 9,
-        Plugins = 10,
-        Data = 11,
-        Scripts = 12,
-    }
-    export class Resource {
-        private static _paths;
-        private static _assetsRoot;
-        static init(rootDir: string): void;
-        static getRoot(): string;
-        static getPath(dir: ResourcePath): string;
-    }
-}
 declare module "engine/core/game" {
-    import { AVGScriptUnit } from "engine/scripting/script-unit";
     import { Screen } from "engine/const/model";
     export class AVGGame {
         private static DEFAULT_ENTRY_SCRIPT;
@@ -577,8 +583,7 @@ declare module "engine/core/game" {
         setResolution(screen: Screen): void;
         getResolution(): Screen;
         setScriptDir(dir: string): void;
-        start(entryScript?: string): void;
-        startFromAPIs(scripts: Array<AVGScriptUnit>): void;
+        start(entryScript?: string): Promise<void>;
         private _run();
     }
     export let game: AVGGame;

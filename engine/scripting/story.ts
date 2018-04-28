@@ -5,32 +5,38 @@ import { Sandbox } from "../core/sandbox";
 import { Transpiler } from "../scripting/transpiler";
 
 export class AVGStory {
+    private static sanbox: Sandbox = new Sandbox();
+
     private _scriptUnits: Array<AVGScriptUnit> = [];
     private _cursor: number = 0;
-    private _sanbox: Sandbox;
     private _code: string;
+    private _compiled: string;
+    private _scriptFile: string;
 
-    constructor() {
-        this._sanbox = new Sandbox();
-    }
+    constructor() {}
 
-    public loadFromScripts(units: Array<AVGScriptUnit>) {
-        this._scriptUnits = units;
-    }
+    // public loadFromScripts(units: Array<AVGScriptUnit>) {
+    //     this._scriptUnits = units;
+    // }
 
-    public loadFromFile(filename: string) {
-        fs.readFile(filename, "utf8", (err, data) => {
-            if (err) {
-                throw err;
-            }
+    public async loadFromFile(filename: string) {
+        return new Promise((resolve, reject) => {
+            fs.readFile(filename, "utf8", (err, data) => {
+                if (err) {
+                    reject(err);
+                    return;
+                }
 
-            this.loadFromString(data);
+                this.loadFromString(data);
+
+                resolve();
+            });
         });
     }
 
-    public getScripts(): Array<AVGScriptUnit> {
-        return this._scriptUnits;
-    }
+    // public getScripts(): Array<AVGScriptUnit> {
+    //     return this._scriptUnits;
+    // }
 
     public loadFromString(code: string) {
         this._code = code;
@@ -38,33 +44,40 @@ export class AVGStory {
     }
 
     private compile() {
+        this._compiled = Transpiler.transpileFromCode(this._code);
+        // console.log("this._compiled", this._compiled);
+    }
+
+    public async run() {
         return new Promise((resolve, reject) => {
-            let compiled = Transpiler.transpileFromCode(this._code);
-
-            console.log("Compiled Code:" + compiled);
-
             try {
-                let script = new vm.Script(compiled);
-                script.runInContext(vm.createContext(this._sanbox));
+                let script = new vm.Script(this._compiled);
 
-                resolve();
+                AVGStory.sanbox.done = () => {
+                    console.log("Script execute done: " + this._scriptFile);
+                    resolve();
+                };
+
+                script.runInContext(vm.createContext(AVGStory.sanbox), {
+                    displayErrors: true
+                });
             } catch (err) {
                 reject("AVG Script errror : " + err);
             }
         });
     }
 
-    public addScriptUnit(unit: AVGScriptUnit) {
-        this._scriptUnits.push(unit);
-    }
+    // public addScriptUnit(unit: AVGScriptUnit) {
+    //     this._scriptUnits.push(unit);
+    // }
 
-    public next(): AVGScriptUnit {
-        this._cursor++;
+    // public next(): AVGScriptUnit {
+    //     this._cursor++;
 
-        if (this._cursor >= this._scriptUnits.length) {
-            return null;
-        }
+    //     if (this._cursor >= this._scriptUnits.length) {
+    //         return null;
+    //     }
 
-        return this._scriptUnits[this._cursor];
-    }
+    //     return this._scriptUnits[this._cursor];
+    // }
 }

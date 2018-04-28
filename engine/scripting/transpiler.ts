@@ -63,8 +63,8 @@ export class Transpiler {
             }
         }
 
-        // return `+(async() => {try {${generated} } catch (err) { console.error('Game runtime errors');}})();`;
-        return `+(async() => { ${generated} })();`;
+        return `+(async() => {try { ${generated} \n done(); } catch (err) { console.error('Game runtime errors', err);}})();`;
+        // return `+(async() => { ${generated} \n console.log(done); })();`;
     }
 
     private static async _read(file: string): Promise<string> {

@@ -1410,6 +1410,10 @@ vinyl@^0.5.0:
     clone-stats "^0.0.1"
     replace-ext "0.0.1"
 
+vm2@^3.5.2:
+  version "3.5.2"
+  resolved "http://registry.npm.taobao.org/vm2/download/vm2-3.5.2.tgz#6ae7c75a867775946e1d4a66623374e0245150e0"
+
 which-module@^1.0.0:
   version "1.0.0"
   resolved "https://registry.yarnpkg.com/which-module/-/which-module-1.0.0.tgz#bba63ca861948994ff307736089e3b96026c2a4f"

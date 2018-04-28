@@ -4,6 +4,6 @@ import { ResourceData } from './resource-data';
 import { Avatar } from './avatar';
 
 export class Character extends AVGData {
-    public name: string;
+    public index?: number = 0;
     public avatar?: Avatar;
 }

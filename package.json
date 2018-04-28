@@ -27,7 +27,8 @@
     "@types/node": "^8.0.24",
     "esprima": "^4.0.0",
     "image-size": "^0.6.1",
-    "node": "^8.2.1"
+    "node": "^8.2.1",
+    "vm2": "^3.5.2"
   },
   "devDependencies": {
     "create-index": "^2.2.0",

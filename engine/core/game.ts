@@ -42,7 +42,7 @@ export class AVGGame {
         this._scriptDir = dir;
     }
 
-    public start(entryScript?: string) {
+    public async start(entryScript?: string) {
 
         // Init plugins
         PluginManager.init();
@@ -50,18 +50,19 @@ export class AVGGame {
         let scriptDir = this._scriptDir || './';
         entryScript = entryScript || path.join(scriptDir, AVGGame.DEFAULT_ENTRY_SCRIPT);
 
-        this._entryStory.loadFromFile(entryScript);
+        await this._entryStory.loadFromFile(entryScript);
+        await this._entryStory.run();
         // this._scriptingLoop.addStory(this._entryStory);
-
-        this._run();
+        // this._run();
     }
 
-    public startFromAPIs(scripts: Array<AVGScriptUnit>) {
-        this._entryStory.loadFromScripts(scripts);
-        // this._scriptingLoop.addStory(this._entryStory);
+    // public startFromAPIs(scripts: Array<AVGScriptUnit>) {
+    //     this._entryStory.loadFromScripts(scripts);
+    //     this._entryStory.run();
+    //     // this._scriptingLoop.addStory(this._entryStory);
 
-        this._run();
-    }
+    //     this._run();
+    // }
 
     private _run() {
         // this._scriptingLoop.run().on(LoopEvents.OnLoopData, (data) => {

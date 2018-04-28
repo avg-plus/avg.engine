@@ -23,7 +23,7 @@ import { APISound } from "./api-sound";
 import { APITimer } from "./api-timer";
 import { APIVariable } from "./api-variable";
 import { SoundTrack } from "../../const";
-import { Sandbox } from "../../core";
+import { Sandbox, Resource } from "../../core";
 import { APIEffect } from "./api-effect";
 import { APIGotoTitleView } from "./api-title-view";
 import { OP } from "../../const/op";
@@ -36,6 +36,9 @@ import { Character } from "../../data/character";
 import { APICharacter } from "./api-character";
 import { InputData } from "../../data/input-data";
 import { APIInputBox } from "./api-input-box";
+import { APICallScript } from "./api-call-script";
+import { AVGStory } from "../story";
+import { ResourcePath } from "../../core/resource";
 
 function paramCompatible<T extends AVGScriptUnit, U extends AVGData>(
     model: T,
@@ -354,5 +357,17 @@ export namespace api {
             APIInputBox.name,
             OP.ShowInputBox
         ).runner(<APIInputBox>model);
+    }
+
+    export async function call(file: string) {
+        let model = new APICallScript();
+        model.scriptFile = file;
+
+        // let script = Resource.readFileText(file);
+        // if (script && typeof script === 'string' && script.length > 0) {
+        let story = new AVGStory();
+        await story.loadFromFile(Resource.getPath(ResourcePath.Scripts, file));
+        return await story.run();
+        // }
     }
 }

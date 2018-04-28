@@ -169,6 +169,10 @@ define("engine/data/character", ["require", "exports", "engine/data/avg-data"], 
     "use strict";
     Object.defineProperty(exports, "__esModule", { value: true });
     class Character extends avg_data_2.AVGData {
+        constructor() {
+            super(...arguments);
+            this.index = 0;
+        }
     }
     exports.Character = Character;
 });
@@ -546,8 +550,8 @@ define("engine/scripting/transpiler", ["require", "exports", "fs", "esprima"], f
                     generated = keyword + generated;
                 }
             }
-            // return `+(async() => {try {${generated} } catch (err) { console.error('Game runtime errors');}})();`;
-            return `+(async() => { ${generated} })();`;
+            return `+(async() => {try { ${generated} \n done(); } catch (err) { console.error('Game runtime errors', err);}})();`;
+            // return `+(async() => { ${generated} \n console.log(done); })();`;
         }
         static _read(file) {
             return __awaiter(this, void 0, void 0, function* () {
@@ -706,7 +710,102 @@ define("engine/scripting/api/api-variable", ["require", "exports", "engine/scrip
     }
     exports.APIVariable = APIVariable;
 });
-define("engine/scripting/api/exports", ["require", "exports", "engine/scripting/api-manager", "engine/data/index", "engine/scripting/api/api-scene", "engine/scripting/api/api-dialogue", "engine/scripting/api/api-sound", "engine/scripting/api/api-timer", "engine/scripting/api/api-variable", "engine/const/index", "engine/scripting/api/api-effect", "engine/scripting/api/api-title-view", "engine/const/op", "engine/scripting/api/api-subtitle", "engine/data/screen-widget", "engine/scripting/api/api-dialogue-choices", "engine/data/dialogue-choice", "engine/scripting/api/api-character", "engine/scripting/api/api-input-box"], function (require, exports, api_manager_2, data_7, api_scene_1, api_dialogue_1, api_sound_1, api_timer_1, api_variable_1, const_1, api_effect_1, api_title_view_1, op_2, api_subtitle_1, screen_widget_5, api_dialogue_choices_1, dialogue_choice_2, api_character_1, api_input_box_1) {
+define("engine/scripting/api/api-call-script", ["require", "exports", "engine/scripting/script-unit"], function (require, exports, script_unit_13) {
+    "use strict";
+    Object.defineProperty(exports, "__esModule", { value: true });
+    class APICallScript extends script_unit_13.AVGScriptUnit {
+        constructor() {
+            super(...arguments);
+            this.scriptFile = "";
+        }
+    }
+    exports.APICallScript = APICallScript;
+});
+define("engine/core/resource", ["require", "exports", "engine/core/env", "path", "fs"], function (require, exports, env_1, path, fs) {
+    "use strict";
+    Object.defineProperty(exports, "__esModule", { value: true });
+    var ResourcePath;
+    (function (ResourcePath) {
+        // Audio
+        ResourcePath[ResourcePath["BGM"] = 0] = "BGM";
+        ResourcePath[ResourcePath["BGS"] = 1] = "BGS";
+        ResourcePath[ResourcePath["SE"] = 2] = "SE";
+        ResourcePath[ResourcePath["Voice"] = 3] = "Voice";
+        // Graphics
+        ResourcePath[ResourcePath["Backgrounds"] = 4] = "Backgrounds";
+        ResourcePath[ResourcePath["Characters"] = 5] = "Characters";
+        ResourcePath[ResourcePath["Masks"] = 6] = "Masks";
+        ResourcePath[ResourcePath["UI"] = 7] = "UI";
+        ResourcePath[ResourcePath["Icons"] = 8] = "Icons";
+        ResourcePath[ResourcePath["Effects"] = 9] = "Effects";
+        // Plugins
+        ResourcePath[ResourcePath["Plugins"] = 10] = "Plugins";
+        // Data
+        ResourcePath[ResourcePath["Data"] = 11] = "Data";
+        // Script
+        ResourcePath[ResourcePath["Scripts"] = 12] = "Scripts";
+    })(ResourcePath = exports.ResourcePath || (exports.ResourcePath = {}));
+    class Resource {
+        static init(rootDir) {
+            this._assetsRoot = rootDir;
+            /*
+                To use initialize paths, you should create the following directory structure:
+                
+                Root
+                ├── audio
+                │   ├── bgm
+                │   ├── bgs
+                │   ├── voice
+                │   └── se
+                ├── data
+                ├── graphics
+                │   ├── backgrounds
+                │   ├── characters
+                │   ├── effects
+                │   ├── masks
+                │   ├── icons
+                │   └── ui
+                ├── plugins
+                └── scripts
+            */
+            this._paths = new Map([
+                [ResourcePath.BGM, "audio/bgm"],
+                [ResourcePath.BGS, "audio/bgs"],
+                [ResourcePath.SE, "audio/se"],
+                [ResourcePath.Voice, "audio/voice"],
+                [ResourcePath.Backgrounds, "graphics/backgrounds"],
+                [ResourcePath.Characters, "graphics/characters"],
+                [ResourcePath.Masks, "graphics/masks"],
+                [ResourcePath.UI, "graphics/ui"],
+                [ResourcePath.Icons, "graphics/icons"],
+                [ResourcePath.Effects, "graphics/effects"],
+                [ResourcePath.Plugins, "plugins"],
+                [ResourcePath.Data, "data"],
+                [ResourcePath.Scripts, "scripts"]
+            ]);
+            console.log(`Initialize resource root folder: ${this._assetsRoot}`);
+        }
+        static getRoot() {
+            return this._assetsRoot;
+        }
+        static getPath(dir, joinPath = "") {
+            let dirPath = this._paths.get(dir);
+            if (!dirPath) {
+                return undefined;
+            }
+            if (env_1.Env.isRunStandalone()) {
+                // Run in node.js
+                dirPath = path.join(this._assetsRoot, dirPath, joinPath);
+            }
+            return dirPath;
+        }
+        static readFileText(file) {
+            return fs.readFileSync(file, { encoding: "utf8", flag: "r" });
+        }
+    }
+    exports.Resource = Resource;
+});
+define("engine/scripting/api/exports", ["require", "exports", "engine/scripting/api-manager", "engine/data/index", "engine/scripting/api/api-scene", "engine/scripting/api/api-dialogue", "engine/scripting/api/api-sound", "engine/scripting/api/api-timer", "engine/scripting/api/api-variable", "engine/const/index", "engine/core/index", "engine/scripting/api/api-effect", "engine/scripting/api/api-title-view", "engine/const/op", "engine/scripting/api/api-subtitle", "engine/data/screen-widget", "engine/scripting/api/api-dialogue-choices", "engine/data/dialogue-choice", "engine/scripting/api/api-character", "engine/scripting/api/api-input-box", "engine/scripting/api/api-call-script", "engine/scripting/story", "engine/core/resource"], function (require, exports, api_manager_2, data_7, api_scene_1, api_dialogue_1, api_sound_1, api_timer_1, api_variable_1, const_1, core_1, api_effect_1, api_title_view_1, op_2, api_subtitle_1, screen_widget_5, api_dialogue_choices_1, dialogue_choice_2, api_character_1, api_input_box_1, api_call_script_1, story_2, resource_1) {
     "use strict";
     Object.defineProperty(exports, "__esModule", { value: true });
     function paramCompatible(model, options, keyField) {
@@ -1002,6 +1101,19 @@ define("engine/scripting/api/exports", ["require", "exports", "engine/scripting/
             });
         }
         api.showInputBox = showInputBox;
+        function call(file) {
+            return __awaiter(this, void 0, void 0, function* () {
+                let model = new api_call_script_1.APICallScript();
+                model.scriptFile = file;
+                // let script = Resource.readFileText(file);
+                // if (script && typeof script === 'string' && script.length > 0) {
+                let story = new story_2.AVGStory();
+                yield story.loadFromFile(core_1.Resource.getPath(resource_1.ResourcePath.Scripts, file));
+                return yield story.run();
+                // }
+            });
+        }
+        api.call = call;
     })(api = exports.api || (exports.api = {}));
 });
 //@ Auto-Generated indexing files for avg.engine
@@ -1031,7 +1143,7 @@ define("engine/core/sandbox", ["require", "exports", "engine/scripting/api/index
     class Sandbox {
         constructor() {
             this.console = console;
-            this.api = api_1.api;
+            this.api = (global["api"] = api_1.api);
         }
     }
     // Game Variables
@@ -1045,51 +1157,56 @@ define("engine/scripting/story", ["require", "exports", "vm", "fs", "engine/core
         constructor() {
             this._scriptUnits = [];
             this._cursor = 0;
-            this._sanbox = new sandbox_2.Sandbox();
         }
-        loadFromScripts(units) {
-            this._scriptUnits = units;
-        }
+        // public loadFromScripts(units: Array<AVGScriptUnit>) {
+        //     this._scriptUnits = units;
+        // }
         loadFromFile(filename) {
-            fs.readFile(filename, "utf8", (err, data) => {
-                if (err) {
-                    throw err;
-                }
-                this.loadFromString(data);
+            return __awaiter(this, void 0, void 0, function* () {
+                return new Promise((resolve, reject) => {
+                    fs.readFile(filename, "utf8", (err, data) => {
+                        if (err) {
+                            reject(err);
+                            return;
+                        }
+                        this.loadFromString(data);
+                        resolve();
+                    });
+                });
             });
         }
-        getScripts() {
-            return this._scriptUnits;
-        }
+        // public getScripts(): Array<AVGScriptUnit> {
+        //     return this._scriptUnits;
+        // }
         loadFromString(code) {
             this._code = code;
             this.compile();
         }
         compile() {
-            return new Promise((resolve, reject) => {
-                let compiled = transpiler_2.Transpiler.transpileFromCode(this._code);
-                console.log("Compiled Code:" + compiled);
-                try {
-                    let script = new vm.Script(compiled);
-                    script.runInContext(vm.createContext(this._sanbox));
-                    resolve();
-                }
-                catch (err) {
-                    reject("AVG Script errror : " + err);
-                }
+            this._compiled = transpiler_2.Transpiler.transpileFromCode(this._code);
+            // console.log("this._compiled", this._compiled);
+        }
+        run() {
+            return __awaiter(this, void 0, void 0, function* () {
+                return new Promise((resolve, reject) => {
+                    try {
+                        let script = new vm.Script(this._compiled);
+                        AVGStory.sanbox.done = () => {
+                            console.log("Script execute done: " + this._scriptFile);
+                            resolve();
+                        };
+                        script.runInContext(vm.createContext(AVGStory.sanbox), {
+                            displayErrors: true
+                        });
+                    }
+                    catch (err) {
+                        reject("AVG Script errror : " + err);
+                    }
+                });
             });
         }
-        addScriptUnit(unit) {
-            this._scriptUnits.push(unit);
-        }
-        next() {
-            this._cursor++;
-            if (this._cursor >= this._scriptUnits.length) {
-                return null;
-            }
-            return this._scriptUnits[this._cursor];
-        }
     }
+    AVGStory.sanbox = new sandbox_2.Sandbox();
     exports.AVGStory = AVGStory;
 });
 define("engine/core/transition", ["require", "exports"], function (require, exports) {
@@ -1158,87 +1275,7 @@ define("engine/core/setting", ["require", "exports"], function (require, exports
     };
     exports.Setting = Setting;
 });
-define("engine/core/resource", ["require", "exports", "engine/core/env", "path"], function (require, exports, env_1, path) {
-    "use strict";
-    Object.defineProperty(exports, "__esModule", { value: true });
-    var ResourcePath;
-    (function (ResourcePath) {
-        // Audio
-        ResourcePath[ResourcePath["BGM"] = 0] = "BGM";
-        ResourcePath[ResourcePath["BGS"] = 1] = "BGS";
-        ResourcePath[ResourcePath["SE"] = 2] = "SE";
-        ResourcePath[ResourcePath["Voice"] = 3] = "Voice";
-        // Graphics
-        ResourcePath[ResourcePath["Backgrounds"] = 4] = "Backgrounds";
-        ResourcePath[ResourcePath["Characters"] = 5] = "Characters";
-        ResourcePath[ResourcePath["Masks"] = 6] = "Masks";
-        ResourcePath[ResourcePath["UI"] = 7] = "UI";
-        ResourcePath[ResourcePath["Icons"] = 8] = "Icons";
-        ResourcePath[ResourcePath["Effects"] = 9] = "Effects";
-        // Plugins
-        ResourcePath[ResourcePath["Plugins"] = 10] = "Plugins";
-        // Data
-        ResourcePath[ResourcePath["Data"] = 11] = "Data";
-        // Script
-        ResourcePath[ResourcePath["Scripts"] = 12] = "Scripts";
-    })(ResourcePath = exports.ResourcePath || (exports.ResourcePath = {}));
-    class Resource {
-        static init(rootDir) {
-            this._assetsRoot = rootDir;
-            /*
-                To use initialize paths, you should create the following directory structure:
-                
-                Root
-                ├── audio
-                │   ├── bgm
-                │   ├── bgs
-                │   ├── voice
-                │   └── se
-                ├── data
-                ├── graphics
-                │   ├── backgrounds
-                │   ├── characters
-                │   ├── effects
-                │   ├── masks
-                │   ├── icons
-                │   └── ui
-                ├── plugins
-                └── scripts
-            */
-            this._paths = new Map([
-                [ResourcePath.BGM, 'audio/bgm'],
-                [ResourcePath.BGS, 'audio/bgs'],
-                [ResourcePath.SE, 'audio/se'],
-                [ResourcePath.Voice, 'audio/voice'],
-                [ResourcePath.Backgrounds, 'graphics/backgrounds'],
-                [ResourcePath.Characters, 'graphics/characters'],
-                [ResourcePath.Masks, 'graphics/masks'],
-                [ResourcePath.UI, 'graphics/ui'],
-                [ResourcePath.Icons, 'graphics/icons'],
-                [ResourcePath.Effects, 'graphics/effects'],
-                [ResourcePath.Plugins, 'plugins'],
-                [ResourcePath.Data, 'data'],
-                [ResourcePath.Scripts, 'scripts'],
-            ]);
-            console.log(`Initialize resource root folder: ${this._assetsRoot}`);
-        }
-        static getRoot() {
-            return this._assetsRoot;
-        }
-        static getPath(dir) {
-            let dirPath = this._paths.get(dir);
-            if (!dirPath) {
-                return undefined;
-            }
-            if (env_1.Env.isRunStandalone()) {
-                dirPath = path.join(this._assetsRoot, dirPath);
-            }
-            return dirPath;
-        }
-    }
-    exports.Resource = Resource;
-});
-define("engine/core/game", ["require", "exports", "engine/scripting/story", "path", "engine/index"], function (require, exports, story_2, path, index_1) {
+define("engine/core/game", ["require", "exports", "engine/scripting/story", "path", "engine/index"], function (require, exports, story_3, path, index_1) {
     "use strict";
     Object.defineProperty(exports, "__esModule", { value: true });
     class AVGGame {
@@ -1247,7 +1284,7 @@ define("engine/core/game", ["require", "exports", "engine/scripting/story", "pat
                 width: 1366,
                 height: 768
             };
-            this._entryStory = new story_2.AVGStory();
+            this._entryStory = new story_3.AVGStory();
             // this._scriptingLoop = new AVGScriptingLoop();
         }
         setResolution(screen) {
@@ -1260,19 +1297,23 @@ define("engine/core/game", ["require", "exports", "engine/scripting/story", "pat
             this._scriptDir = dir;
         }
         start(entryScript) {
-            // Init plugins
-            index_1.PluginManager.init();
-            let scriptDir = this._scriptDir || './';
-            entryScript = entryScript || path.join(scriptDir, AVGGame.DEFAULT_ENTRY_SCRIPT);
-            this._entryStory.loadFromFile(entryScript);
-            // this._scriptingLoop.addStory(this._entryStory);
-            this._run();
+            return __awaiter(this, void 0, void 0, function* () {
+                // Init plugins
+                index_1.PluginManager.init();
+                let scriptDir = this._scriptDir || './';
+                entryScript = entryScript || path.join(scriptDir, AVGGame.DEFAULT_ENTRY_SCRIPT);
+                yield this._entryStory.loadFromFile(entryScript);
+                yield this._entryStory.run();
+                // this._scriptingLoop.addStory(this._entryStory);
+                // this._run();
+            });
         }
-        startFromAPIs(scripts) {
-            this._entryStory.loadFromScripts(scripts);
-            // this._scriptingLoop.addStory(this._entryStory);
-            this._run();
-        }
+        // public startFromAPIs(scripts: Array<AVGScriptUnit>) {
+        //     this._entryStory.loadFromScripts(scripts);
+        //     this._entryStory.run();
+        //     // this._scriptingLoop.addStory(this._entryStory);
+        //     this._run();
+        // }
         _run() {
             // this._scriptingLoop.run().on(LoopEvents.OnLoopData, (data) => {
             //     console.log(`Received data: `, data);
@@ -1351,7 +1392,7 @@ define("engine/core/utils", ["require", "exports", "image-size"], function (requ
     exports.Utils = Utils;
 });
 //@ Auto-Generated indexing files for avg.engine
-define("engine/core/index", ["require", "exports", "engine/core/env", "engine/core/game", "engine/core/i18n", "engine/core/input", "engine/core/resource", "engine/core/sandbox", "engine/core/setting", "engine/core/utils"], function (require, exports, env_2, game_1, i18n_2, input_1, resource_1, sandbox_3, setting_1, utils_1) {
+define("engine/core/index", ["require", "exports", "engine/core/env", "engine/core/game", "engine/core/i18n", "engine/core/input", "engine/core/resource", "engine/core/sandbox", "engine/core/setting", "engine/core/utils"], function (require, exports, env_2, game_1, i18n_2, input_1, resource_2, sandbox_3, setting_1, utils_1) {
     "use strict";
     function __export(m) {
         for (var p in m) if (!exports.hasOwnProperty(p)) exports[p] = m[p];
@@ -1361,7 +1402,7 @@ define("engine/core/index", ["require", "exports", "engine/core/env", "engine/co
     __export(game_1);
     __export(i18n_2);
     __export(input_1);
-    __export(resource_1);
+    __export(resource_2);
     __export(sandbox_3);
     __export(setting_1);
     __export(utils_1);
@@ -1469,11 +1510,11 @@ define("engine/plugin/internal/dialogue-parser-plugin", ["require", "exports", "
                 return "";
             }
             // Grammar: [color=N][/color]
-            text = text.replace(/\[color=([a-zA-Z0-9#]+)\]/g, `<font color=$1>`);
-            text = text.replace(/\[\/color\]/g, `</font>`);
+            text = text.replace(/\[color=([a-zA-Z0-9#]+)\]/g, `<span style="color:$1">`);
+            text = text.replace(/\[\/color\]/g, `</span>`);
             // Grammar: [c=N][/c]
-            text = text.replace(/\[c=([a-zA-Z0-9#]+)\]|\[color=([a-zA-Z0-9#]+)\]/g, `<font color=$1>`);
-            text = text.replace(/\[\/c\]/g, `</font>`);
+            text = text.replace(/\[c=([a-zA-Z0-9#]+)\]|\[color=([a-zA-Z0-9#]+)\]/g, `<span style="color:$1">`);
+            text = text.replace(/\[\/c\]/g, `</span>`);
             // Grammar: [bold][/bold]
             text = text.replace(/\[bold\]/g, `<bold>`);
             text = text.replace(/\[\/bold\]/g, `</bold>`);
@@ -1490,11 +1531,14 @@ define("engine/plugin/internal/dialogue-parser-plugin", ["require", "exports", "
             text = text.replace(/\[del\]/g, `<del>`);
             text = text.replace(/\[\/del\]/g, `</del>`);
             // Grammar: [size=N][/size]
-            text = text.replace(/\[size=(\d+)\]/g, `<font size=$1>`);
-            text = text.replace(/\[\/size\]/g, `</font>`);
+            text = text.replace(/\[size=(\d+)\]/g, `<span style="font-size: $1px;">`);
+            text = text.replace(/\[\/size\]/g, `</span>`);
             // Grammar: [s=N][/s]
-            text = text.replace(/\[s=(\d+)\]/g, `<font size=$1>`);
-            text = text.replace(/\[\/s\]/g, `</font>`);
+            text = text.replace(/\[s=(\d+)\]/g, `<span style="font-size: $1px;">`);
+            text = text.replace(/\[\/s\]/g, `</span>`);
+            // Grammar: [rt=rt]Content[/rt]
+            text = text.replace(/\[rt=([\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF\w ;]+)\]([\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF\w ;]+)\[\/rt\]/g, `<ruby>$2<rt>$1</rt></ruby>`);
+            console.log(text);
             // Grammar: [emoji=file]
             text = text.replace(/\[emoji=([\w\-\. ]+)]/g, `<img src='assets/graphics/emoji/$1' />`);
             // Grammar: [br]
@@ -1527,14 +1571,14 @@ define("engine/plugin/internal/index", ["require", "exports", "engine/plugin/int
     __export(dialogue_parser_plugin_1);
 });
 //@ Auto-Generated indexing files for avg.engine
-define("engine/index", ["require", "exports", "engine/const/index", "engine/core/index", "engine/data/index", "engine/plugin/index", "engine/plugin/internal/index", "engine/scripting/index", "engine/scripting/api/index"], function (require, exports, const_2, core_1, data_8, plugin_1, internal_1, scripting_1, api_2) {
+define("engine/index", ["require", "exports", "engine/const/index", "engine/core/index", "engine/data/index", "engine/plugin/index", "engine/plugin/internal/index", "engine/scripting/index", "engine/scripting/api/index"], function (require, exports, const_2, core_2, data_8, plugin_1, internal_1, scripting_1, api_2) {
     "use strict";
     function __export(m) {
         for (var p in m) if (!exports.hasOwnProperty(p)) exports[p] = m[p];
     }
     Object.defineProperty(exports, "__esModule", { value: true });
     __export(const_2);
-    __export(core_1);
+    __export(core_2);
     __export(data_8);
     __export(plugin_1);
     __export(internal_1);
