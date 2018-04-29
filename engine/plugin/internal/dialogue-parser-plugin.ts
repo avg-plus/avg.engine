@@ -75,7 +75,6 @@ export class DialogueParserPlugin extends AVGInternalPlugin {
             `<ruby>$2<rt>$1</rt></ruby>`
         );
 
-        console.log(text);
         // Grammar: [emoji=file]
         text = text.replace(
             /\[emoji=([\w\-\. ]+)]/g,

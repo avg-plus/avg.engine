@@ -13,6 +13,7 @@ export enum OP {
     PlayBGS = "PlayBGS",
     PlaySE = "PlaySE",
     LoadScene = "LoadScene",
+    RemoveScene = "RemoveScene",
     AnimateScene = "AnimateScene",
     Wait = "Wait",
     PlayEffect = "PlayEffect",
@@ -22,6 +23,9 @@ export enum OP {
     UpdateSubtitle = "UpdateSubtitle",
     HideSubtitle = "HideSubtitle",
     AnimateSubtitle = "AnimateSubtitle",
+    ShowImage = "ShowImage",
+    RemoveImage = "RemoveImage",
+    UpdateImage = "UpdateImage",
+    AnimateImage = "AnimateImage",
     ShowInputBox = "ShowInputBox"
-
 }

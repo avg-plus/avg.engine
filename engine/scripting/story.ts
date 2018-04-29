@@ -54,7 +54,7 @@ export class AVGStory {
                 let script = new vm.Script(this._compiled);
 
                 AVGStory.sanbox.done = () => {
-                    console.log("Script execute done: " + this._scriptFile);
+                    console.log("Script execute done");
                     resolve();
                 };
 

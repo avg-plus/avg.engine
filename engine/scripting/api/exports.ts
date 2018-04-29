@@ -27,8 +27,8 @@ import { Sandbox, Resource } from "../../core";
 import { APIEffect } from "./api-effect";
 import { APIGotoTitleView } from "./api-title-view";
 import { OP } from "../../const/op";
-import { APISubtitle } from "./api-subtitle";
-import { Subtitle } from "../../data/subtitle";
+import { APIScreenSubtitle } from "./api-screen-subtitle";
+import { Subtitle } from "../../data/screen-subtitle";
 import { ScreenWidgetAnimation } from "../../data/screen-widget";
 import { APIDialogueChoice } from "./api-dialogue-choices";
 import { DialogueChoice } from "../../data/dialogue-choice";
@@ -39,6 +39,8 @@ import { APIInputBox } from "./api-input-box";
 import { APICallScript } from "./api-call-script";
 import { AVGStory } from "../story";
 import { ResourcePath } from "../../core/resource";
+import { APIScreenImage } from "./api-screen-image";
+import { ScreenImage } from "../../data/screen-image";
 
 function paramCompatible<T extends AVGScriptUnit, U extends AVGData>(
     model: T,
@@ -77,6 +79,7 @@ export namespace api {
             });
 
             const proxy = APIManager.getImpl(APIDialogue.name, OP.ShowText);
+
             proxy && (await proxy.runner(<APIDialogue>model));
         };
 
@@ -116,11 +119,18 @@ export namespace api {
         proxy && (await proxy.runner(<APICharacter>model));
     }
 
-    export async function showChoices(choices: Array<string>) {
+    export async function showChoices(
+        choices: Array<string>,
+        onEnter: (index: number) => void,
+        onLeave: (index: number) => void
+    ) {
         let model = new APIDialogueChoice();
         choices.forEach(s => {
             model.choices.push(new DialogueChoice(s));
         });
+
+        model.onEnter = onEnter;
+        model.onLeave = onLeave;
 
         return await APIManager.getImpl(
             APIDialogueChoice.name,
@@ -152,7 +162,16 @@ export namespace api {
         );
     }
 
-    export async function playBGM(filename: string, options: Sound) {
+    export async function removeScene(index: number) {
+        let model = new APIScene();
+        model.index = index;
+
+        return await APIManager.getImpl(APIScene.name, OP.RemoveScene).runner(
+            <APIScene>model
+        );
+    }
+
+    export async function playBGM(filename: string, options: SoundBGM) {
         let model = new APISound();
         model.data.track = SoundTrack.BGM;
 
@@ -300,49 +319,61 @@ export namespace api {
         text: string,
         options: Subtitle
     ) {
-        let model = new APISubtitle();
+        let model = new APIScreenSubtitle();
         model.data.id = id;
         model.data.text = text;
         model.data.animation = new WidgetAnimation();
         model.data.animation.name = ScreenWidgetAnimation.Enter_Appear;
 
-        paramCompatible<APISubtitle, Subtitle>(model, options);
+        paramCompatible<APIScreenSubtitle, Subtitle>(model, options);
 
-        const proxy = APIManager.getImpl(APISubtitle.name, OP.ShowSubtitle);
-        proxy && (await proxy.runner(<APISubtitle>model));
+        const proxy = APIManager.getImpl(
+            APIScreenSubtitle.name,
+            OP.ShowSubtitle
+        );
+        proxy && (await proxy.runner(<APIScreenSubtitle>model));
     }
 
     export async function animateSubtitle(
         id: string,
         animation: WidgetAnimation
     ) {
-        let model = new APISubtitle();
+        let model = new APIScreenSubtitle();
         model.data.id = id;
 
-        const proxy = APIManager.getImpl(APISubtitle.name, OP.AnimateSubtitle);
-        proxy && (await proxy.runner(<APISubtitle>model));
+        const proxy = APIManager.getImpl(
+            APIScreenSubtitle.name,
+            OP.AnimateSubtitle
+        );
+        proxy && (await proxy.runner(<APIScreenSubtitle>model));
     }
 
     export async function updateSubtitle(id: string, text: string) {
-        let model = new APISubtitle();
+        let model = new APIScreenSubtitle();
         model.data.id = id;
         model.data.text = text;
 
-        const proxy = APIManager.getImpl(APISubtitle.name, OP.UpdateSubtitle);
-        proxy && (await proxy.runner(<APISubtitle>model));
+        const proxy = APIManager.getImpl(
+            APIScreenSubtitle.name,
+            OP.UpdateSubtitle
+        );
+        proxy && (await proxy.runner(<APIScreenSubtitle>model));
     }
 
     export async function hideSubtitle(
         id: string,
         options: { animation: WidgetAnimation }
     ) {
-        let model = new APISubtitle();
+        let model = new APIScreenSubtitle();
         model.data.id = id;
 
-        paramCompatible<APISubtitle, WidgetAnimation>(model, options);
+        paramCompatible<APIScreenSubtitle, WidgetAnimation>(model, options);
 
-        const proxy = APIManager.getImpl(APISubtitle.name, OP.HideSubtitle);
-        proxy && (await proxy.runner(<APISubtitle>model));
+        const proxy = APIManager.getImpl(
+            APIScreenSubtitle.name,
+            OP.HideSubtitle
+        );
+        proxy && (await proxy.runner(<APIScreenSubtitle>model));
     }
 
     export async function showInputBox(title: string, options: InputData) {
@@ -363,11 +394,38 @@ export namespace api {
         let model = new APICallScript();
         model.scriptFile = file;
 
-        // let script = Resource.readFileText(file);
-        // if (script && typeof script === 'string' && script.length > 0) {
         let story = new AVGStory();
         await story.loadFromFile(Resource.getPath(ResourcePath.Scripts, file));
         return await story.run();
-        // }
+    }
+
+    export async function showImage(
+        id: string,
+        file: string,
+        options: ScreenImage
+    ) {
+        let model = new APIScreenImage();
+        model.data.id = id;
+        model.data.file = ResourceData.from(file);
+        model.data.animation = new WidgetAnimation();
+        model.data.animation.name = ScreenWidgetAnimation.Enter_Appear;
+
+        paramCompatible<APIScreenImage, ScreenImage>(model, options);
+
+        const proxy = APIManager.getImpl(APIScreenImage.name, OP.ShowImage);
+        proxy && (await proxy.runner(<APIScreenImage>model));
+    }
+
+    export async function removeImage(id: string, options: ScreenImage) {
+        let model = new APIScreenImage();
+        model.data.id = id;
+
+        model.data.animation = new WidgetAnimation();
+        model.data.animation.name = ScreenWidgetAnimation.Leave_Hide;
+
+        paramCompatible<APIScreenImage, ScreenImage>(model, options);
+
+        const proxy = APIManager.getImpl(APIScreenImage.name, OP.RemoveImage);
+        proxy && (await proxy.runner(<APIScreenImage>model));
     }
 }

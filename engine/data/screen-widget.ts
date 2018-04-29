@@ -40,14 +40,14 @@ export class WidgetAnimationOptions {
     public duration: number = 5;
 }
 
-export class WidgetAnimation_FadeInOptions extends WidgetAnimationOptions { }
-export class WidgetAnimation_FadeOutOptions extends WidgetAnimationOptions { }
+export class WidgetAnimation_FadeInOptions extends WidgetAnimationOptions {}
+export class WidgetAnimation_FadeOutOptions extends WidgetAnimationOptions {}
 export class WidgetAnimation_FlyInOptions extends WidgetAnimationOptions {
     public offset: number = 10;
     public direction: string = AnimationDirection.FromLeft;
 }
 
-export class WidgetAnimation_FlyOutOptions extends WidgetAnimation_FlyInOptions { }
+export class WidgetAnimation_FlyOutOptions extends WidgetAnimation_FlyInOptions {}
 
 export class WidgetAnimation {
     public name: ScreenWidgetAnimation;
@@ -62,6 +62,7 @@ export class ScreenWidget {
     private _widgetType: ScreenWidgetType;
     private _position: string = ScreenPosition.Center;
 
+    public id: string;
     public x: string;
     public y: string;
 
@@ -83,7 +84,7 @@ export class ScreenWidget {
         }
     }
 
-    public animation: WidgetAnimation;
+    public animation: WidgetAnimation = new WidgetAnimation();
 
     constructor(type: ScreenWidgetType) {
         this._widgetType = type;

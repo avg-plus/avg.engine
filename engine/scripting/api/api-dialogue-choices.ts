@@ -8,4 +8,6 @@ export class SelectedDialogueChoice {
 
 export class APIDialogueChoice extends AVGScriptUnit {
     public choices: Array<DialogueChoice> = new Array<DialogueChoice>();
+    public onEnter: (index: number) => void;
+    public onLeave: (index: number) => void;
 }
