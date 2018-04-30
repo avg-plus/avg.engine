@@ -360,14 +360,17 @@ export namespace api {
         proxy && (await proxy.runner(<APIScreenSubtitle>model));
     }
 
-    export async function hideSubtitle(
+    export async function removeSubtitle(
         id: string,
-        options: { animation: WidgetAnimation }
+        options?: { animation?: WidgetAnimation }
     ) {
         let model = new APIScreenSubtitle();
         model.data.id = id;
+        model.data.animation = options
+            ? options.animation || undefined
+            : undefined;
 
-        paramCompatible<APIScreenSubtitle, WidgetAnimation>(model, options);
+        // paramCompatible<APIScreenSubtitle, WidgetAnimation>(model, options);
 
         const proxy = APIManager.getImpl(
             APIScreenSubtitle.name,
