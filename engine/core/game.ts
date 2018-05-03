@@ -10,15 +10,23 @@ import { Transition } from './transition';
 import { PluginManager } from '../index';
 import { Setting } from './setting';
 import { Resource } from './resource';
+import { AVGArchives } from './game-archives';
+
+export enum GameRunningType {
+    Normal,
+    Loading
+}
 
 export class AVGGame {
 
     private static DEFAULT_ENTRY_SCRIPT = 'start.avs';
+    private static _runningType: GameRunningType = GameRunningType.Normal;
 
     private _entryStory: AVGStory;
     // private _scriptingLoop: AVGScriptingLoop;
     private _scriptDir: string;
     private _transition: Transition;
+
 
     private _screen: Screen = {
         width: 1366,
@@ -36,6 +44,14 @@ export class AVGGame {
 
     public getResolution(): Screen {
         return this._screen;
+    }
+
+    public static setRunningType(type: GameRunningType) {
+        this._runningType = type;
+    }
+
+    public static getRunningType(): GameRunningType {
+        return this._runningType;
     }
 
     public setScriptDir(dir: string) {

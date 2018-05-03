@@ -1,4 +1,6 @@
 import { AVGScriptUnit, RunnerFunction } from './script-unit';
+import { AVGArchives } from '../core/game-archives';
+
 
 export type OP_Runner = { op: string, runner: RunnerFunction };
 export type OP_RunnerContainer = Array<OP_Runner>;
@@ -7,6 +9,8 @@ export type APITable = Map<string, OP_RunnerContainer>;
 export class APIManager {
 
     private static _apis: APITable = new Map<string, OP_RunnerContainer>();
+
+    private static _currentAPILine: number = 0;
 
     public static extendImpl<T extends AVGScriptUnit>(typename: string, op: string, implRunner: RunnerFunction): void {
 
@@ -36,6 +40,8 @@ export class APIManager {
     }
 
     public static getImpl(typename: string, op: string): OP_Runner {
+        this._currentAPILine++;
+        AVGArchives.postAPICall(this._currentAPILine);
         return this.tryGetOP(typename, op);
     }
 
@@ -62,6 +68,14 @@ export class APIManager {
         }
 
         return null;
+    }
+
+    public static getCurrentAPILine() {
+        return this._currentAPILine;
+    }
+
+    public static resetCurrentAPILine() {
+        this._currentAPILine = 0;
     }
 }
 

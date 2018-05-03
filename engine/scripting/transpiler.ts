@@ -24,13 +24,13 @@ export class Transpiler {
     }
 
     private static _preprocesser(code: string) {
-        if (code.indexOf("await ") >= 0) {
-            throw Transpiler.Error.UnexpectedReservedKeyword;
-        }
+        // if (code.indexOf("await ") >= 0) {
+        //     throw Transpiler.Error.UnexpectedReservedKeyword;
+        // }
 
-        if (code.indexOf("async ") >= 0) {
-            throw Transpiler.Error.UnexpectedReservedKeyword;
-        }
+        // if (code.indexOf("async ") >= 0) {
+        //     throw Transpiler.Error.UnexpectedReservedKeyword;
+        // }
 
         return this._transpile(code);
     }
