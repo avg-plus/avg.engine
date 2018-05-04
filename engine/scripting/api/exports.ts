@@ -23,7 +23,7 @@ import { APISound } from "./api-sound";
 import { APITimer } from "./api-timer";
 import { APIVariable } from "./api-variable";
 import { SoundTrack } from "../../const";
-import { Sandbox, Resource } from "../../core";
+import { Sandbox, Resource, Setting } from "../../core";
 import { APIEffect } from "./api-effect";
 import { APIGotoTitleView } from "./api-title-view";
 import { OP } from "../../const/op";
@@ -316,7 +316,7 @@ export namespace api {
         index: number,
         animateName: string,
         options: any
-    ) {}
+    ) { }
 
     export async function getVariable(name: string): Promise<any> {
         return Promise.resolve(APIVariable.get(name));
@@ -438,5 +438,9 @@ export namespace api {
 
         const proxy = APIManager.getImpl(APIScreenImage.name, OP.RemoveImage);
         proxy && (await proxy.runner(<APIScreenImage>model));
+    }
+
+    export async function updateSetting(key: string, value: any) {
+        Setting[key] = value;
     }
 }
