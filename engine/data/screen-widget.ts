@@ -1,15 +1,15 @@
 import { AVGData } from "./avg-data";
 
-export enum ScreenPosition {
-    TopLeft = "TopLeft", // 左上
-    TopRight = "TopRight", // 右上
-    BottomLeft = "BottomLeft", // 左下
-    BottomRight = "BottomRight", // 右下
-    Top = "Top", // 顶部
-    Left = "Left", // 左
-    Right = "Right", // 右
-    Bottom = "Bottom", // 下
-    Center = "Center" // 居中
+export class ScreenPosition {
+    public static TopLeft = "TopLeft"; // 左上
+    public static TopRight = "TopRight"; // 右上
+    public static BottomLeft = "BottomLeft"; // 左下
+    public static BottomRight = "BottomRight"; // 右下
+    public static Top = "Top"; // 顶部
+    public static Left = "Left"; // 左
+    public static Right = "Right"; // 右
+    public static Bottom = "Bottom"; // 下
+    public static Center = "Center" // 居中
 }
 
 export enum ScreenWidgetType {
@@ -17,22 +17,22 @@ export enum ScreenWidgetType {
     Text
 }
 
-export enum ScreenWidgetAnimation {
-    Enter_Appear = "Appear",
-    Enter_FadeIn = "FadeIn",
-    Enter_FlyIn = "FlyIn",
-    Enter_ScaleIn = "ScaleIn",
-    Leave_Hide = "Hide",
-    Leave_FadeOut = "FadeOut",
-    Leave_FlyOut = "FlyOut",
-    Leave_ScaleOut = "ScaleOut"
+export class ScreenWidgetAnimation {
+    public static Enter_Appear = "Appear";
+    public static Enter_FadeIn = "FadeIn";
+    public static Enter_FlyIn = "FlyIn";
+    public static Enter_ScaleIn = "ScaleIn";
+    public static Leave_Hide = "Hide";
+    public static Leave_FadeOut = "FadeOut";
+    public static Leave_FlyOut = "FlyOut";
+    public static Leave_ScaleOut = "ScaleOut"
 }
 
-export enum AnimationDirection {
-    FromLeft = "Left",
-    FromRight = "Right",
-    FromUp = "Up",
-    FromDown = "Down"
+export class AnimationDirection {
+    public static FromLeft = "Left";
+    public static FromRight = "Right";
+    public static FromUp = "Up";
+    public static FromDown = "Down"
 }
 
 /* Animations */
@@ -75,7 +75,7 @@ export class ScreenWidget {
         this._position = value.trim();
 
         // If custom position
-        let regex = /\((\d+%?),(\d+%?)\)/;
+        let regex = /\((\d+%?);(\d+%?)\)/;
         let matches = this._position.match(regex);
 
         if (matches) {
