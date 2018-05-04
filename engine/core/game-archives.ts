@@ -30,13 +30,20 @@ export class AVGArchives {
         archive.progressAt = APIManager.getCurrentAPILine();
         archive.thumbnail = thumb;
         archive.data = Sandbox.Variables;
+        this._archives[index] = archive;
+        this.saveToFile(index, archive);
     }
 
     public static loadArchive(index: number) {
+        if (this._archives[index] == undefined) {
+            return false;
+        }
+
         this._selectedArchive = index;
         this._isLoading = true;
         AVGGame.setRunningType(GameRunningType.Loading);
         Sandbox.Variables = this._archives[index].data;
+        return true;
     }
 
     public static postAPICall(line: number) {
