@@ -24,13 +24,13 @@ export class Transpiler {
     }
 
     private static _preprocesser(code: string) {
-        // if (code.indexOf("await ") >= 0) {
-        //     throw Transpiler.Error.UnexpectedReservedKeyword;
-        // }
+        if (code.indexOf("await ") >= 0) {
+            throw Transpiler.Error.UnexpectedReservedKeyword + "await";
+        }
 
-        // if (code.indexOf("async ") >= 0) {
-        //     throw Transpiler.Error.UnexpectedReservedKeyword;
-        // }
+        if (code.indexOf("async ") >= 0) {
+            throw Transpiler.Error.UnexpectedReservedKeyword + "async";
+        }
 
         return this._transpile(code);
     }
@@ -47,6 +47,7 @@ export class Transpiler {
         };
 
         // 'async' keyword transform
+        console.time("Compile Script Elapsed");
         console.log("Starting async keyword transform AST generate ...");
         let asyncTransformAST = esprima.parse(
             code,
@@ -90,6 +91,7 @@ export class Transpiler {
         }
 
         console.log("Regenerate code:", asyncTransformCode);
+        console.timeEnd("Compile Script Elapsed");
 
         return `+(async() => {try { ${asyncTransformCode} \n done(); } catch (err) { console.error('Game runtime errors', err);}})();`;
     }
@@ -113,5 +115,5 @@ export class Transpiler {
         });
     }
 
-    private static _compile_error() {}
+    private static _compile_error() { }
 }
