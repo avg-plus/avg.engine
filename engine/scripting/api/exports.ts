@@ -39,7 +39,7 @@ import { APIInputBox } from "./api-input-box";
 import { APICallScript } from "./api-call-script";
 import { AVGStory } from "../story";
 import { ResourcePath } from "../../core/resource";
-import { APIScreenImage } from "./api-screen-image";
+import { APIScreenImage, ScreenImageResult } from "./api-screen-image";
 import { ScreenImage } from "../../data/screen-image";
 import { IDGenerator } from "../../core/id-generator";
 
@@ -415,7 +415,7 @@ export namespace api {
     export async function showImage(file: string, options: ScreenImage) {
         let model = new APIScreenImage();
         model.data.id = IDGenerator.generate();
-        model.data.file = ResourceData.from(file);
+        model.data.file = ResourceData.from(file, ResourcePath.Images);
         model.data.animation = new WidgetAnimation();
         model.data.animation.name = ScreenWidgetAnimation.Enter_Appear;
 
@@ -442,5 +442,9 @@ export namespace api {
 
     export async function updateSetting(key: string, value: any) {
         Setting[key] = value;
+    }
+
+    export async function transitionTo(color: string, duration: number) {
+        
     }
 }
