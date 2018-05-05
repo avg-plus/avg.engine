@@ -10,6 +10,7 @@ export enum ResourcePath {
 
     // Graphics
     Backgrounds,
+    Images,
     Characters,
     Masks,
     UI,
@@ -45,6 +46,7 @@ export class Resource {
             ├── data
             ├── graphics
             │   ├── backgrounds
+            │   ├── images
             │   ├── characters
             │   ├── effects
             │   ├── masks
@@ -60,6 +62,7 @@ export class Resource {
             [ResourcePath.SE, "audio/se"],
             [ResourcePath.Voice, "audio/voice"],
             [ResourcePath.Backgrounds, "graphics/backgrounds"],
+            [ResourcePath.Images, "graphics/images"],
             [ResourcePath.Characters, "graphics/characters"],
             [ResourcePath.Masks, "graphics/masks"],
             [ResourcePath.UI, "graphics/ui"],
