@@ -63,9 +63,9 @@ export class AVGArchives {
         return new Promise((resolve, reject) => {
             let filePathAndName: string = path.join(this._archiveFilePath, index + ".te");
             try {
-                fs.writeFileSync(filePathAndName, JSON.stringify(archive), "w");
+                fs.writeFileSync(filePathAndName, JSON.stringify(archive), { flag: "w" });
                 resolve();
-            } catch(err) {
+            } catch (err) {
                 reject(err);
             }
         });
@@ -77,7 +77,7 @@ export class AVGArchives {
                 if (err) {
                     reject(err);
                     return;
-                } 
+                }
 
                 files.forEach((filename) => {
                     let filePathAndName = path.join(this._archiveFilePath, filename);
@@ -93,7 +93,7 @@ export class AVGArchives {
                                     reject(err);
                                     return;
                                 }
-                
+
                                 this.appendArchive(this.getIndexFromFilename(filename), data);
                                 resolve();
                             });
