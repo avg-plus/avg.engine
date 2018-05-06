@@ -72,24 +72,36 @@ export namespace api {
         text: string | Array<string>,
         options?: Dialogue
     ) {
-        const show = async (content: string) => {
-            let model = new APIDialogue();
-            paramCompatible<APIDialogue, Dialogue>(model, options, {
+        let model = new APIDialogue();
+
+        let originAvatarFile = "";
+        const show = async (content: string, showOptions: Dialogue) => {
+            paramCompatible<APIDialogue, Dialogue>(model, showOptions, {
                 field: "text",
                 value: content
             });
 
-            const proxy = APIManager.getImpl(APIDialogue.name, OP.ShowText);
+            if (originAvatarFile === "") {
+                originAvatarFile = model.data.character.avatar.file;
+            }
 
+            const fullpath = ResourceData.from(
+                originAvatarFile,
+                ResourcePath.Characters
+            ).filename;
+
+            model.data.character.avatar.file = fullpath;
+
+            const proxy = APIManager.getImpl(APIDialogue.name, OP.ShowText);
             proxy && (await proxy.runner(<APIDialogue>model));
         };
 
         if (Array.isArray(text)) {
             for (let content of text) {
-                await show(content);
+                await show(content, options);
             }
         } else {
-            await show(<string>text);
+            await show(<string>text, options);
         }
     }
 
@@ -104,19 +116,18 @@ export namespace api {
     export async function showCharacter(
         index: number,
         filename: string,
-        options?: { avatar: Avatar }
+        options?: Avatar
     ) {
         let model = new APICharacter();
-        model.index = index;
-        model.data = new Avatar();
-        model.data.file = ResourceData.from(
+        model.data.index = index;
+
+        model.data.avatar = new Avatar();
+        Object.assign(model.data.avatar, options);
+
+        model.data.avatar.file = ResourceData.from(
             filename,
             ResourcePath.Characters
         ).filename;
-
-        if (options !== undefined) {
-            paramCompatible<APICharacter, Avatar>(model, options.avatar);
-        }
 
         const proxy = APIManager.getImpl(APICharacter.name, OP.ShowCharacter);
         proxy && (await proxy.runner(<APICharacter>model));
@@ -124,7 +135,7 @@ export namespace api {
 
     export async function hideCharacter(index: number = -1) {
         let model = new APICharacter();
-        model.index = index;
+        model.data.index = index;
 
         paramCompatible<APICharacter, Avatar>(model, {});
         const proxy = APIManager.getImpl(APICharacter.name, OP.HideCharacter);
@@ -164,10 +175,20 @@ export namespace api {
     ) {
         let model = new APIScene();
         model.index = index;
-        paramCompatible<APIScene, Scene>(model, options, {
-            field: "file",
-            value: ResourceData.from(filename, ResourcePath.Backgrounds)
-        });
+
+        if (filename && filename.length > 0) {
+            paramCompatible<APIScene, Scene>(model, options, {
+                field: "file",
+                value: ResourceData.from(filename, ResourcePath.Backgrounds)
+            });
+
+        } else {
+            model.isAsync = false;
+            paramCompatible<APIScene, Scene>(model, options, {
+                field: "file",
+                value: ResourceData.from("//:0")
+            });
+        }
 
         return await APIManager.getImpl(APIScene.name, OP.LoadScene).runner(
             <APIScene>model
@@ -326,12 +347,22 @@ export namespace api {
         return Promise.resolve(APIVariable.set(name, value));
     }
 
-    export async function showSubtitle(text: string, options: Subtitle) {
+    export async function showSubtitle(
+        text: string,
+        options: Subtitle,
+        isAsync: boolean = false
+    ) {
         let model = new APIScreenSubtitle();
-        model.data.id = IDGenerator.generate();
+        model.isAsync = isAsync;
+        model.data = options;
+        model.data.id = "Text_" + IDGenerator.generate();
         model.data.text = text;
-        model.data.animation = new WidgetAnimation();
-        model.data.animation.name = ScreenWidgetAnimation.Enter_Appear;
+        model.data.position = model.data.position || ScreenPosition.Center;
+
+        // if (!model.data) {
+        //     model.data.animation = new WidgetAnimation();
+        //     model.data.animation.name = ScreenWidgetAnimation.Enter_Appear;
+        // }
 
         paramCompatible<APIScreenSubtitle, Subtitle>(model, options);
 
@@ -370,9 +401,11 @@ export namespace api {
 
     export async function removeSubtitle(
         id: string,
-        options?: { animation?: WidgetAnimation }
+        options?: { animation?: WidgetAnimation },
+        isAsync: boolean = false
     ) {
         let model = new APIScreenSubtitle();
+        model.isAsync = isAsync;
         model.data.id = id;
         model.data.animation = options
             ? options.animation || undefined
@@ -412,9 +445,14 @@ export namespace api {
         return await story.run();
     }
 
-    export async function showImage(file: string, options: ScreenImage) {
+    export async function showImage(
+        file: string,
+        options: ScreenImage,
+        isAsync: boolean = false
+    ) {
         let model = new APIScreenImage();
-        model.data.id = IDGenerator.generate();
+        model.isAsync = isAsync;
+        model.data.id = "Image_" + IDGenerator.generate();
         model.data.file = ResourceData.from(file, ResourcePath.Images);
         model.data.animation = new WidgetAnimation();
         model.data.animation.name = ScreenWidgetAnimation.Enter_Appear;
@@ -427,8 +465,13 @@ export namespace api {
         ).runner(<APIScreenImage>model);
     }
 
-    export async function removeImage(id: string, options: ScreenImage) {
+    export async function removeImage(
+        id: string,
+        options: ScreenImage,
+        isAsync: boolean = false
+    ) {
         let model = new APIScreenImage();
+        model.isAsync = isAsync;
         model.data.id = id;
 
         model.data.animation = new WidgetAnimation();
@@ -444,7 +487,5 @@ export namespace api {
         Setting[key] = value;
     }
 
-    export async function transitionTo(color: string, duration: number) {
-        
-    }
+    export async function transitionTo(color: string, duration: number) { }
 }

@@ -5,6 +5,7 @@ export class ResourceData {
     public filename: string;
 
     constructor(filename?: string, dir?: ResourcePath) {
+        this.filename = "";
         if (dir !== undefined) {
             this.filename = path.join(Resource.getPath(dir), filename);
         } else {

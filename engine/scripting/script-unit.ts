@@ -2,24 +2,28 @@ import { AVGData } from "../data/avg-data";
 
 export type RunnerFunction = (scriptUnit: AVGScriptUnit) => void; //Promise<AVGScriptUnit>;
 export class AVGScriptUnit {
-    public data: AVGData;
-    private _runner: RunnerFunction;
-    private _isAsync: boolean = true;
+  public data: AVGData;
+  private _runner: RunnerFunction;
+  private _isAsync: boolean = true;
 
-    public get isAsync(): boolean {
-        return this._isAsync;
-    }
+  constructor(async: boolean = true) {
+    this.isAsync = async;
+  }
 
-    public set isAsync(value: boolean) {
-        this._isAsync = value;
-    }
+  public get isAsync(): boolean {
+    return this._isAsync;
+  }
 
-    public get runner(): RunnerFunction {
-        console.log("Execute API Runner:", this);
-        return this._runner;
-    }
+  public set isAsync(value: boolean) {
+    this._isAsync = value;
+  }
 
-    public set runner(value: RunnerFunction) {
-        this._runner = value;
-    }
+  public get runner(): RunnerFunction {
+    console.log("Execute API Runner:", this);
+    return this._runner;
+  }
+
+  public set runner(value: RunnerFunction) {
+    this._runner = value;
+  }
 }

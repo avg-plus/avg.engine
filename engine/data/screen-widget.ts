@@ -1,15 +1,15 @@
 import { AVGData } from "./avg-data";
 
 export class ScreenPosition {
-    public static TopLeft = "TopLeft"; // 左上
-    public static TopRight = "TopRight"; // 右上
-    public static BottomLeft = "BottomLeft"; // 左下
-    public static BottomRight = "BottomRight"; // 右下
-    public static Top = "Top"; // 顶部
-    public static Left = "Left"; // 左
-    public static Right = "Right"; // 右
-    public static Bottom = "Bottom"; // 下
-    public static Center = "Center" // 居中
+    public static TopLeft = "topleft"; // 左上
+    public static TopRight = "topright"; // 右上
+    public static BottomLeft = "bottomleft"; // 左下
+    public static BottomRight = "bottomright"; // 右下
+    public static Top = "top"; // 顶部
+    public static Left = "left"; // 左
+    public static Right = "right"; // 右
+    public static Bottom = "bottom"; // 下
+    public static Center = "center"; // 居中
 }
 
 export enum ScreenWidgetType {
@@ -18,21 +18,21 @@ export enum ScreenWidgetType {
 }
 
 export class ScreenWidgetAnimation {
-    public static Enter_Appear = "Appear";
-    public static Enter_FadeIn = "FadeIn";
-    public static Enter_FlyIn = "FlyIn";
-    public static Enter_ScaleIn = "ScaleIn";
-    public static Leave_Hide = "Hide";
-    public static Leave_FadeOut = "FadeOut";
-    public static Leave_FlyOut = "FlyOut";
-    public static Leave_ScaleOut = "ScaleOut"
+    public static Enter_Appear = "appear";
+    public static Enter_FadeIn = "fadein";
+    public static Enter_FlyIn = "flyin";
+    public static Enter_ScaleIn = "scalein";
+    public static Leave_Hide = "hide";
+    public static Leave_FadeOut = "fadeout";
+    public static Leave_FlyOut = "flyout";
+    public static Leave_ScaleOut = "scaleout";
 }
 
 export class AnimationDirection {
-    public static FromLeft = "Left";
-    public static FromRight = "Right";
-    public static FromUp = "Up";
-    public static FromDown = "Down"
+    public static FromLeft = "left";
+    public static FromRight = "right";
+    public static FromUp = "up";
+    public static FromDown = "down";
 }
 
 /* Animations */
@@ -44,13 +44,30 @@ export class WidgetAnimation_FadeInOptions extends WidgetAnimationOptions {}
 export class WidgetAnimation_FadeOutOptions extends WidgetAnimationOptions {}
 export class WidgetAnimation_FlyInOptions extends WidgetAnimationOptions {
     public offset: number = 10;
-    public direction: string = AnimationDirection.FromLeft;
+    public _direction: string = AnimationDirection.FromLeft;
+
+    public set direction(value: string) {
+        this._direction = value.toString().toLowerCase();
+    }
+
+    public get direction(): string {
+        return this._direction;
+    }
 }
 
 export class WidgetAnimation_FlyOutOptions extends WidgetAnimation_FlyInOptions {}
 
 export class WidgetAnimation {
-    public name: ScreenWidgetAnimation;
+    private _name: string;
+
+    public set name(value: string) {
+        this._name = value.trim().toLowerCase();
+        console.log("set animation name", this.name);
+    }
+
+    public get name(): string {
+        return this._name;
+    }
 
     public options:
         | WidgetAnimation_FadeInOptions
@@ -72,7 +89,7 @@ export class ScreenWidget {
 
     public set position(value: string) {
         // Ignore spaces
-        this._position = value.trim();
+        this._position = value.trim().toLowerCase();
 
         // If custom position
         let regex = /\((\d+%?);(\d+%?)\)/;

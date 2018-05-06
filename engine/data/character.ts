@@ -5,5 +5,5 @@ import { Avatar } from './avatar';
 
 export class Character extends AVGData {
     public index?: number = 0;
-    public avatar?: Avatar;
+    public avatar?: Avatar = new Avatar();
 }
