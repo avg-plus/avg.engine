@@ -8,6 +8,6 @@ export class Dialogue extends AVGData {
     public text: string;
     public voice?: string;
     public name?: string;
-    public character?: Character = new Character;
+    public character?: Character = new Character();
 }
 

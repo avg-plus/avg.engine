@@ -27,5 +27,6 @@ export class OP {
     public static RemoveImage = "RemoveImage";
     public static UpdateImage = "UpdateImage";
     public static AnimateImage = "AnimateImage";
-    public static ShowInputBox = "ShowInputBox"
+    public static ShowInputBox = "ShowInputBox";
+    public static TransitionTo = "TransitionTo";
 }

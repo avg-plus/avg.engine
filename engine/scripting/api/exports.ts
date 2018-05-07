@@ -29,7 +29,7 @@ import { APIGotoTitleView } from "./api-title-view";
 import { OP } from "../../const/op";
 import { APIScreenSubtitle } from "./api-screen-subtitle";
 import { Subtitle } from "../../data/screen-subtitle";
-import { ScreenWidgetAnimation } from "../../data/screen-widget";
+import { ScreenWidgetAnimation, WidgetAnimation_HideOptions } from "../../data/screen-widget";
 import { APIDialogueChoice } from "./api-dialogue-choices";
 import { DialogueChoice } from "../../data/dialogue-choice";
 import { Character } from "../../data/character";
@@ -42,6 +42,7 @@ import { ResourcePath } from "../../core/resource";
 import { APIScreenImage, ScreenImageResult } from "./api-screen-image";
 import { ScreenImage } from "../../data/screen-image";
 import { IDGenerator } from "../../core/id-generator";
+import { APITransitionTo } from "./api-transition-to";
 
 function paramCompatible<T extends AVGScriptUnit, U extends AVGData>(
     model: T,
@@ -81,16 +82,18 @@ export namespace api {
                 value: content
             });
 
-            if (originAvatarFile === "") {
-                originAvatarFile = model.data.character.avatar.file;
+            if (model.data.character && model.data.character.avatar && model.data.character.avatar.file) {
+                if (originAvatarFile === "") {
+                    originAvatarFile = model.data.character.avatar.file;
+                }
+
+                const fullpath = ResourceData.from(
+                    originAvatarFile,
+                    ResourcePath.Characters
+                ).filename;
+
+                model.data.character.avatar.file = fullpath;
             }
-
-            const fullpath = ResourceData.from(
-                originAvatarFile,
-                ResourcePath.Characters
-            ).filename;
-
-            model.data.character.avatar.file = fullpath;
 
             const proxy = APIManager.getImpl(APIDialogue.name, OP.ShowText);
             proxy && (await proxy.runner(<APIDialogue>model));
@@ -134,6 +137,11 @@ export namespace api {
     }
 
     export async function hideCharacter(index: number = -1) {
+
+        if (!index) {
+            index = -1;
+        }
+
         let model = new APICharacter();
         model.data.index = index;
 
@@ -354,17 +362,17 @@ export namespace api {
     ) {
         let model = new APIScreenSubtitle();
         model.isAsync = isAsync;
-        model.data = options;
+        model.data = options || new Subtitle;
         model.data.id = "Text_" + IDGenerator.generate();
         model.data.text = text;
-        model.data.position = model.data.position || ScreenPosition.Center;
+        model.data.position = options.position || ScreenPosition.Center;
+        model.data.animation = options.animation || new WidgetAnimation();
 
         // if (!model.data) {
-        //     model.data.animation = new WidgetAnimation();
         //     model.data.animation.name = ScreenWidgetAnimation.Enter_Appear;
         // }
 
-        paramCompatible<APIScreenSubtitle, Subtitle>(model, options);
+        // paramCompatible<APIScreenSubtitle, Subtitle>(model, options);
 
         return await APIManager.getImpl(
             APIScreenSubtitle.name,
@@ -406,7 +414,7 @@ export namespace api {
     ) {
         let model = new APIScreenSubtitle();
         model.isAsync = isAsync;
-        model.data.id = id;
+        model.data.id = id || "All";
         model.data.animation = options
             ? options.animation || undefined
             : undefined;
@@ -452,12 +460,14 @@ export namespace api {
     ) {
         let model = new APIScreenImage();
         model.isAsync = isAsync;
+        model.data = options || new ScreenImage;
         model.data.id = "Image_" + IDGenerator.generate();
         model.data.file = ResourceData.from(file, ResourcePath.Images);
+        model.data.position = options.position || ScreenPosition.Center;;
         model.data.animation = new WidgetAnimation();
         model.data.animation.name = ScreenWidgetAnimation.Enter_Appear;
 
-        paramCompatible<APIScreenImage, ScreenImage>(model, options);
+        // paramCompatible<APIScreenImage, ScreenImage>(model, options);
 
         return await APIManager.getImpl(
             APIScreenImage.name,
@@ -471,11 +481,16 @@ export namespace api {
         isAsync: boolean = false
     ) {
         let model = new APIScreenImage();
+
         model.isAsync = isAsync;
         model.data.id = id;
 
         model.data.animation = new WidgetAnimation();
         model.data.animation.name = ScreenWidgetAnimation.Leave_Hide;
+
+        if (!model.data.animation.options) {
+            model.data.animation.options = new WidgetAnimation_HideOptions;
+        }
 
         paramCompatible<APIScreenImage, ScreenImage>(model, options);
 
@@ -487,5 +502,13 @@ export namespace api {
         Setting[key] = value;
     }
 
-    export async function transitionTo(color: string, duration: number) { }
+    export async function transitionTo(color: string, opacity: number, duration: number) {
+        const api = new APITransitionTo();
+        api.color = color || "#FFFFFF";
+        api.opacity = opacity || 1;
+        api.duration = duration || 1000;
+
+        const proxy = APIManager.getImpl(APITransitionTo.name, OP.TransitionTo);
+        proxy && (await proxy.runner(<APITransitionTo>api));
+    }
 }

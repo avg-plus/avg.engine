@@ -13,8 +13,6 @@ gulp.task('compile', () => {
 gulp.task('create-index', () => {
     console.log('Creating indexing files ...');
 
-
-
     globby(['engine/**/', '!engine/'], {}).then((matches) => {
         matches.map((dir) => {
             globby([dir + '*.ts'], {}).then((files) => {

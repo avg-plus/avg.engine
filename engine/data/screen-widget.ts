@@ -37,7 +37,7 @@ export class AnimationDirection {
 
 /* Animations */
 export class WidgetAnimationOptions {
-    public duration: number = 5;
+    public duration: number = 0;
 }
 
 export class WidgetAnimation_FadeInOptions extends WidgetAnimationOptions {}
@@ -56,6 +56,7 @@ export class WidgetAnimation_FlyInOptions extends WidgetAnimationOptions {
 }
 
 export class WidgetAnimation_FlyOutOptions extends WidgetAnimation_FlyInOptions {}
+export class WidgetAnimation_HideOptions extends WidgetAnimationOptions {}
 
 export class WidgetAnimation {
     private _name: string;
@@ -72,7 +73,8 @@ export class WidgetAnimation {
     public options:
         | WidgetAnimation_FadeInOptions
         | WidgetAnimation_FadeOutOptions
-        | WidgetAnimation_FlyInOptions;
+        | WidgetAnimation_FlyInOptions 
+        | WidgetAnimation_FlyOutOptions;
 }
 
 export class ScreenWidget {
