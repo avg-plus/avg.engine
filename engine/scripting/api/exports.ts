@@ -29,7 +29,7 @@ import { APIGotoTitleView } from "./api-title-view";
 import { OP } from "../../const/op";
 import { APIScreenSubtitle } from "./api-screen-subtitle";
 import { Subtitle } from "../../data/screen-subtitle";
-import { ScreenWidgetAnimation, WidgetAnimation_HideOptions } from "../../data/screen-widget";
+import { ScreenWidgetAnimation, WidgetAnimation_HideOptions, WidgetAnimation_FadeInOptions } from "../../data/screen-widget";
 import { APIDialogueChoice } from "./api-dialogue-choices";
 import { DialogueChoice } from "../../data/dialogue-choice";
 import { Character } from "../../data/character";
@@ -163,10 +163,12 @@ export namespace api {
         model.onEnter = onEnter;
         model.onLeave = onLeave;
 
-        return await APIManager.getImpl(
+        let result = await APIManager.getImpl(
             APIDialogueChoice.name,
             OP.ShowChioce
         ).runner(<APIDialogueChoice>model);
+
+        return result;
     }
 
     /**
@@ -357,16 +359,20 @@ export namespace api {
 
     export async function showSubtitle(
         text: string,
-        options: Subtitle,
+        options?: Subtitle,
         isAsync: boolean = false
     ) {
         let model = new APIScreenSubtitle();
         model.isAsync = isAsync;
-        model.data = options || new Subtitle;
+        model.data = new Subtitle();
+        Object.assign(model.data, options);
+
         model.data.id = "Text_" + IDGenerator.generate();
         model.data.text = text;
         model.data.position = options.position || ScreenPosition.Center;
         model.data.animation = options.animation || new WidgetAnimation();
+        model.data.animation.name = model.data.animation.name || ScreenWidgetAnimation.Enter_Appear;        
+        model.data.animation.options = model.data.animation.options || new WidgetAnimation_FadeInOptions();
 
         // if (!model.data) {
         //     model.data.animation.name = ScreenWidgetAnimation.Enter_Appear;
@@ -414,7 +420,7 @@ export namespace api {
     ) {
         let model = new APIScreenSubtitle();
         model.isAsync = isAsync;
-        model.data.id = id || "All";
+        model.data.id = id || undefined;
         model.data.animation = options
             ? options.animation || undefined
             : undefined;
@@ -460,12 +466,16 @@ export namespace api {
     ) {
         let model = new APIScreenImage();
         model.isAsync = isAsync;
-        model.data = options || new ScreenImage;
+        model.data = new ScreenImage();
+        Object.assign(model.data, options);
+        
         model.data.id = "Image_" + IDGenerator.generate();
         model.data.file = ResourceData.from(file, ResourcePath.Images);
         model.data.position = options.position || ScreenPosition.Center;;
-        model.data.animation = new WidgetAnimation();
-        model.data.animation.name = ScreenWidgetAnimation.Enter_Appear;
+        model.data.size = options.size || "100%";
+        model.data.animation = model.data.animation || new WidgetAnimation();
+        model.data.animation.name = model.data.animation.name || ScreenWidgetAnimation.Enter_Appear;
+        model.data.animation.options = model.data.animation.options || new WidgetAnimation_FadeInOptions();
 
         // paramCompatible<APIScreenImage, ScreenImage>(model, options);
 
