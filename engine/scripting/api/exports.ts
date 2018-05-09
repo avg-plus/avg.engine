@@ -214,7 +214,7 @@ export namespace api {
         );
     }
 
-    export async function playBGM(filename: string, options: SoundBGM) {
+    export async function playBGM(filename: string, options?: SoundBGM) {
         let model = new APISound();
         model.data.track = SoundTrack.BGM;
 
@@ -227,7 +227,7 @@ export namespace api {
         proxy && (await proxy.runner(<APISound>model));
     }
 
-    export async function stopBGM(options: Sound) {
+    export async function stopBGM(options?: Sound) {
         let model = new APISound();
         model.data.track = SoundTrack.BGM;
 
@@ -237,7 +237,7 @@ export namespace api {
         proxy && (await proxy.runner(<APISound>model));
     }
 
-    export async function pauseBGM(options: Sound) {
+    export async function pauseBGM(options?: Sound) {
         let model = new APISound();
         model.data.track = SoundTrack.BGM;
 
@@ -253,7 +253,7 @@ export namespace api {
      * @param {string} title - The title of the book.
      * @param {string} author - The author of the book.
      */
-    export async function resumeBGM(options: Sound) {
+    export async function resumeBGM(options?: Sound) {
         let model = new APISound();
         model.data.track = SoundTrack.BGM;
 
