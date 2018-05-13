@@ -46,6 +46,10 @@ export class Transpiler {
             return node.type === "CallExpression" && calleeObj.name === "api";
         };
 
+        // Fix esprima bug that leads to an error with wrong character index
+        // I dont know why this issue will appear
+        // code = "if(1) {" + code + "\n}";
+
         // 'async' keyword transform
         console.time("Compile Script Elapsed");
         console.log("Starting async keyword transform AST generate ...");
@@ -60,7 +64,20 @@ export class Transpiler {
         );
 
         console.log("Regenerating async keyword transform code ...");
-        let asyncTransformCode = escodegen.generate(asyncTransformAST);
+        let asyncTransformCode = escodegen.generate(asyncTransformAST, {
+            format: {
+                compact: false,
+                quotes: "double",
+                newline: "\n",
+                semicolons: true,
+                space: "",
+                preserveBlankLines: false,
+                safeConcatenation: true,
+                indent: {
+                    style: "                     "  // Dont remove this, it fix something strange
+                }
+            }
+        });
 
         // Add 'await' keyword before every api calls
         let program = esprima.parse(
@@ -70,10 +87,9 @@ export class Transpiler {
                 attachComment: false
             },
             (node, meta) => {
-                if (node.type === "CallExpression" && node.callee) {
-                    if (isAPICall(node)) {
-                        loc_pos.push(node.callee.range[0]);
-                    }
+                if (node.type === "CallExpression" && node.callee && isAPICall(node)) {
+                    const pos = node.callee.range[0];
+                    loc_pos.push(pos);
                 }
             }
         );
@@ -81,10 +97,11 @@ export class Transpiler {
         const keyword = "await ";
         for (let pos of loc_pos.reverse()) {
             if (pos > 0) {
-                asyncTransformCode =
-                    asyncTransformCode.slice(0, pos) +
-                    keyword +
-                    asyncTransformCode.slice(pos);
+
+                const a_part = asyncTransformCode.slice(0, pos);
+                const b_part = asyncTransformCode.slice(pos);
+
+                asyncTransformCode = a_part + keyword + b_part;
             } else {
                 asyncTransformCode = keyword + asyncTransformCode;
             }
