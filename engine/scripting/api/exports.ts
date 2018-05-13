@@ -76,7 +76,22 @@ export namespace api {
         let model = new APIDialogue();
 
         let originAvatarFile = "";
+
+        if (!options) {
+            options = new Dialogue;
+        }
+
+        let voices = [];
+        if (options && options.voice) {
+            if (Array.isArray(options.voice)) {
+                voices = options.voice.slice(0);
+            } else {
+                voices = [options.voice];
+            }
+        }
+
         const show = async (content: string, showOptions: Dialogue) => {
+
             paramCompatible<APIDialogue, Dialogue>(model, showOptions, {
                 field: "text",
                 value: content
@@ -100,17 +115,22 @@ export namespace api {
         };
 
         if (Array.isArray(text)) {
-            for (let content of text) {
+            for (let i = 0; i < text.length; ++i) {
+                let content = text[i];
+
+                options.voice = voices[i] || "";
+
                 await show(content, options);
             }
         } else {
+            options.voice = voices[0];
             await show(<string>text, options);
         }
     }
 
-    export async function hideText(options?: Dialogue) {
+    export async function hideText() {
         let model = new APIDialogue();
-        paramCompatible<APIDialogue, Dialogue>(model, options);
+        paramCompatible<APIDialogue, Dialogue>(model, {});
 
         const proxy = APIManager.getImpl(APIDialogue.name, OP.HideText);
         proxy && (await proxy.runner(<APIDialogue>model));
@@ -263,7 +283,7 @@ export namespace api {
         proxy && (await proxy.runner(<APISound>model));
     }
 
-    export async function playVoice(filename: string, options: Sound) {
+    export async function playVoice(filename: string, options?: Sound) {
         let model = new APISound();
         model.data.track = SoundTrack.Voice;
 
@@ -276,7 +296,7 @@ export namespace api {
         proxy && (await proxy.runner(<APISound>model));
     }
 
-    export async function playSE(filename: string, options: Sound) {
+    export async function playSE(filename: string, options?: Sound) {
         let model = new APISound();
         model.data.track = SoundTrack.Voice;
 
@@ -289,7 +309,7 @@ export namespace api {
         proxy && (await proxy.runner(<APISound>model));
     }
 
-    export async function playBGS(filename: string, options: Sound) {
+    export async function playBGS(filename: string, options?: Sound) {
         let model = new APISound();
         model.data.track = SoundTrack.Voice;
 
@@ -328,13 +348,12 @@ export namespace api {
         proxy && (await proxy.runner(<APIGotoTitleView>model));
     }
 
-    export async function sceneEffect(
-        index: number,
+    export async function effect(
         effectName: string,
         options: any
     ) {
         let model = new APIEffect();
-        model.index = index;
+        // model.index = index;
         model.data.effectName = effectName;
 
         paramCompatible<APIEffect, Effect>(model, options);
@@ -371,7 +390,7 @@ export namespace api {
         model.data.text = text;
         model.data.position = options.position || ScreenPosition.Center;
         model.data.animation = options.animation || new WidgetAnimation();
-        model.data.animation.name = model.data.animation.name || ScreenWidgetAnimation.Enter_Appear;        
+        model.data.animation.name = model.data.animation.name || ScreenWidgetAnimation.Enter_Appear;
         model.data.animation.options = model.data.animation.options || new WidgetAnimation_FadeInOptions();
 
         // if (!model.data) {
@@ -468,7 +487,7 @@ export namespace api {
         model.isAsync = isAsync;
         model.data = new ScreenImage();
         Object.assign(model.data, options);
-        
+
         model.data.id = "Image_" + IDGenerator.generate();
         model.data.file = ResourceData.from(file, ResourcePath.Images);
         model.data.position = options.position || ScreenPosition.Center;;
@@ -515,7 +534,7 @@ export namespace api {
     export async function transitionTo(color: string, opacity: number, duration: number) {
         const api = new APITransitionTo();
         api.color = color || "#FFFFFF";
-        api.opacity = opacity || 1;
+        api.opacity = opacity;
         api.duration = duration || 1000;
 
         const proxy = APIManager.getImpl(APITransitionTo.name, OP.TransitionTo);
