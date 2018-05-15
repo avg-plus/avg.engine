@@ -2,6 +2,7 @@ export class OP {
     public static ShowText = "ShowText";
     public static HideText = "HideText";
     public static ShowCharacter = "ShowCharacter";
+    public static AnimateCharacter = "AnimateCharacter";
     public static HideCharacter = "HideCharacter";
     public static ShowChioce = "ShowChoice";
     public static HideChioce = "HideChoice";
