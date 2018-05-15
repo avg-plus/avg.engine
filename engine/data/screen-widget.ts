@@ -37,11 +37,11 @@ export class AnimationDirection {
 
 /* Animations */
 export class WidgetAnimationOptions {
-    public duration: number = 5;
+    public duration: number = 0;
 }
 
-export class WidgetAnimation_FadeInOptions extends WidgetAnimationOptions {}
-export class WidgetAnimation_FadeOutOptions extends WidgetAnimationOptions {}
+export class WidgetAnimation_FadeInOptions extends WidgetAnimationOptions { }
+export class WidgetAnimation_FadeOutOptions extends WidgetAnimationOptions { }
 export class WidgetAnimation_FlyInOptions extends WidgetAnimationOptions {
     public offset: number = 10;
     public _direction: string = AnimationDirection.FromLeft;
@@ -55,7 +55,8 @@ export class WidgetAnimation_FlyInOptions extends WidgetAnimationOptions {
     }
 }
 
-export class WidgetAnimation_FlyOutOptions extends WidgetAnimation_FlyInOptions {}
+export class WidgetAnimation_FlyOutOptions extends WidgetAnimation_FlyInOptions { }
+export class WidgetAnimation_HideOptions extends WidgetAnimationOptions { }
 
 export class WidgetAnimation {
     private _name: string;
@@ -72,7 +73,8 @@ export class WidgetAnimation {
     public options:
         | WidgetAnimation_FadeInOptions
         | WidgetAnimation_FadeOutOptions
-        | WidgetAnimation_FlyInOptions;
+        | WidgetAnimation_FlyInOptions
+        | WidgetAnimation_FlyOutOptions;
 }
 
 export class ScreenWidget {
@@ -89,15 +91,15 @@ export class ScreenWidget {
 
     public set position(value: string) {
         // Ignore spaces
-        this._position = value.trim().toLowerCase();
+        this._position = value.replace(' ', '').toLowerCase();
 
         // If custom position
-        let regex = /\((\d+%?);(\d+%?)\)/;
+        let regex = /\((\d+%?),(\d+%?)\)/;
         let matches = this._position.match(regex);
 
         if (matches) {
-            this.x = matches[1];
-            this.y = matches[2];
+            this.x = matches[1] + (matches[1].substr(-1) === '%' ? '' : 'px');
+            this.y = matches[2] + (matches[2].substr(-1) === '%' ? '' : 'px');
         }
     }
 

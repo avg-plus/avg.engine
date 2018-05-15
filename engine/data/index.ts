@@ -1,5 +1,6 @@
 //@ Auto-Generated indexing files for avg.engine
 
+export * from './archive';
 export * from './avatar';
 export * from './avg-data';
 export * from './character';
