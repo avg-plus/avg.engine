@@ -43,6 +43,7 @@ import { APIScreenImage, ScreenImageResult } from "./api-screen-image";
 import { ScreenImage } from "../../data/screen-image";
 import { IDGenerator } from "../../core/id-generator";
 import { APITransitionTo } from "./api-transition-to";
+import { APIAnimateCharacter } from "./api-animate-character";
 
 function paramCompatible<T extends AVGScriptUnit, U extends AVGData>(
     model: T,
@@ -151,6 +152,15 @@ export namespace api {
             filename,
             ResourcePath.Characters
         ).filename;
+
+        const proxy = APIManager.getImpl(APICharacter.name, OP.ShowCharacter);
+        proxy && (await proxy.runner(<APICharacter>model));
+    }
+
+    export async function animateCharacter(index: number, animateName: string, options: any) {
+        const model = new APIAnimateCharacter();
+        model.index = index;
+        model.animateName = animateName;
 
         const proxy = APIManager.getImpl(APICharacter.name, OP.ShowCharacter);
         proxy && (await proxy.runner(<APICharacter>model));
