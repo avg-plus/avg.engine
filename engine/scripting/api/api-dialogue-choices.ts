@@ -1,7 +1,8 @@
 import { AVGScriptUnit } from "..";
 import { DialogueChoice } from "../../data/dialogue-choice";
+import { AVGData } from "../../data/avg-data";
 
-export class SelectedDialogueChoice {
+export class SelectedDialogueChoice extends AVGData {
     public selectedIndex = -1;
     public selectedTitle = "";
 }

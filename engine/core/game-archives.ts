@@ -13,6 +13,8 @@ export class AVGArchives {
     private static _selectedArchive: number;
     private static _isLoading: boolean = false;
 
+    public static loadChoiceCount: number = 0;
+
 
     private static getIndexFromFilename(filename: string): number {
         return Number.parseInt(filename.split(".")[0]);
@@ -41,6 +43,7 @@ export class AVGArchives {
 
         this._selectedArchive = index;
         this._isLoading = true;
+        this.loadChoiceCount = 0;
         AVGGame.setRunningType(GameRunningType.Loading);
         Sandbox.runtime = this._archives[index].runtime;
         return true;
