@@ -10,5 +10,5 @@ export class Sandbox {
     public api = (global["api"] = api);
 
     // Game Variables
-    public static Variables: Map<string, any> = new Map<string, any>();
+    // public static Variables: Map<string, any> = new Map<string, any>();
 }

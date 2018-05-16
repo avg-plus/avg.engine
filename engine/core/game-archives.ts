@@ -4,6 +4,7 @@ import { Archive } from "../data/archive";
 import { AVGGame, GameRunningType } from "./game";
 import { APIManager } from "../scripting/api-manager";
 import { Sandbox } from "./sandbox";
+import { AVGGameRuntime } from "./runtime";
 
 export class AVGArchives {
 
@@ -29,7 +30,7 @@ export class AVGArchives {
         archive.timestamp = new Date().getTime();
         archive.progressAt = APIManager.getCurrentAPILine();
         archive.thumbnail = thumb;
-        archive.data = Sandbox.Variables;
+        archive.data = AVGGameRuntime.Variables;
         this._archives[index] = archive;
         this.saveToFile(index, archive);
     }
@@ -42,7 +43,7 @@ export class AVGArchives {
         this._selectedArchive = index;
         this._isLoading = true;
         AVGGame.setRunningType(GameRunningType.Loading);
-        Sandbox.Variables = this._archives[index].data;
+        AVGGameRuntime.Variables = this._archives[index].data;
         return true;
     }
 
