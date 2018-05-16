@@ -4,6 +4,7 @@ import { AVGGameRuntime, AVGMusicState } from "../../core/runtime";
 import { ScreenImage } from "../../data/screen-image";
 import { Sound } from "../../data/sound";
 import { Dialogue, Avatar, Character } from "../..";
+import { isNull } from "util";
 
 export class APIRuntime extends AVGScriptUnit {
 
@@ -21,7 +22,7 @@ export class APIRuntime extends AVGScriptUnit {
 
     public static updateDialogue(dialogue: Dialogue) {
         AVGGameRuntime.dialogue = dialogue;
-        if (dialogue.character !== null) {
+        if (!isNull(dialogue.character)) {
             AVGGameRuntime.characters.push(dialogue.character);
         }
     }
