@@ -3,6 +3,7 @@
 export * from './api-animate-character';
 export * from './api-animate-scene';
 export * from './api-archive';
+export * from './api-runtime';
 export * from './api-call-script';
 export * from './api-character';
 export * from './api-dialogue-choices';
