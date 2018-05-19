@@ -13,6 +13,8 @@ export class AVGArchives {
     private static _selectedArchive: number;
     private static _isLoading: boolean = false;
 
+    public static loadChoiceCount: number = 0;
+
 
     private static getIndexFromFilename(filename: string): number {
         return Number.parseInt(filename.split(".")[0]);
@@ -29,7 +31,7 @@ export class AVGArchives {
         archive.timestamp = new Date().getTime();
         archive.progressAt = APIManager.getCurrentAPILine();
         archive.thumbnail = thumb;
-        archive.data = Sandbox.Variables;
+        archive.runtime = Sandbox.runtime;
         this._archives[index] = archive;
         this.saveToFile(index, archive);
     }
@@ -41,8 +43,9 @@ export class AVGArchives {
 
         this._selectedArchive = index;
         this._isLoading = true;
+        this.loadChoiceCount = 0;
         AVGGame.setRunningType(GameRunningType.Loading);
-        Sandbox.Variables = this._archives[index].data;
+        Sandbox.runtime = this._archives[index].runtime;
         return true;
     }
 

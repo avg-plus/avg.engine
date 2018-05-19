@@ -14,7 +14,8 @@ import {
     ScreenPosition,
     ScreenWidgetType,
     WidgetAnimation,
-    Avatar
+    Avatar,
+    Archive
 } from "../../data";
 
 import { APIScene } from "./api-scene";
@@ -23,14 +24,14 @@ import { APISound } from "./api-sound";
 import { APITimer } from "./api-timer";
 import { APIVariable } from "./api-variable";
 import { SoundTrack } from "../../const";
-import { Sandbox, Resource, Setting } from "../../core";
+import { Sandbox, Resource, Setting, AVGGame, GameRunningType, AVGArchives } from "../../core";
 import { APIEffect } from "./api-effect";
 import { APIGotoTitleView } from "./api-title-view";
 import { OP } from "../../const/op";
 import { APIScreenSubtitle } from "./api-screen-subtitle";
 import { Subtitle } from "../../data/screen-subtitle";
 import { ScreenWidgetAnimation, WidgetAnimation_HideOptions, WidgetAnimation_FadeInOptions } from "../../data/screen-widget";
-import { APIDialogueChoice } from "./api-dialogue-choices";
+import { APIDialogueChoice, SelectedDialogueChoice } from "./api-dialogue-choices";
 import { DialogueChoice } from "../../data/dialogue-choice";
 import { Character } from "../../data/character";
 import { APICharacter } from "./api-character";
@@ -185,6 +186,10 @@ export namespace api {
         onEnter: (index: number) => void,
         onLeave: (index: number) => void
     ) {
+        if (AVGGame.getRunningType() == GameRunningType.Loading) {
+            return Sandbox.runtime.choices[AVGArchives.loadChoiceCount++];
+        }
+
         let model = new APIDialogueChoice();
         choices.forEach(s => {
             model.choices.push(new DialogueChoice(s));
@@ -197,6 +202,7 @@ export namespace api {
             APIDialogueChoice.name,
             OP.ShowChioce
         ).runner(<APIDialogueChoice>model);
+        Sandbox.recordChoice(<SelectedDialogueChoice>result);
 
         return result;
     }

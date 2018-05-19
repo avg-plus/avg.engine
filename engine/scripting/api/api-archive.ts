@@ -1,7 +1,8 @@
 import { AVGArchives } from "../../core/game-archives";
 import { Archive } from "../../data/archive";
+import { AVGScriptUnit } from "../script-unit";
 
-export class APIArchive {
+export class APIArchive extends AVGScriptUnit {
     public static async init() {
         await AVGArchives.syncArchiveFromFile();
     }
