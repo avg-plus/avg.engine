@@ -10,7 +10,7 @@ export class Sandbox {
     public console = console;
     public api = (global["api"] = api);
 
-    public static runtime: Runtime;
+    public static runtime: Runtime = new Runtime;
 
     public static recordChoice(selected: SelectedDialogueChoice) {
         this.runtime.choices.push(selected);

@@ -202,7 +202,7 @@ export namespace api {
             APIDialogueChoice.name,
             OP.ShowChioce
         ).runner(<APIDialogueChoice>model);
-        Sandbox.recordChoice(<SelectedDialogueChoice>result);
+        Sandbox.recordChoice(<SelectedDialogueChoice>result); 
 
         return result;
     }
