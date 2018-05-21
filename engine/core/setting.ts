@@ -1,5 +1,5 @@
 import { Screen } from '../const/model';
-import { EngineUtils } from './utils';
+import { EngineUtils } from './engine-utils';
 
 export class Setting {
     private static settings: any = {
