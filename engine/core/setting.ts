@@ -1,4 +1,5 @@
 import { Screen } from '../const/model';
+import { EngineUtils } from './utils';
 
 export class Setting {
     private static settings: any = {
@@ -22,35 +23,35 @@ export class Setting {
 
     public static get TextSpeed(): number { return this.settings.game.text_speed; }
     public static set TextSpeed(value: number) {
-        this.NumericRange(value, 0, 100);
+        EngineUtils.NumericRange(value, 0, 100);
         this.settings.game.text_speed = value;
     }
     public static get AutoPlay(): boolean { return this.settings.game.auto_play; }
     public static set AutoPlay(value: boolean) { this.settings.game.auto_play = value; }
     public static get AutoPlaySpeed(): number { return this.settings.game.auto_play_speed; }
     public static set AutoPlaySpeed(value: number) {
-        this.NumericRange(value, 0, 100);
+        EngineUtils.NumericRange(value, 0, 100);
         this.settings.game.auto_play_speed = value;
     }
     public static get BGMVolume(): number { return this.settings.game.sound.bgm; }
     public static set BGMVolume(value: number) {
-        this.NumericRange(value, 0, 100);
+        EngineUtils.NumericRange(value, 0, 100);
         this.settings.game.sound.bgm = value;
     }
     public static get BGSVolume(): number { return this.settings.game.sound.bgs; }
     public static set BGSVolume(value: number) {
-        this.NumericRange(value, 0, 100);
+        EngineUtils.NumericRange(value, 0, 100);
         this.settings.game.sound.bgs = value;
 
     }
     public static get SEVolume(): number { return this.settings.game.sound.se; }
     public static set SEVolume(value: number) {
-        this.NumericRange(value, 0, 100);
+        EngineUtils.NumericRange(value, 0, 100);
         this.settings.game.sound.se = value;
     }
     public static get VoiceVolume(): number { return this.settings.game.sound.voice; }
     public static set VoiceVolume(value: number) {
-        this.NumericRange(value, 0, 100);
+        EngineUtils.NumericRange(value, 0, 100);
         this.settings.game.sound.voice = value;
     }
     public static get WindowWidth(): number { return this.settings.screen.width; }
@@ -69,13 +70,5 @@ export class Setting {
         }
     }
 
-    private static NumericRange(value: number, min: number, max: number) {
-        if (value < min) {
-            value = 0;
-        }
-
-        if (value > max) {
-            value = 100;
-        }
-    }
+    
 }
