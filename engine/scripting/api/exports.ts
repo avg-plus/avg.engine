@@ -45,6 +45,7 @@ import { ScreenImage } from "../../data/screen-image";
 import { IDGenerator } from "../../core/id-generator";
 import { APITransitionTo } from "./api-transition-to";
 import { APIAnimateCharacter } from "./api-animate-character";
+import { isNull } from "util";
 
 function paramCompatible<T extends AVGScriptUnit, U extends AVGData>(
     model: T,
@@ -186,10 +187,6 @@ export namespace api {
         onEnter: (index: number) => void,
         onLeave: (index: number) => void
     ) {
-        if (AVGGame.getRunningType() == GameRunningType.Loading) {
-            return Sandbox.runtime.choices[AVGArchives.loadChoiceCount++];
-        }
-
         let model = new APIDialogueChoice();
         choices.forEach(s => {
             model.choices.push(new DialogueChoice(s));
@@ -198,11 +195,14 @@ export namespace api {
         model.onEnter = onEnter;
         model.onLeave = onLeave;
 
-        let result = await APIManager.getImpl(
-            APIDialogueChoice.name,
-            OP.ShowChioce
-        ).runner(<APIDialogueChoice>model);
-        Sandbox.recordChoice(<SelectedDialogueChoice>result);
+        let result: SelectedDialogueChoice;
+        const proxy = APIManager.getImpl(APIDialogueChoice.name, OP.ShowChioce);
+        if (isNull(proxy) && AVGGame.isLoading()) {
+            result = Sandbox.runtime.choices[AVGArchives.loadChoiceCount++];    
+        } else {
+            result = <SelectedDialogueChoice> await proxy.runner(<APIDialogueChoice>model);
+            Sandbox.recordChoice(result);
+        }
 
         return result;
     }
@@ -236,9 +236,12 @@ export namespace api {
             });
         }
 
-        return await APIManager.getImpl(APIScene.name, OP.LoadScene).runner(
-            <APIScene>model
-        );
+        let proxy = APIManager.getImpl(APIScene.name, OP.LoadScene);
+        if (proxy) {
+            return await proxy.runner(<APIScene>model);
+        } else {
+            return null;
+        }
     }
 
     export async function removeScene(index: number) {

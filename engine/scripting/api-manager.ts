@@ -1,5 +1,6 @@
 import { AVGScriptUnit, RunnerFunction } from './script-unit';
 import { AVGArchives } from '../core/game-archives';
+import { AVGGame } from '..';
 
 
 export type OP_Runner = { op: string, runner: RunnerFunction };
@@ -42,7 +43,12 @@ export class APIManager {
     public static getImpl(typename: string, op: string): OP_Runner {
         this._currentAPILine++;
         AVGArchives.postAPICall(this._currentAPILine);
-        return this.tryGetOP(typename, op);
+
+        if (AVGGame.isLoading()) {
+            return null;
+        } else {
+            return this.tryGetOP(typename, op);
+        }
     }
 
     private static tryCreateOPContainer(typename: string) {

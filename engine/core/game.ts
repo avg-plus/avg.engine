@@ -54,6 +54,10 @@ export class AVGGame {
         return this._runningType;
     }
 
+    public static isLoading(): boolean {
+        return this._runningType == GameRunningType.Loading;
+    }
+
     public setScriptDir(dir: string) {
         this._scriptDir = dir;
     }
