@@ -10,6 +10,7 @@ export * from './effect';
 export * from './image';
 export * from './input-data';
 export * from './resource-data';
+export * from './runtime';
 export * from './scene';
 export * from './screen-image';
 export * from './screen-subtitle';

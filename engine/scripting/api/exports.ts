@@ -221,6 +221,12 @@ export namespace api {
     ) {
         let model = new APIScene();
         model.index = index;
+        
+        if (!options) {
+            options = new Scene;
+        }
+
+        
 
         if (filename && filename.length > 0) {
             paramCompatible<APIScene, Scene>(model, options, {
@@ -235,6 +241,9 @@ export namespace api {
                 value: ResourceData.from("//:0")
             });
         }
+
+        options.duration = options.duration || 1000;
+        options.transition = options.transition || "";
 
         let proxy = APIManager.getImpl(APIScene.name, OP.LoadScene);
         if (proxy) {
