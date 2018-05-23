@@ -1,10 +1,13 @@
-import * as fs from 'fs';
-
+// import * as fs from 'fs';
 import { AVGStory } from '../scripting/story';
 // import { AVGScriptingLoop } from '../scripting/scripting-loop';
 import { AVGScriptUnit } from '../scripting/script-unit';
 
-import * as path from 'path';
+// import * as path from 'path';
+const path = null;
+const fs = null;
+const url = null;
+
 import { Screen } from '../const/model';
 import { Transition } from './transition';
 import { PluginManager } from '../index';

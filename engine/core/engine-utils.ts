@@ -1,10 +1,10 @@
 import { Dimension } from "../const/model";
-import * as sizeOf from "image-size";
+// import * as sizeOf from "image-size";
 
 export class EngineUtils {
-  public static getImageSize(file: string): Dimension {
-    return sizeOf(file);
-  }
+  // public static getImageSize(file: string): Dimension {
+  //   return sizeOf(file);
+  // }
 
   public static async wait(ms: number) {
     return new Promise(resolve => setTimeout(resolve, ms));

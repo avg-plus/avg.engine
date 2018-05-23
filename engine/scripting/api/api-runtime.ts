@@ -4,7 +4,11 @@ import { Runtime, AVGMusicState } from "../../data/runtime";
 import { ScreenImage } from "../../data/screen-image";
 import { Sound } from "../../data/sound";
 import { Dialogue, Avatar, Character, Sandbox } from "../..";
-import { isNull } from "util";
+// import { isNull } from "util";
+const path = null;
+const fs = null;
+const url = null;
+const isNull = (v: any) => {}
 
 export class APIRuntime extends AVGScriptUnit {
 

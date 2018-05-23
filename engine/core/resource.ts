@@ -1,6 +1,10 @@
 import { Env } from "./env";
-import * as path from "path";
-import * as fs from "fs";
+// import * as path from "path";
+// import * as fs from "fs";
+
+const path = null;
+const fs = null;
+const url = null;
 export enum ResourcePath {
     // Audio
     BGM,
@@ -88,7 +92,7 @@ export class Resource {
 
         if (Env.isRunStandalone()) {
             // Run in node.js
-            dirPath = path.join(this._assetsRoot, dirPath, joinPath);
+            dirPath = this._assetsRoot + "/" + dirPath +  "/" + joinPath;//path.join(this._assetsRoot, dirPath, joinPath);
         }
 
         return dirPath;

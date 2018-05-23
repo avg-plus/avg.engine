@@ -1,5 +1,8 @@
 import { ResourcePath, Resource } from "..";
-import * as path from "path";
+// import * as path from "path";
+const path = null;
+const fs = null;
+const url = null;
 
 export class ResourceData {
     public filename: string;
@@ -7,7 +10,7 @@ export class ResourceData {
     constructor(filename?: string, dir?: ResourcePath) {
         this.filename = "";
         if (dir !== undefined) {
-            this.filename = path.join(Resource.getPath(dir), filename);
+            this.filename = Resource.getPath(dir) + "/"  + filename;
         } else {
             this.filename = filename;
         }

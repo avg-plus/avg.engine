@@ -1,5 +1,10 @@
-import * as fs from "fs";
-import * as path from "path";
+// import * as fs from "fs";
+// import * as path from "path";
+
+const path = null;
+const fs = null;
+const url = null;
+
 import { Archive } from "../data/archive";
 import { AVGGame, GameRunningType } from "./game";
 import { APIManager } from "../scripting/api-manager";

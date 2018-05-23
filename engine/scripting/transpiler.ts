@@ -1,4 +1,4 @@
-import * as fs from "fs";
+// import * as fs from "fs";
 import * as esprima from "esprima";
 import * as escodegen from "escodegen";
 import * as estree from "estree";
@@ -12,12 +12,12 @@ export class Transpiler {
         UnexpectedReservedKeyword: "UnexpectedReservedKeywordError: "
     };
 
-    public static async transpile(file: string) {
-        const raw = await this._read(file);
-        if (raw) {
-            let compiled = this._preprocesser(raw);
-        }
-    }
+    // public static async transpile(file: string) {
+    //     const raw = await this._read(file);
+    //     if (raw) {
+    //         let compiled = this._preprocesser(raw);
+    //     }
+    // }
 
     public static transpileFromCode(code: string): string {
         return this._preprocesser(code);
@@ -113,24 +113,24 @@ export class Transpiler {
         return `+(async() => {try { ${asyncTransformCode} \n done(); } catch (err) { console.error('Game runtime errors', err);}})();`;
     }
 
-    private static async _read(file: string): Promise<string> {
-        return await new Promise<string>((resolve, reject) => {
-            fs.readFile(file, "utf8", (err, data) => {
-                if (err) reject(err);
+    // private static async _read(file: string): Promise<string> {
+    //     return await new Promise<string>((resolve, reject) => {
+    //         fs.readFile(file, "utf8", (err, data) => {
+    //             if (err) reject(err);
 
-                resolve(data);
-            });
-        });
-    }
+    //             resolve(data);
+    //         });
+    //     });
+    // }
 
-    private static async _write(file: string, data: string) {
-        return await new Promise((resolve, reject) => {
-            fs.writeFile(file, data, err => {
-                if (err) reject(err);
-                resolve();
-            });
-        });
-    }
+    // private static async _write(file: string, data: string) {
+    //     return await new Promise((resolve, reject) => {
+    //         fs.writeFile(file, data, err => {
+    //             if (err) reject(err);
+    //             resolve();
+    //         });
+    //     });
+    // }
 
     private static _compile_error() { }
 }
