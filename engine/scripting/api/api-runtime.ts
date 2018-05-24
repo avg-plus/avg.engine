@@ -4,7 +4,9 @@ import { Runtime, AVGMusicState } from "../../data/runtime";
 import { ScreenImage } from "../../data/screen-image";
 import { Sound } from "../../data/sound";
 import { Dialogue, Avatar, Character, Sandbox } from "../..";
-import { isNull } from "util";
+// import { isNull } from "util";
+import { AVGNativeUtil } from "../../core/native-modules/avg-native-util";
+
 
 export class APIRuntime extends AVGScriptUnit {
 
@@ -22,7 +24,7 @@ export class APIRuntime extends AVGScriptUnit {
 
     public static updateDialogue(dialogue: Dialogue) {
         Sandbox.runtime.dialogue = dialogue;
-        if (!isNull(dialogue.character)) {
+        if (!AVGNativeUtil.isNull(dialogue.character)) {
             Sandbox.runtime.characters[dialogue.character.index] = dialogue.character;
         }
     }

@@ -2,6 +2,7 @@
 
 export * from './const';
 export * from './core';
+export * from './core/native-modules';
 export * from './data';
 export * from './plugin';
 export * from './plugin/internal';

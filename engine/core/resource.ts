@@ -1,6 +1,7 @@
 import { Env } from "./env";
-import * as path from "path";
-import * as fs from "fs";
+import { AVGNativePath } from "../core/native-modules/avg-native-path";
+import { AVGNativeFS } from "../core/native-modules/avg-native-fs";
+
 export enum ResourcePath {
     // Audio
     BGM,
@@ -86,15 +87,15 @@ export class Resource {
             return undefined;
         }
 
-        if (Env.isRunStandalone()) {
+        // if (Env.isRunStandalone()) {
             // Run in node.js
-            dirPath = path.join(this._assetsRoot, dirPath, joinPath);
-        }
+            dirPath = AVGNativePath.join(this._assetsRoot, dirPath, joinPath);
+        // }
 
         return dirPath;
     }
 
-    public static readFileText(file: string): string {
-        return fs.readFileSync(file, { encoding: "utf8", flag: "r" });
-    }
+    // public static readFileText(file: string): string {
+    //     return AVGNativeFS.readFileSync(file, { encoding: "utf8", flag: "r" });
+    // }
 }
