@@ -1,5 +1,3 @@
-import * as fs from "fs";
-import { AVGNativePath } from "../core/native-modules/avg-native-path";
 import { Archive } from "../data/archive";
 import { AVGGame, GameRunningType } from "./game";
 import { APIManager } from "../scripting/api-manager";
@@ -62,54 +60,43 @@ export class AVGArchives {
 
   public static async saveToFile(index: number, archive: Archive) {
     return new Promise((resolve, reject) => {
-      let filePathAndName: string = AVGNativePath.join(
-        this._archiveFilePath,
-        index + ".te"
-      );
-      try {
-        fs.writeFileSync(filePathAndName, JSON.stringify(archive), {
-          flag: "w"
-        });
-        resolve();
-      } catch (err) {
-        reject(err);
-      }
+      // let filePathAndName: string = path.join(this._archiveFilePath, index + ".te");
+      // try {
+      //     fs.writeFileSync(filePathAndName, JSON.stringify(archive), { flag: "w" });
+      //     resolve();
+      // } catch (err) {
+      //     reject(err);
+      // }
     });
   }
 
   public static async syncArchiveFromFile() {
     return new Promise((resolve, reject) => {
-      fs.readdir(this._archiveFilePath, (err, files) => {
-        if (err) {
-          reject(err);
-          return;
-        }
-
-        files.forEach(filename => {
-          let filePathAndName = AVGNativePath.join(
-            this._archiveFilePath,
-            filename
-          );
-          fs.stat(filePathAndName, (err, stats) => {
-            if (err) {
-              reject(err);
-              return;
-            }
-
-            if (stats.isFile()) {
-              fs.readFile(filePathAndName, "utf8", (err, data) => {
-                if (err) {
-                  reject(err);
-                  return;
-                }
-
-                this.appendArchive(this.getIndexFromFilename(filename), data);
-                resolve();
-              });
-            }
-          });
-        });
-      });
+      // fs.readdir(this._archiveFilePath, (err, files) => {
+      //     if (err) {
+      //         reject(err);
+      //         return;
+      //     }
+      //     files.forEach((filename) => {
+      //         let filePathAndName = path.join(this._archiveFilePath, filename);
+      //         fs.stat(filePathAndName, (err, stats) => {
+      //             if (err) {
+      //                 reject(err);
+      //                 return;
+      //             }
+      //             if (stats.isFile()) {
+      //                 fs.readFile(filePathAndName, "utf8", (err, data) => {
+      //                     if (err) {
+      //                         reject(err);
+      //                         return;
+      //                     }
+      //                     this.appendArchive(this.getIndexFromFilename(filename), data);
+      //                     resolve();
+      //                 });
+      //             }
+      //         });
+      //     });
+      // });
     });
   }
 }

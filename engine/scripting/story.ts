@@ -45,15 +45,29 @@ export class AVGStory {
   public async run() {
     return new Promise((resolve, reject) => {
       try {
-        AVGStory.sanbox.done = () => {
+        AVGStory.sanbox.done = function() {
           console.log("Script execute done");
           resolve();
         };
 
-        let script = new vm.Script(this._compiled);
-        script.runInNewContext(vm.createContext(AVGStory.sanbox), {
-          displayErrors: true
-        });
+
+        // Universal
+        const evalInContext = (js, context) => {
+          const result = (() => {
+            return eval(js);
+          }).call(context);
+
+          return result;
+        };
+
+        evalInContext(this._compiled, AVGStory.sanbox);
+
+        // Run in Chrome and Node.js
+        // let script = new vm.Script(this._compiled);
+        // script.runInNewContext(vm.createContext(AVGStory.sanbox), {
+        //   displayErrors: true
+        // });
+
       } catch (err) {
         const errMessage = "AVG Script errror : " + err;
         reject(errMessage);

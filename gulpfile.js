@@ -63,7 +63,7 @@ function generateExports(files, saveDir, isDir = false) {
             let dir = parsedData.dir.replace(saveDir + '/', '') || dir;
             dir = dir.replace(saveDir, '') || '';
 
-            filename = AVGNativePath.join(dir, parsedData.name) + parsedData.ext;
+            filename = path.join(dir, parsedData.name) + parsedData.ext;
         } else {
             filename = parsedData.name;
         }
@@ -74,5 +74,5 @@ function generateExports(files, saveDir, isDir = false) {
     })
 
     let fullData = `//@ Auto-Generated indexing files for avg.engine\n\n${exportData}`;
-    fs.writeFileSync(AVGNativePath.join(saveDir, 'index.ts'), fullData);
+    fs.writeFileSync(path.join(saveDir, 'index.ts'), fullData);
 }
