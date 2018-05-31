@@ -20,17 +20,6 @@ export class AVGStory {
     const response = await AVGNativeFS.readFileSync(filename);
 
     this.loadFromString(response);
-
-    // fs.readFile(filename, "utf8", (err, data) => {
-    //     if (err) {
-    //         reject(err);
-    //         return;
-    //     }
-
-    //     this.loadFromString(data);
-
-    //     resolve();
-    // });
   }
 
   public loadFromString(code: string) {
@@ -50,7 +39,6 @@ export class AVGStory {
           resolve();
         };
 
-
         // Universal
         const evalInContext = (js, context) => {
           const result = (() => {
@@ -67,7 +55,6 @@ export class AVGStory {
         // script.runInNewContext(vm.createContext(AVGStory.sanbox), {
         //   displayErrors: true
         // });
-
       } catch (err) {
         const errMessage = "AVG Script errror : " + err;
         reject(errMessage);

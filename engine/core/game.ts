@@ -47,11 +47,6 @@ export class AVGGame {
     return this._instance;
   }
 
-  public setPlatformService(platformService: PlatformService) {
-
-
-  }
-
   public setRunningPlatform(platform: GameRunningPlatform) {
     this._runningPlatform = platform;
   }

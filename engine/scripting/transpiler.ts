@@ -115,8 +115,8 @@ export class Transpiler {
 
   private static async _read(file: string): Promise<string> {
     return await new Promise<string>((resolve, reject) => {
-      let data = AVGNativeFS.readFileSync(file, { encoding: "utf8" });
-      resolve(data);
+    //   let data = AVGNativeFS.readFileSync(file, { encoding: "utf8" });
+    //   resolve(data);
       //   fs.readFile(file, "utf8", (err, data) => {
       //     if (err) reject(err);
 
