@@ -1,5 +1,5 @@
 import { AVGData } from "./avg-data";
-import { isNull } from "util";
+import { AVGNativeUtil } from "../core/native-modules/avg-native-util";
 import { Runtime } from "./runtime";
 
 export class Archive extends AVGData {
@@ -11,7 +11,7 @@ export class Archive extends AVGData {
     constructor(json: any = null) {
         super();
 
-        if (!isNull(json)) {
+        if (!AVGNativeUtil.isNull(json)) {
             this.progressAt = json.progressAt;
             this.timestamp = json.timestamp;
             this.thumbnail = json.thumbnail;
