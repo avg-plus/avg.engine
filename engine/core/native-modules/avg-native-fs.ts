@@ -43,6 +43,22 @@ export interface AVGNativeFSInterface {
       flag?: string;
     }
   ): string;
+
+  readLocalStorage(
+    filename: string,
+    options?: {
+      encoding?: string;
+      flag?: string;
+    }
+  );
+
+  writeLocalStorage(
+    filename: string,
+    options?: {
+      encoding?: string;
+      flag?: string;
+    }
+  );
 }
 
 export class AVGNativeFS {
@@ -81,6 +97,26 @@ export class AVGNativeFS {
     filename: string,
     options?: { encoding: string; flag?: string }
   ): string {
+    throw new Error("Method not implemented.");
+  }
+
+  public static readLocalStorage(
+    filename: string,
+    options?: {
+      encoding?: string;
+      flag?: string;
+    }
+  ) {
+    throw new Error("Method not implemented.");
+  }
+
+  public static writeLocalStorage(
+    filename: string,
+    options?: {
+      encoding?: string;
+      flag?: string;
+    }
+  ) {
     throw new Error("Method not implemented.");
   }
 }

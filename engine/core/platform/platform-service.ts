@@ -36,7 +36,7 @@ export class PlatformService {
     return this._platform === GameRunningPlatform.WebBrowser;
   }
 
-  public static isElectron() {
+  public static isDesktop() {
     return (
       this._platform === GameRunningPlatform.MacOS ||
       this._platform === GameRunningPlatform.Windows ||

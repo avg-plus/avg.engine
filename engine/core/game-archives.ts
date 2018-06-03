@@ -62,12 +62,12 @@ export class AVGArchives {
   public static async saveToFile(index: number, archive: Archive) {
     return new Promise((resolve, reject) => {
       let filePathAndName: string = AVGNativePath.join(this._archiveFilePath, index + ".te");
-      // try {
-      //     AVGNativeFS.writeFileSync(filePathAndName, JSON.stringify(archive), { flag: "w" });
-      //     resolve();
-      // } catch (err) {
-      //     reject(err);
-      // }
+      try {
+          // AVGNativeFS.writeFileSync(filePathAndName, JSON.stringify(archive), { flag: "w" });
+          resolve();
+      } catch (err) {
+          reject(err);
+      }
     });
   }
 

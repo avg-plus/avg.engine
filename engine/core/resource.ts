@@ -94,8 +94,4 @@ export class Resource {
 
         return dirPath;
     }
-
-    // public static readFileText(file: string): string {
-    //     return AVGNativeFS.readFileSync(file, { encoding: "utf8", flag: "r" });
-    // }
 }
