@@ -17,6 +17,15 @@ export class EngineUtils {
     return value;
   }
 
+  public static cssObjectToStyles(cssObject: any) {
+    let styles = "";
+    for (let o in cssObject) {
+      styles += o.toString() + ":" + cssObject[o] + ";";
+    }
+
+    return styles;
+  }
+
   public static parseCSSFilters(filters: string): Map<string, string> {
     const container = new Map<string, string>();
     if (filters === "none") {

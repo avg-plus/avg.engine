@@ -1,5 +1,6 @@
 //@ Auto-Generated indexing files for avg.engine
 
+export * from './engine-setting';
 export * from './engine-utils';
 export * from './env';
 export * from './game-archives';

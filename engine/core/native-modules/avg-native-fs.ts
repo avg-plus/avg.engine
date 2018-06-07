@@ -86,14 +86,14 @@ export class AVGNativeFS {
   }
   public static readFile(
     filename: string,
-    options: { encoding: string; flag?: string },
+    options: { encoding?: string; flag?: string },
     callback: BFSCallback<string>
   ): void {
     throw new Error("Method not implemented.");
   }
   public static readFileSync(
     filename: string,
-    options?: { encoding: string; flag?: string }
+    options?: { encoding?: string; flag?: string }
   ): string {
     throw new Error("Method not implemented.");
   }
