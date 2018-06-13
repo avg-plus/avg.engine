@@ -164,7 +164,7 @@ export namespace api {
         model.animateName = animateName;
 
         const proxy = APIManager.getImpl(APICharacter.name, OP.ShowCharacter);
-        proxy && (await proxy.runner(<APICharacter>model));
+        // proxy && (await proxy.runner(<APICharacter>model));
     }
 
     export async function hideCharacter(index: number = -1) {
