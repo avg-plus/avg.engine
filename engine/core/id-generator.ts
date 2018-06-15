@@ -16,7 +16,7 @@ export class IDGenerator {
             );
         }
 
-        console.log("ID Sequence generated: " + text);
+        // console.log("ID Sequence generated: " + text);
 
         return text;
     }

@@ -28,12 +28,13 @@
     "@types/esprima": "^2.1.34",
     "@types/estree": "^0.0.39",
     "@types/node": "^8.0.24",
+    "browser-path": "^0.0.1",
+    "browserfs": "^1.4.3",
     "escodegen": "^1.9.1",
     "esprima": "^4.0.0",
     "estraverse": "^4.2.0",
     "esutils": "^2.0.2",
     "gulp": "^3.9.1",
-    "image-size": "^0.6.1",
     "node": "^8.2.1",
     "source-map": "^0.7.2"
   },
@@ -41,6 +42,7 @@
     "create-index": "^2.2.0",
     "dts-generator": "^2.1.0",
     "globby": "^6.1.0",
+    "gulp": "^3.9.1",
     "node-bin-setup": "^1.0.6",
     "shelljs": "^0.7.8",
     "tslint": "^5.5.0"

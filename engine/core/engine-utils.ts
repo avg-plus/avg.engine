@@ -1,11 +1,6 @@
 import { Dimension } from "../const/model";
-import * as sizeOf from "image-size";
 
 export class EngineUtils {
-  public static getImageSize(file: string): Dimension {
-    return sizeOf(file);
-  }
-
   public static async wait(ms: number) {
     return new Promise(resolve => setTimeout(resolve, ms));
   }
@@ -20,6 +15,15 @@ export class EngineUtils {
     }
 
     return value;
+  }
+
+  public static cssObjectToStyles(cssObject: any) {
+    let styles = "";
+    for (let o in cssObject) {
+      styles += o.toString() + ":" + cssObject[o] + ";";
+    }
+
+    return styles;
   }
 
   public static parseCSSFilters(filters: string): Map<string, string> {
