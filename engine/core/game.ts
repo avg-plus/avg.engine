@@ -58,6 +58,13 @@ export class AVGGame {
   public getResolution(): Screen {
     return this._screen;
   }
+<<<<<<< HEAD
+=======
+  
+  public static isLoading(): boolean {
+    return this._runningType == GameRunningType.Loading;
+  }
+>>>>>>> master
 
   public static setRunningType(type: GameRunningType) {
     this._runningType = type;
