@@ -226,8 +226,6 @@ export namespace api {
             options = new Scene;
         }
 
-        
-
         if (filename && filename.length > 0) {
             paramCompatible<APIScene, Scene>(model, options, {
                 field: "file",
@@ -264,6 +262,7 @@ export namespace api {
 
     export async function playBGM(filename: string, options?: SoundBGM) {
         let model = new APISound();
+        model.data = new SoundBGM;
         model.data.track = SoundTrack.BGM;
 
         paramCompatible<APISound, SoundBGM>(model, options, {
