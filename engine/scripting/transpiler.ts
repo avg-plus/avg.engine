@@ -44,7 +44,12 @@ export class Transpiler {
       const callee = node.callee;
       const calleeObj = (<any>callee).object;
 
-      return node.type === "CallExpression" && calleeObj.name === "api";
+      return (
+        calleeObj &&
+        node.type === "CallExpression" &&
+        calleeObj.name &&
+        (calleeObj.name === "api" || calleeObj.name === "plugins")
+      );
     };
 
     // Fix esprima bug that leads to an error with wrong character index
@@ -54,15 +59,11 @@ export class Transpiler {
     // 'async' keyword transform
     console.time("Compile Script Elapsed");
     console.log("Starting async keyword transform AST generate ...");
-    let asyncTransformAST = esprima.parse(
-      code,
-      { range: false, attachComment: false },
-      (node, meta) => {
-        if (node.type === "ArrowFunctionExpression") {
-          node.async = true;
-        }
+    let asyncTransformAST = esprima.parse(code, { range: false, attachComment: false }, (node, meta) => {
+      if (node.type === "ArrowFunctionExpression") {
+        node.async = true;
       }
-    );
+    });
 
     console.log("Regenerating async keyword transform code ...");
     let asyncTransformCode = escodegen.generate(asyncTransformAST, {
@@ -115,11 +116,10 @@ export class Transpiler {
 
   private static async _read(file: string): Promise<string> {
     return await new Promise<string>((resolve, reject) => {
-    //   let data = AVGNativeFS.readFileSync(file, { encoding: "utf8" });
-    //   resolve(data);
+      //   let data = AVGNativeFS.readFileSync(file, { encoding: "utf8" });
+      //   resolve(data);
       //   fs.readFile(file, "utf8", (err, data) => {
       //     if (err) reject(err);
-
       //     resolve(data);
       //   });
     });

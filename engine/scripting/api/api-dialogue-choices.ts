@@ -4,7 +4,7 @@ import { AVGData } from "../../data/avg-data";
 
 export class SelectedDialogueChoice extends AVGData {
     public selectedIndex = -1;
-    public selectedTitle = "";
+    public selectedText = "";
 }
 
 export class APIDialogueChoice extends AVGScriptUnit {

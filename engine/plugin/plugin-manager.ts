@@ -1,32 +1,57 @@
-import { PluginBase } from './plugin-base';
-import { DialogueParserPlugin, Dialogue } from '../index';
-import { PluginEvents } from './avg-plugin';
+import { PluginBase } from "./plugin-base";
+import { AVGPluginHooks, AVGPlugin } from "./avg-plugin";
+import { Conjure } from "./conjure/conjure";
+import { DialogueParserPlugin } from "./internal/dialogue-parser-plugin";
+import { AVGNativeFS } from "../core/native-modules/avg-native-fs";
+import { WaitNextInputWidgetPlugin } from "./internal/wait-next-input-widget-plugin";
+import { Resource } from "..";
+import { ResourcePath } from "..";
+import { AVGNativePath } from "../core/native-modules/avg-native-path";
 
 export class PluginManager {
-    private static _registeredPlugins: Map<string, PluginBase>;
+  private static _registeredPlugins: Map<string, PluginBase>;
 
-    public static init() {
-        this._registeredPlugins = new Map<string, PluginBase>();
+  private static _conjure: Conjure;
 
-        // Register internal plugins
-        this.register(new DialogueParserPlugin());
+  public static init() {
+    this._registeredPlugins = new Map<string, PluginBase>();
+
+    this._conjure = new Conjure("activate");
+
+    // Register internal plugins
+    this.register(new DialogueParserPlugin());
+    this.register(new WaitNextInputWidgetPlugin());
+  }
+
+  public static getAllPlugins() {
+    // List all plugins and check the plugins are valid
+  }
+
+  public static register(plugin: PluginBase) {
+    const pluginInfo = plugin.pluginInfo();
+    console.log("Plugin registered: ", pluginInfo);
+
+    if (!this._registeredPlugins.has(plugin.constructor.name)) {
+      this._registeredPlugins.set(plugin.constructor.name, plugin);
+    }
+  }
+
+  public static async loadScripts(scripts: string) {
+    scripts = "const exports = {};\n" + scripts;
+    const instance = this._conjure.loadScript(scripts, {});
+    if (instance) {
+      const plugin = <AVGPlugin>instance;
+      this.register(plugin);
+      return instance;
     }
 
-    public static register(plugin: PluginBase) {
-        let pluginInfo = plugin.onLoad();
-        console.log('Plugin registered: ', pluginInfo);
+    return instance;
+  }
 
-        if (!this._registeredPlugins.has(plugin.constructor.name)) {
-            this._registeredPlugins.set(plugin.constructor.name, plugin);
-        }
-    }
-
-    public static on(event: PluginEvents, ...args: any[]) {
-        this._registeredPlugins.forEach((value: PluginBase, key: string) => {
-            let eventName = PluginEvents[event];
-            let method = value[eventName];
-
-            method && method(...args);
-        });
-    }
+  public static on(event: AVGPluginHooks, ...args: any[]) {
+    this._registeredPlugins.forEach((value: PluginBase, key: string) => {
+      let method = value[event];
+      method && method(...args);
+    });
+  }
 }

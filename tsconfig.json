@@ -1,9 +1,9 @@
 {
     "compileOnSave": true,
     "compilerOptions": {
-        "module": "amd",
-        "target": "es6",
-        "lib": ["es5", "es6", "es7", "es2015.promise", "es2015.proxy"],
+        "module": "commonjs",
+        "target": "es5",
+        "lib": ["es5", "es6", "es7", "es2015.promise", "es2015.proxy", "webworker", "scripthost"],
         "moduleResolution": "node",
         "declaration": true,
         "noEmitOnError": true,
@@ -18,7 +18,7 @@
         "sourceMap": true,
         // "declarationDir": "./libs",
         "sourceRoot": "./",
-        "outFile": "./libs/avg-engine.js",
+        // "outFile": "./libs/avg-engine.js",
         "typeRoots": [
             "node_modules/@types"
         ],

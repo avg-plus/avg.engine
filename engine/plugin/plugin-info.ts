@@ -1,5 +1,6 @@
 export class PluginInfo {
-    public pluginName: string;
+    public name: string;
+    public version: string;
     public author: string;
-    public comment?: string;
+    public description?: string;
 }
