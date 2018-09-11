@@ -1,5 +1,5 @@
 import * as vm from "vm";
-// import * as fs from "fs";
+
 import { AVGNativeFS } from "../core/native-modules/avg-native-fs";
 import { AVGScriptUnit } from "../scripting/script-unit";
 import { Sandbox } from "../core/sandbox";
@@ -14,6 +14,9 @@ export class AVGStory {
   private _compiled: string;
   private _scriptFile: string;
 
+  // private static _scriptingHandle: Promise<{}> = null;
+  private static _scriptingResolver = null;
+  private static _scriptingEvalInContext = null;
   constructor() {}
 
   public async loadFromFile(filename: string) {
@@ -22,7 +25,7 @@ export class AVGStory {
     this.loadFromString(response);
   }
 
-  public loadFromString(code: string) {
+  public async loadFromString(code: string) {
     this._code = code;
     this.compile();
   }
@@ -31,14 +34,20 @@ export class AVGStory {
     this._compiled = Transpiler.transpileFromCode(this._code);
   }
 
+  public UnsafeTerminate() {
+    // AVGStory.sanbox._shouldForceTerminate = true;
+    // AVGStory._scriptingEvalInContext.call(AVGStory.sanbox);
+  }
+
   public async run() {
     return new Promise((resolve, reject) => {
+      AVGStory._scriptingResolver = resolve;
+
       try {
         AVGStory.sanbox.done = function() {
           console.log("Script execute done");
           resolve();
         };
-
         // Universal
         const evalInContext = (js, context) => {
           const result = (() => {
@@ -58,7 +67,7 @@ export class AVGStory {
       } catch (err) {
         const errMessage = "AVG Script errror : " + err;
         reject(errMessage);
-        // alert(errMessage)
+        // alert(errMessage);
       }
     });
   }

@@ -4,18 +4,21 @@ import { PluginInfo } from "../plugin-info";
 import { AVGInternalPlugin } from "../avg-internal-plugin";
 import { APIVariable } from "../../index";
 
+// export function activate(context) {
+//   return new DialogueParserPlugin();
+// }
+
 export class DialogueParserPlugin extends AVGInternalPlugin {
-  public onLoad(): PluginInfo {
+  public pluginInfo(): PluginInfo {
     return {
-      author: "AngryPowman",
-      pluginName: "TextParser",
-      comment: "Text plugin with text highlighting supported."
+      name: "AVGPlus.TextParser",
+      version: "1.0",
+      author: "AVGPlus",
+      description: "Text plugin with highlighting supported."
     };
   }
 
-  public onUnload() {}
-
-  public OnBeforeDialogue(dialogue: Dialogue) {
+  public onBeforeShowDialogue(dialogue: Dialogue) {
     dialogue.text = DialogueParserPlugin.parseContent(dialogue.text);
     dialogue.name = DialogueParserPlugin.parseContent(dialogue.name);
   }
@@ -36,19 +39,13 @@ export class DialogueParserPlugin extends AVGInternalPlugin {
       let value = APIVariable.get(vMatch[1]);
       text = text.replace(variableRegex, value === undefined ? "" : value);
     }
-    
+
     // Grammar: [color=N][/color]
-    text = text.replace(
-      /\[color=([a-zA-Z0-9#]+)\]/g,
-      `<span style="color:$1">`
-    );
+    text = text.replace(/\[color=([a-zA-Z0-9#]+)\]/g, `<span style="color:$1">`);
     text = text.replace(/\[\/color\]/g, `</span>`);
 
     // Grammar: [c=N][/c]
-    text = text.replace(
-      /\[c=([a-zA-Z0-9#]+)\]|\[color=([a-zA-Z0-9#]+)\]/g,
-      `<span style="color:$1">`
-    );
+    text = text.replace(/\[c=([a-zA-Z0-9#]+)\]|\[color=([a-zA-Z0-9#]+)\]/g, `<span style="color:$1">`);
     text = text.replace(/\[\/c\]/g, `</span>`);
 
     // Grammar: [bold][/bold]
@@ -80,10 +77,7 @@ export class DialogueParserPlugin extends AVGInternalPlugin {
     text = text.replace(/\[\/s\]/g, `</span>`);
 
     // Grammar: [emoji=file]
-    text = text.replace(
-      /\[emoji=([\w\-\. ]+)]/g,
-      `<img src='assets/graphics/emoji/$1' />`
-    );
+    text = text.replace(/\[emoji=([\w\-\. ]+)]/g, `<img src='assets/graphics/emoji/$1' />`);
 
     // Grammar: [br]
     text = text.replace(/\[br]/g, `<br>`);

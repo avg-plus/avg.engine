@@ -1,8 +1,7 @@
-import { AVGData } from './avg-data';
+import { AVGData } from "./avg-data";
+import { Renderer } from "./renderer";
 
 export class Avatar extends AVGData {
-    public file: string = "";
-    public width?: number;
-    public height?: number;
-    public scale?: number;
+  public file: string = "";
+  public renderer?: Renderer = new Renderer;
 }

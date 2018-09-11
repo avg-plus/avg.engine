@@ -8,9 +8,9 @@ import { GameRunningPlatform } from "../const/game-running-platform";
 import { AVGNativePath } from "../core/native-modules/avg-native-path";
 import { Screen } from "../const/model";
 import { Transition } from "./transition";
-import { PluginManager, PlatformService } from "../index";
+import { PluginManager, PlatformService, AVGNativeFS } from "../index";
 import { Setting } from "./setting";
-import { Resource } from "./resource";
+import { Resource, ResourcePath } from "./resource";
 import { AVGArchives } from "./game-archives";
 
 export enum GameRunningType {
@@ -23,7 +23,7 @@ export class AVGGame {
   private static _runningType: GameRunningType = GameRunningType.Normal;
   private static _instance: AVGGame;
 
-  private _entryStory: AVGStory = new AVGStory();
+  public static _entryStory: AVGStory = new AVGStory();
   private _scriptDir: string;
   private _transition: Transition;
   private _runningPlatform: GameRunningPlatform;
@@ -33,11 +33,7 @@ export class AVGGame {
     height: 768
   };
 
-  private constructor(
-    platform?: GameRunningPlatform,
-    name?: string,
-    screen?: Screen
-  ) {}
+  private constructor(platform?: GameRunningPlatform, name?: string, screen?: Screen) {}
 
   public static getInstance() {
     if (!this._instance) {
@@ -58,7 +54,7 @@ export class AVGGame {
   public getResolution(): Screen {
     return this._screen;
   }
-  
+
   public static isLoading(): boolean {
     return this._runningType == GameRunningType.Loading;
   }
@@ -79,13 +75,16 @@ export class AVGGame {
     // Init plugins
     PluginManager.init();
 
-    let scriptDir = this._scriptDir || "./";
-    entryScript =
-      entryScript ||
-      AVGNativePath.join(scriptDir, AVGGame.DEFAULT_ENTRY_SCRIPT);
+    // const scripts = await AVGNativeFS.readFileSync(
+    //   AVGNativePath.join(Resource.getPath(ResourcePath.Plugins), "sample-plugin.js")
+    // );
+    // PluginManager.loadScripts(scripts);
 
-    await this._entryStory.loadFromFile(entryScript);
-    await this._entryStory.run();
+    let scriptDir = this._scriptDir || "./";
+    entryScript = entryScript || AVGNativePath.join(scriptDir, AVGGame.DEFAULT_ENTRY_SCRIPT);
+
+    await AVGGame._entryStory.loadFromFile(entryScript);
+    await AVGGame._entryStory.run();
   }
 }
 

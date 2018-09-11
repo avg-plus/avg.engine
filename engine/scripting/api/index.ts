@@ -9,6 +9,7 @@ export * from './api-dialogue-choices';
 export * from './api-dialogue';
 export * from './api-effect';
 export * from './api-input-box';
+export * from './api-plugins';
 export * from './api-runtime';
 export * from './api-scene';
 export * from './api-screen-image';

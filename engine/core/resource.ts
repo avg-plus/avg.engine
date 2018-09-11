@@ -3,39 +3,41 @@ import { AVGNativePath } from "../core/native-modules/avg-native-path";
 import { AVGNativeFS } from "../core/native-modules/avg-native-fs";
 
 export enum ResourcePath {
-    // Audio
-    BGM,
-    BGS,
-    SE,
-    Voice,
+  // Audio
+  BGM,
+  BGS,
+  SE,
+  Voice,
 
-    // Graphics
-    Backgrounds,
-    Images,
-    Characters,
-    Masks,
-    UI,
-    Icons,
-    Effects,
+  // Graphics
+  Backgrounds,
+  Images,
+  Characters,
+  Masks,
+  UI,
+  Icons,
+  Effects,
 
-    // Plugins
-    Plugins,
+  // Plugins
+  Plugins,
 
-    // Data
-    Data,
+  // Data
+  Data,
 
-    // Script
-    Scripts
+  // Script
+  Scripts
 }
 
 export class Resource {
-    private static _paths: Map<ResourcePath, string>;
-    private static _assetsRoot: string;
+  private static _paths: Map<ResourcePath, string>;
+  private static _assetsRoot: string;
+  private static _dataRoot: string;
 
-    public static init(rootDir: string) {
-        this._assetsRoot = rootDir;
+  public static init(assetsRoot: string, dataRoot: string) {
+    this._assetsRoot = assetsRoot;
+    this._dataRoot = dataRoot;
 
-        /* 
+    /* 
             To use initialize paths, you should create the following directory structure:
             
             Root
@@ -57,41 +59,49 @@ export class Resource {
             └── scripts
         */
 
-        this._paths = new Map<ResourcePath, string>([
-            [ResourcePath.BGM, "audio/bgm"],
-            [ResourcePath.BGS, "audio/bgs"],
-            [ResourcePath.SE, "audio/se"],
-            [ResourcePath.Voice, "audio/voice"],
-            [ResourcePath.Backgrounds, "graphics/backgrounds"],
-            [ResourcePath.Images, "graphics/images"],
-            [ResourcePath.Characters, "graphics/characters"],
-            [ResourcePath.Masks, "graphics/masks"],
-            [ResourcePath.UI, "graphics/ui"],
-            [ResourcePath.Icons, "graphics/icons"],
-            [ResourcePath.Effects, "graphics/effects"],
-            [ResourcePath.Plugins, "plugins"],
-            [ResourcePath.Data, "data"],
-            [ResourcePath.Scripts, "scripts"]
-        ]);
+    this._paths = new Map<ResourcePath, string>([
+      [ResourcePath.BGM, AVGNativePath.join(this._assetsRoot, "audio/bgm")],
+      [ResourcePath.BGS, AVGNativePath.join(this._assetsRoot, "audio/bgs")],
+      [ResourcePath.SE, AVGNativePath.join(this._assetsRoot, "audio/se")],
+      [ResourcePath.Voice, AVGNativePath.join(this._assetsRoot, "audio/voice")],
+      [ResourcePath.Backgrounds, AVGNativePath.join(this._assetsRoot, "graphics/backgrounds")],
+      [ResourcePath.Images, AVGNativePath.join(this._assetsRoot, "graphics/images")],
+      [ResourcePath.Characters, AVGNativePath.join(this._assetsRoot, "graphics/characters")],
+      [ResourcePath.Scripts, AVGNativePath.join(this._assetsRoot, "scripts")],
 
-        console.log(`Initialize resource root folder: ${this._assetsRoot}`);
+      // Data
+      [ResourcePath.Masks, AVGNativePath.join(this._dataRoot, "masks")],
+      //   [ResourcePath.UI, "graphics/ui"],
+      [ResourcePath.Icons, AVGNativePath.join(this._dataRoot, "icons")],
+      [ResourcePath.Effects, AVGNativePath.join(this._dataRoot, "effects")],
+      [ResourcePath.Plugins, AVGNativePath.join(this._dataRoot, "plugins")],
+      [ResourcePath.Data, this._dataRoot]
+    ]);
+
+    console.log(`Initialize resource root folder: ${this._assetsRoot}`);
+  }
+
+  public static getAssetsRoot(): string {
+    return this._assetsRoot;
+  }
+
+  public static getDataRoot(): string {
+    return this._dataRoot;
+  }
+
+  public static getPath(dir: ResourcePath, joinPath: string = ""): string {
+    let dirPath = this._paths.get(dir);
+    if (!dirPath) {
+      return undefined;
     }
 
-    public static getRoot(): string {
-        return this._assetsRoot;
-    }
+    // if (Env.isRunStandalone()) {
+    // Run in node.js
+    // dirPath = AVGNativePath.join(this._assetsRoot, dirPath, joinPath);
+    dirPath = AVGNativePath.join(dirPath, joinPath);
 
-    public static getPath(dir: ResourcePath, joinPath: string = ""): string {
-        let dirPath = this._paths.get(dir);
-        if (!dirPath) {
-            return undefined;
-        }
+    // }
 
-        // if (Env.isRunStandalone()) {
-            // Run in node.js
-            dirPath = AVGNativePath.join(this._assetsRoot, dirPath, joinPath);
-        // }
-
-        return dirPath;
-    }
+    return dirPath;
+  }
 }

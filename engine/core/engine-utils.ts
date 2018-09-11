@@ -26,6 +26,14 @@ export class EngineUtils {
     return styles;
   }
 
+  public static isUndefined(v: any) {
+    return v === undefined || v === null;
+  }
+
+  public static getRandom(max: number) {
+    return Math.floor(Math.random() * Math.floor(max));
+  }
+
   public static parseCSSFilters(filters: string): Map<string, string> {
     const container = new Map<string, string>();
     if (filters === "none") {
@@ -68,13 +76,14 @@ export class EngineUtils {
       return;
     }
 
-    const increment = to > from ? 0.1 : -0.1;
-    const stepTime = Math.abs(Math.floor(duration / range / 10));
+    // The best value to balance between animation smoothness and performance
+    const precision = 3;
+    let stepValue = (range / duration) * precision;
 
     let current = from;
 
     const timer = setInterval(() => {
-      current += increment;
+      current += stepValue;
 
       if (update) {
         update(current);
@@ -87,6 +96,6 @@ export class EngineUtils {
           done();
         }
       }
-    }, stepTime);
+    }, precision);
   }
 }
