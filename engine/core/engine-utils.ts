@@ -1,5 +1,3 @@
-import { Dimension } from "../const/model";
-
 export class EngineUtils {
   public static async wait(ms: number) {
     return new Promise(resolve => setTimeout(resolve, ms));
@@ -64,13 +62,11 @@ export class EngineUtils {
     return filters;
   }
 
-  public static countTo(
-    from: number,
-    to: number,
-    duration: number,
-    update: (value: number) => void,
-    done?: () => void
-  ) {
+  public static countTo(from: number,
+                        to: number,
+                        duration: number,
+                        update: (value: number) => void,
+                        done?: () => void) {
     const range = to - from;
     if (range === 0) {
       return;

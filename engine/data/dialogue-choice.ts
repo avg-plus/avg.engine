@@ -1,11 +1,11 @@
 import { AVGData } from ".";
 
 export class DialogueChoice extends AVGData {
-    public title: string;
+  public title: string;
 
-    constructor(text: string) {
-        super();
+  constructor(text: string) {
+    super();
 
-        this.title = text;
-    }
+    this.title = text;
+  }
 }

@@ -1,6 +1,4 @@
-import { PlatformService } from "../platform";
 // const path = require("path");
-import * as path from "path";
 
 export class AVGNativePath {
   public static join(...paths: string[]): string {
@@ -32,5 +30,6 @@ export class AVGNativePath {
 
     return newParts.join("/") || (newParts.length ? "/" : ".");
   }
+
   // }
 }

@@ -1,17 +1,10 @@
-import * as fs from "fs";
-
 import { AVGStory } from "../scripting/story";
-import { AVGScriptUnit } from "../scripting/script-unit";
 import { GameRunningPlatform } from "../const/game-running-platform";
-
 // import * as path from 'path';
 import { AVGNativePath } from "../core/native-modules/avg-native-path";
 import { Screen } from "../const/model";
 import { Transition } from "./transition";
-import { PluginManager, PlatformService, AVGNativeFS } from "../index";
-import { Setting } from "./setting";
-import { Resource, ResourcePath } from "./resource";
-import { AVGArchives } from "./game-archives";
+import { PluginManager } from "../index";
 
 export enum GameRunningType {
   Normal,
@@ -33,7 +26,8 @@ export class AVGGame {
     height: 768
   };
 
-  private constructor(platform?: GameRunningPlatform, name?: string, screen?: Screen) {}
+  private constructor(platform?: GameRunningPlatform, name?: string, screen?: Screen) {
+  }
 
   public static getInstance() {
     if (!this._instance) {

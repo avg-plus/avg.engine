@@ -1,6 +1,4 @@
-import { Env } from "./env";
 import { AVGNativePath } from "../core/native-modules/avg-native-path";
-import { AVGNativeFS } from "../core/native-modules/avg-native-fs";
 
 export enum ResourcePath {
   // Audio

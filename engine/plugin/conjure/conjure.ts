@@ -1,8 +1,7 @@
-import { AVGPlugin } from "../avg-plugin";
-
 export class Conjure {
   private _scripts: string = "";
   private _entryFunctionName: string;
+
   // private _plugins: Map<string, AVGPlugin> = new Map<string, AVGPlugin>();
 
   constructor(entryFunctionName: string) {

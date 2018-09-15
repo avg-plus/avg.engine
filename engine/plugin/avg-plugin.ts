@@ -7,7 +7,8 @@ export enum AVGPluginHooks {
 }
 
 function Plugin(info: { name: string; version: string; description: string }) {
-  return function(target: any, propertyKey: string, descriptor: PropertyDescriptor) {};
+  return function (target: any, propertyKey: string, descriptor: PropertyDescriptor) {
+  };
 }
 
 export class AVGPlugin implements PluginBase {
@@ -21,20 +22,26 @@ export class AVGPlugin implements PluginBase {
   }
 
   // > 显示对话前
-  protected onBeforeShowDialogue(dialogue: Dialogue) {}
+  protected onBeforeShowDialogue(dialogue: Dialogue) {
+  }
 
   // > 显示对话后
-  protected onBeforeHideDialogue() {}
+  protected onBeforeHideDialogue() {
+  }
 
   // > 显示角色前
-  protected onBeforeShowCharacter() {}
+  protected onBeforeShowCharacter() {
+  }
 
   // > 显示角色后
-  protected onBeforeHideCharacter() {}
+  protected onBeforeHideCharacter() {
+  }
 
   // > 显示场景前
-  protected onBeforeLoadScene() {}
+  protected onBeforeLoadScene() {
+  }
 
   // > 显示场景后
-  protected onBeforeHideScene() {}
+  protected onBeforeHideScene() {
+  }
 }

@@ -1,3 +1,3 @@
 export class ScriptingResult {
-    public id: string;
+  public id: string;
 }

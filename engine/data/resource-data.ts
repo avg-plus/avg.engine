@@ -1,4 +1,4 @@
-import { ResourcePath, Resource } from "..";
+import { Resource, ResourcePath } from "..";
 import { AVGNativePath } from "../core/native-modules/avg-native-path";
 
 export class ResourceData {

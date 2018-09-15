@@ -1,8 +1,6 @@
 // import * as fs from "fs";
 import * as esprima from "esprima";
 import * as escodegen from "escodegen";
-import * as estree from "estree";
-import { AVGNativeFS } from "../core/native-modules";
 
 export enum TranspilerError {
   None
@@ -134,5 +132,6 @@ export class Transpiler {
     });
   }
 
-  private static _compile_error() {}
+  private static _compile_error() {
+  }
 }

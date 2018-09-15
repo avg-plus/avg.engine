@@ -1,6 +1,6 @@
 import { AVGNativeFS } from "../../core/native-modules/avg-native-fs";
 import { AVGNativePath } from "../../core/native-modules/avg-native-path";
-import { ResourcePath, Resource } from "../../core/resource";
+import { Resource, ResourcePath } from "../../core/resource";
 import { PluginManager } from "../../plugin/plugin-manager";
 import { AVGPlugin } from "../../plugin/avg-plugin";
 

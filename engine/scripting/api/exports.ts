@@ -2,21 +2,18 @@ import { AVGScriptUnit } from "../script-unit";
 import { APIManager } from "../api-manager";
 
 import {
-  Dialogue,
-  Sound,
-  Scene,
-  AVGData,
-  ResourceData,
-  Timer,
-  Variable,
-  SoundBGM,
-  Effect,
-  ScreenPosition,
-  ScreenWidgetType,
-  WidgetAnimation,
   Avatar,
-  Archive,
-  Renderer
+  AVGData,
+  Dialogue,
+  Effect,
+  Renderer,
+  ResourceData,
+  Scene,
+  ScreenPosition,
+  Sound,
+  SoundBGM,
+  Timer,
+  WidgetAnimation
 } from "../../data";
 
 import { APIScene } from "./api-scene";
@@ -25,27 +22,22 @@ import { APISound } from "./api-sound";
 import { APITimer } from "./api-timer";
 import { APIVariable } from "./api-variable";
 import { SoundTrack } from "../../const";
-import { Sandbox, Resource, Setting, AVGGame, GameRunningType, AVGArchives } from "../../core";
+import { AVGArchives, AVGGame, Sandbox, Setting } from "../../core";
 import { APIEffect } from "./api-effect";
 import { APIGotoTitleView } from "./api-title-view";
 import { OP } from "../../const/op";
 import { APIScreenSubtitle } from "./api-screen-subtitle";
 import { Subtitle } from "../../data/screen-subtitle";
-import {
-  ScreenWidgetAnimation,
-  WidgetAnimation_HideOptions,
-  WidgetAnimation_FadeInOptions
-} from "../../data/screen-widget";
+import { ScreenWidgetAnimation, WidgetAnimation_FadeInOptions, WidgetAnimation_HideOptions } from "../../data/screen-widget";
 import { APIDialogueChoice, SelectedDialogueChoice } from "./api-dialogue-choices";
 import { DialogueChoice } from "../../data/dialogue-choice";
-import { Character } from "../../data/character";
 import { APICharacter } from "./api-character";
 import { InputData } from "../../data/input-data";
 import { APIInputBox } from "./api-input-box";
 import { APICallScript } from "./api-call-script";
 import { AVGStory } from "../story";
 import { ResourcePath } from "../../core/resource";
-import { APIScreenImage, ScreenImageResult } from "./api-screen-image";
+import { APIScreenImage } from "./api-screen-image";
 import { ScreenImage } from "../../data/screen-image";
 import { IDGenerator } from "../../core/id-generator";
 import { APITransitionTo } from "./api-transition-to";
@@ -54,11 +46,9 @@ import { isNull } from "util";
 import { EngineUtils } from "../../core/engine-utils";
 import mergeDeep from "../../core/utils";
 
-function paramCompatible<T extends AVGScriptUnit, U extends AVGData>(
-  model: T,
-  options?: any,
-  keyField?: { field: string; value: any }
-) {
+function paramCompatible<T extends AVGScriptUnit, U extends AVGData>(model: T,
+                                                                     options?: any,
+                                                                     keyField?: { field: string; value: any }) {
   let data = <U>model.data;
   if (keyField) {
     data[keyField.field] = keyField.value;
@@ -191,11 +181,9 @@ export namespace api {
     proxy && (await proxy.runner(<APICharacter>model));
   }
 
-  export async function showChoices(
-    choices: Array<string>,
-    onEnter: (index: number) => void,
-    onLeave: (index: number) => void
-  ) {
+  export async function showChoices(choices: Array<string>,
+                                    onEnter: (index: number) => void,
+                                    onLeave: (index: number) => void) {
     let model = new APIDialogueChoice();
     choices.forEach(s => {
       model.choices.push(new DialogueChoice(s));
@@ -384,7 +372,8 @@ export namespace api {
     proxy && (await proxy.runner(<APIEffect>model));
   }
 
-  export async function animateScene(index: number, animateName: string, options: any) {}
+  export async function animateScene(index: number, animateName: string, options: any) {
+  }
 
   export async function getVariable(name: string): Promise<any> {
     return Promise.resolve(APIVariable.get(name));
@@ -434,11 +423,9 @@ export namespace api {
     proxy && (await proxy.runner(<APIScreenSubtitle>model));
   }
 
-  export async function removeSubtitle(
-    id: string,
-    options?: { animation?: WidgetAnimation },
-    isAsync: boolean = false
-  ) {
+  export async function removeSubtitle(id: string,
+                                       options?: { animation?: WidgetAnimation },
+                                       isAsync: boolean = false) {
     let model = new APIScreenSubtitle();
     model.isAsync = isAsync;
     model.data.id = id || undefined;

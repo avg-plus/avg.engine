@@ -1,5 +1,3 @@
-import * as vm from "vm";
-
 import { AVGNativeFS } from "../core/native-modules/avg-native-fs";
 import { AVGScriptUnit } from "../scripting/script-unit";
 import { Sandbox } from "../core/sandbox";
@@ -17,7 +15,9 @@ export class AVGStory {
   // private static _scriptingHandle: Promise<{}> = null;
   private static _scriptingResolver = null;
   private static _scriptingEvalInContext = null;
-  constructor() {}
+
+  constructor() {
+  }
 
   public async loadFromFile(filename: string) {
     const response = await AVGNativeFS.readFileSync(filename);
@@ -44,7 +44,7 @@ export class AVGStory {
       AVGStory._scriptingResolver = resolve;
 
       try {
-        AVGStory.sanbox.done = function() {
+        AVGStory.sanbox.done = function () {
           console.log("Script execute done");
           resolve();
         };

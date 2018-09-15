@@ -1,5 +1,4 @@
 import { Dialogue } from "../../data";
-import { AVGPlugin } from "../avg-plugin";
 import { PluginInfo } from "../plugin-info";
 import { AVGInternalPlugin } from "../avg-internal-plugin";
 import { APIVariable } from "../../index";

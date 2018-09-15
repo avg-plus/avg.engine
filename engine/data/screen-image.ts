@@ -1,34 +1,33 @@
 import { ScreenWidget } from "./screen-widget";
-import { ScreenWidgetType, ResourceData } from ".";
-import { Dimension } from "../const/model";
+import { ResourceData, ScreenWidgetType } from ".";
 
 export class ScreenImage extends ScreenWidget {
-    public file: ResourceData;
+  public file: ResourceData;
 
-    private _size: string; // (640, 480), (50%, 30%), 50%
+  private _size: string; // (640, 480), (50%, 30%), 50%
 
-    public width: string;
-    public height: string;
-    public scale: string;
+  public width: string;
+  public height: string;
+  public scale: string;
 
-    public set size(value: string) {
-        this._size = value.replace(" ", "");
+  public set size(value: string) {
+    this._size = value.replace(" ", "");
 
-        let regex = /\((\d+),(\d+)\)|(\d+%)/;   // (320,160);  50%
-        let matches = this._size.match(regex);
+    let regex = /\((\d+),(\d+)\)|(\d+%)/;   // (320,160);  50%
+    let matches = this._size.match(regex);
 
-        if (matches && matches.length === 4) {
-            this.width = matches[1];
-            this.height = matches[2];
-            this.scale = matches[3];
-        }
+    if (matches && matches.length === 4) {
+      this.width = matches[1];
+      this.height = matches[2];
+      this.scale = matches[3];
     }
+  }
 
-    public get size(): string {
-        return this._size;
-    }
+  public get size(): string {
+    return this._size;
+  }
 
-    constructor() {
-        super(ScreenWidgetType.Image);
-    }
+  constructor() {
+    super(ScreenWidgetType.Image);
+  }
 }

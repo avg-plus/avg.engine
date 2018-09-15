@@ -1,9 +1,8 @@
 import { GameRunningPlatform } from "../../const/game-running-platform";
-import { game, AVGGame } from "../game";
 
 export class PlatformService {
   private static _platform: GameRunningPlatform;
-  
+
   public static initFromWindow(window: any) {
     // Conditional imports
     const process = window.process;

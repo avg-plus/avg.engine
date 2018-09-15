@@ -1,1 +1,2 @@
-export class PluginContext {}
+export class PluginContext {
+}

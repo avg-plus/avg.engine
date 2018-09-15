@@ -32,6 +32,8 @@
     "esutils": "^2.0.2"
   },
   "devDependencies": {
+    "@angular/compiler": "^6.1.7",
+    "@angular/core": "^6.1.7",
     "@types/escodegen": "^0.0.6",
     "@types/esprima": "^2.1.34",
     "@types/estree": "^0.0.39",
@@ -41,6 +43,7 @@
     "globby": "^6.1.0",
     "gulp": "^3.9.1",
     "node-bin-setup": "^1.0.6",
+    "rxjs": "^6.3.2",
     "shelljs": "^0.7.8",
     "tslint": "^5.5.0",
     "typescript": "^2.8.3"

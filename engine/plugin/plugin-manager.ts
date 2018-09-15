@@ -1,12 +1,9 @@
 import { PluginBase } from "./plugin-base";
-import { AVGPluginHooks, AVGPlugin } from "./avg-plugin";
+import { AVGPlugin, AVGPluginHooks } from "./avg-plugin";
 import { Conjure } from "./conjure/conjure";
 import { DialogueParserPlugin } from "./internal/dialogue-parser-plugin";
-import { AVGNativeFS } from "../core/native-modules/avg-native-fs";
 import { WaitNextInputWidgetPlugin } from "./internal/wait-next-input-widget-plugin";
-import { Resource } from "..";
-import { ResourcePath } from "..";
-import { AVGNativePath } from "../core/native-modules/avg-native-path";
+import { Resource, ResourcePath } from "..";
 
 export class PluginManager {
   private static _registeredPlugins: Map<string, PluginBase>;
