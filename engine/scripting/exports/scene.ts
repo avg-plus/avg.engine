@@ -19,7 +19,7 @@ export class EngineAPI_Scene extends AVGExportedAPI {
    * @param {string} filename The background image file of scene
    * @param {Scene} [options]
    */
-  public static async loadScene(index: number, filename: string, options?: Scene) {
+  public static async load(index: number, filename: string, options?: Scene): Promise<SceneHandle> {
     let model = new APIScene();
     model.index = index;
 
@@ -44,32 +44,18 @@ export class EngineAPI_Scene extends AVGExportedAPI {
 
     let proxy = APIManager.getImpl(APIScene.name, OP.LoadScene);
     if (proxy) {
-      return await proxy.runner(<APIScene>model);
+      return <SceneHandle>await proxy.runner(<APIScene>model);
     } else {
       return null;
     }
   }
 
-  public static async removeScene(index: number): Promise<SceneHandle> {
+  public static async remove(index: number): Promise<SceneHandle> {
     let model = new APIScene();
     model.index = index;
 
     return <SceneHandle>await APIManager.getImpl(APIScene.name, OP.RemoveScene).runner(<APIScene>model);
   }
 
-  public static async playBGM(filename: string, options?: SoundBGM) {
-    let model = new APISound();
-    model.data = new SoundBGM();
-    model.data.track = SoundTrack.BGM;
-
-    paramCompatible<APISound, SoundBGM>(model, options, {
-      field: "file",
-      value: ResourceData.from(filename, ResourcePath.BGM)
-    });
-
-    const proxy = APIManager.getImpl(APISound.name, OP.PlayBGM);
-    proxy && (await proxy.runner(<APISound>model));
-  }
-
-  public static async animateScene(index: number, animateName: string, options: any) {}
+  public static async animate(index: number, animateName: string, options: any) {}
 }
