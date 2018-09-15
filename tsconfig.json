@@ -25,5 +25,5 @@
         "outDir": "./dist",
         "rootDir": "./"
     },
-    "exclude": ["node_modules", "dist", "libs", "test", "doc"]
+    "include": ["engine/**/*.ts"]
 }
