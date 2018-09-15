@@ -25,7 +25,16 @@ import { APISound } from "./api-sound";
 import { APITimer } from "./api-timer";
 import { APIVariable } from "./api-variable";
 import { SoundTrack } from "../../const";
-import { Sandbox, Resource, Setting, AVGGame, GameRunningType, AVGArchives } from "../../core";
+import {
+  Sandbox,
+  Resource,
+  Setting,
+  AVGGame,
+  GameRunningType,
+  AVGArchives,
+  mergeDeep,
+  paramCompatible
+} from "../../core";
 import { APIEffect } from "./api-effect";
 import { APIGotoTitleView } from "./api-title-view";
 import { OP } from "../../const/op";
@@ -52,26 +61,27 @@ import { APITransitionTo } from "./api-transition-to";
 import { APIAnimateCharacter } from "./api-animate-character";
 import { isNull } from "util";
 import { EngineUtils } from "../../core/engine-utils";
-import mergeDeep from "../../core/utils";
+import { Transpiler } from "..";
 
-function paramCompatible<T extends AVGScriptUnit, U extends AVGData>(
-  model: T,
-  options?: any,
-  keyField?: { field: string; value: any }
-) {
-  let data = <U>model.data;
-  if (keyField) {
-    data[keyField.field] = keyField.value;
-  }
+// function paramCompatible<T extends AVGScriptUnit, U extends AVGData>(
+//   model: T,
+//   options?: any,
+//   keyField?: { field: string; value: any }
+// ) {
+//   let data = <U>model.data;
+//   if (keyField) {
+//     data[keyField.field] = keyField.value;
+//   }
 
-  if (options && typeof options === "object") {
-    Object.assign(model.data, model.data, options);
-  }
+//   if (options && typeof options === "object") {
+//     Object.assign(model.data, model.data, options);
+//   }
 
-  return model;
-}
+//   return model;
+// }
 
 export namespace api {
+  
   /**
    * Show dialogue box
    *
@@ -80,6 +90,10 @@ export namespace api {
    * @param {Dialogue} [options]
    */
   export async function showText(text: string | Array<string>, options?: Dialogue) {
+    if (Sandbox.isSkipMode) {
+      return;
+    }
+
     let model = new APIDialogue();
 
     let originAvatarFile = "";
@@ -100,6 +114,10 @@ export namespace api {
     }
 
     const show = async (content: string, showOptions: Dialogue) => {
+      if (Sandbox.isSkipMode) {
+        return;
+      }
+
       console.log("first model options", model);
 
       // paramCompatible<APIDialogue, Dialogue>(model, showOptions, {
@@ -351,6 +369,10 @@ export namespace api {
   }
 
   export async function wait(time: number, options: Timer) {
+    if (Sandbox.isSkipMode) {
+      return;
+    }
+
     let model = new APITimer();
     paramCompatible<APITimer, Timer>(model, options, {
       field: "time",
@@ -519,5 +541,13 @@ export namespace api {
 
     const proxy = APIManager.getImpl(APITransitionTo.name, OP.TransitionTo);
     proxy && (await proxy.runner(<APITransitionTo>api));
+  }
+
+  export async function startSkip() {
+    Sandbox.isSkipMode = true;
+  }
+
+  export async function stopSkip() {
+    Sandbox.isSkipMode = false;
   }
 }

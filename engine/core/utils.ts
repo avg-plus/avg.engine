@@ -1,8 +1,15 @@
+import { AVGScriptUnit } from "../scripting/script-unit";
+import { AVGData } from "../data/avg-data";
+
 export function isObject(item) {
   return item && typeof item === "object" && !Array.isArray(item);
 }
 
-export default function mergeDeep(target, source) {
+export function isNull(obj) {
+  return obj === null || obj === undefined;
+}
+
+export function mergeDeep(target, source) {
   let output = Object.assign({}, target);
   if (isObject(target) && isObject(source)) {
     Object.keys(source).forEach(key => {
@@ -15,4 +22,21 @@ export default function mergeDeep(target, source) {
     });
   }
   return output;
+}
+
+export function paramCompatible<T extends AVGScriptUnit, U extends AVGData>(
+  model: T,
+  options?: any,
+  keyField?: { field: string; value: any }
+) {
+  let data = <U>model.data;
+  if (keyField) {
+    data[keyField.field] = keyField.value;
+  }
+
+  if (options && typeof options === "object") {
+    Object.assign(model.data, model.data, options);
+  }
+
+  return model;
 }

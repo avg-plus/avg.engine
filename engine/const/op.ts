@@ -30,4 +30,6 @@ export class OP {
     public static AnimateImage = "AnimateImage";
     public static ShowInputBox = "ShowInputBox";
     public static TransitionTo = "TransitionTo";
+    public static StartSkip = "StartSkip";
+    public static StopSkip = "StopSkip";
 }

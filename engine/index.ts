@@ -10,3 +10,4 @@ export * from './plugin/conjure';
 export * from './plugin/internal';
 export * from './scripting';
 export * from './scripting/api';
+export * from './scripting/exports';

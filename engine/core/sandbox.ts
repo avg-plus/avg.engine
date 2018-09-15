@@ -5,12 +5,30 @@ import { APIDialogue } from "../scripting/api/api-dialogue";
 import { api, SelectedDialogueChoice } from "../scripting/api";
 import { plugins } from "../scripting/api/api-plugins";
 import { Runtime } from "../data/runtime";
+// import { EngineAPI_Text } from "../scripting/exports/text";
+import { AVGExportedAPI } from "../scripting/exports/avg-exported-api";
 
+
+// @injectExports()
 export class Sandbox {
   public done: () => void;
   public console = console;
   public api = (global["api"] = api);
-  public plugins = (global["plugins"] = plugins);
+
+  // [index: string]: any;
+
+  public static inject(name: string, t: any) {
+    Sandbox[name] = global[name] = t;
+    console.log(`Inject ${name} ...`);
+  }
+
+  /*
+    - API Exports
+  */
+  // public text = (global["text"] = EngineAPI_Text);
+  // public plugins = (global["plugins"] = plugins);
+
+  public static isSkipMode: boolean = false; // Will skip all dialogues
 
   public static runtime: Runtime = new Runtime();
 
@@ -18,3 +36,9 @@ export class Sandbox {
     this.runtime.choices.push(selected);
   }
 }
+
+// const registeredClasses = AVGExportedAPI.registeredClasses();
+
+// for (let i = 0; i < registeredClasses.size; ++i) {
+//   const className = registeredClasses.;
+// }

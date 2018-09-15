@@ -3,6 +3,8 @@ import * as esprima from "esprima";
 import * as escodegen from "escodegen";
 import * as estree from "estree";
 import { AVGNativeFS } from "../core/native-modules";
+import { AVGExportedAPI } from "./exports/avg-exported-api";
+import { APIManager } from "./api-manager";
 
 export enum TranspilerError {
   None
@@ -44,12 +46,24 @@ export class Transpiler {
       const callee = node.callee;
       const calleeObj = (<any>callee).object;
 
-      return (
-        calleeObj &&
-        node.type === "CallExpression" &&
-        calleeObj.name &&
-        (calleeObj.name === "api" || calleeObj.name === "plugins")
-      );
+      let isRegisteredCallee = false;
+
+      var BreakException = {};
+
+      try {
+        APIManager.registeredClasses().forEach((value, key) => {
+          if (key === calleeObj.name) {
+            isRegisteredCallee = true;
+            throw BreakException;
+          }
+        });
+      } catch (error) {}
+
+      if (calleeObj && calleeObj.name === "api") {
+        isRegisteredCallee = true;
+      }
+
+      return calleeObj && node.type === "CallExpression" && calleeObj.name && isRegisteredCallee;
     };
 
     // Fix esprima bug that leads to an error with wrong character index
