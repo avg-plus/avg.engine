@@ -15,6 +15,7 @@ export * from './runtime';
 export * from './scene';
 export * from './screen-image';
 export * from './screen-subtitle';
+export * from './screen-widget-html';
 export * from './screen-widget';
 export * from './scripting-result';
 export * from './sound';

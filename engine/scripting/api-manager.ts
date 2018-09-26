@@ -56,7 +56,7 @@ export class APIManager {
       this._apis.set(typename, container);
     }
 
-    console.log(`Registered API proxy: ${typename}::${op}`);
+    // console.log(`Registered API proxy: ${typename}::${op}`);
   }
 
   public static getImpl(typename: string, op: string): OP_Runner {

@@ -6,3 +6,4 @@ export * from './character';
 export * from './dialog';
 export * from './scene';
 export * from './text';
+export * from './widget';

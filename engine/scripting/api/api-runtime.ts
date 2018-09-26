@@ -25,7 +25,7 @@ export class APIRuntime extends AVGScriptUnit {
     public static updateDialogue(dialogue: Dialogue) {
         Sandbox.runtime.dialogue = dialogue;
         if (!AVGNativeUtil.isNull(dialogue.character)) {
-            Sandbox.runtime.characters[dialogue.character.index] = dialogue.character;
+            // Sandbox.runtime.characters[dialogue.character.index] = dialogue.character;
         }
     }
 

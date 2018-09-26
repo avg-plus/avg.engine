@@ -171,43 +171,43 @@ export namespace api {
     proxy && (await proxy.runner(<APIDialogue>model));
   }
 
-  export async function showCharacter(index: number, filename: string, options?: Avatar) {
-    let model = new APICharacter();
-    model.data.index = index;
+  // export async function showCharacter(index: number, filename: string, options?: Avatar) {
+  //   let model = new APICharacter();
+  //   model.data.index = index;
 
-    // model.data.avatar = new Avatar();
-    Object.assign(model.data.avatar, options);
+  //   // model.data.avatar = new Avatar();
+  //   Object.assign(model.data.avatar, options);
 
-    model.data.avatar.file = ResourceData.from(filename, ResourcePath.Characters).filename;
-    if (EngineUtils.isUndefined(model.data.avatar.renderer)) {
-      model.data.avatar.renderer = new Renderer();
-    }
+  //   model.data.avatar.file = ResourceData.from(filename, ResourcePath.Characters).filename;
+  //   if (EngineUtils.isUndefined(model.data.avatar.renderer)) {
+  //     model.data.avatar.renderer = new Renderer();
+  //   }
 
-    const proxy = APIManager.getImpl(APICharacter.name, OP.ShowCharacter);
-    proxy && (await proxy.runner(<APICharacter>model));
-  }
+  //   const proxy = APIManager.getImpl(APICharacter.name, OP.ShowCharacter);
+  //   proxy && (await proxy.runner(<APICharacter>model));
+  // }
 
-  export async function animateCharacter(index: number, animateName: string, options: any) {
-    const model = new APIAnimateCharacter();
-    model.index = index;
-    model.animateName = animateName;
+  // export async function animateCharacter(index: number, animateName: string, options: any) {
+  //   const model = new APIAnimateCharacter();
+  //   model.index = index;
+  //   model.animateName = animateName;
 
-    const proxy = APIManager.getImpl(APICharacter.name, OP.ShowCharacter);
-    // proxy && (await proxy.runner(<APICharacter>model));
-  }
+  //   const proxy = APIManager.getImpl(APICharacter.name, OP.ShowCharacter);
+  //   // proxy && (await proxy.runner(<APICharacter>model));
+  // }
 
-  export async function hideCharacter(index: number = -1) {
-    if (!index) {
-      index = -1;
-    }
+  // export async function hideCharacter(index: number = -1) {
+  //   if (!index) {
+  //     index = -1;
+  //   }
 
-    let model = new APICharacter();
-    model.data.index = index;
+  //   let model = new APICharacter();
+  //   model.data.index = index;
 
-    paramCompatible<APICharacter, Avatar>(model, {});
-    const proxy = APIManager.getImpl(APICharacter.name, OP.HideCharacter);
-    proxy && (await proxy.runner(<APICharacter>model));
-  }
+  //   paramCompatible<APICharacter, Avatar>(model, {});
+  //   const proxy = APIManager.getImpl(APICharacter.name, OP.HideCharacter);
+  //   proxy && (await proxy.runner(<APICharacter>model));
+  // }
 
   export async function showChoices(
     choices: Array<string>,
@@ -435,14 +435,14 @@ export namespace api {
 
     // paramCompatible<APIScreenSubtitle, Subtitle>(model, options);
 
-    return await APIManager.getImpl(APIScreenSubtitle.name, OP.ShowSubtitle).runner(<APIScreenSubtitle>model);
+    return await APIManager.getImpl(APIScreenSubtitle.name, OP.ShowTextWidget).runner(<APIScreenSubtitle>model);
   }
 
   export async function animateSubtitle(id: string, animation: WidgetAnimation) {
     let model = new APIScreenSubtitle();
     model.data.id = id;
 
-    const proxy = APIManager.getImpl(APIScreenSubtitle.name, OP.AnimateSubtitle);
+    const proxy = APIManager.getImpl(APIScreenSubtitle.name, OP.AnimateTextWidget);
     proxy && (await proxy.runner(<APIScreenSubtitle>model));
   }
 
@@ -451,7 +451,7 @@ export namespace api {
     model.data.id = id;
     model.data.text = text;
 
-    const proxy = APIManager.getImpl(APIScreenSubtitle.name, OP.UpdateSubtitle);
+    const proxy = APIManager.getImpl(APIScreenSubtitle.name, OP.UpdateTextWidget);
 
     proxy && (await proxy.runner(<APIScreenSubtitle>model));
   }
@@ -466,7 +466,7 @@ export namespace api {
     model.data.id = id || undefined;
     model.data.animation = options ? options.animation || undefined : undefined;
 
-    const proxy = APIManager.getImpl(APIScreenSubtitle.name, OP.HideSubtitle);
+    const proxy = APIManager.getImpl(APIScreenSubtitle.name, OP.RemoveTextWidget);
 
     proxy && (await proxy.runner(<APIScreenSubtitle>model));
   }
@@ -507,7 +507,7 @@ export namespace api {
 
     // paramCompatible<APIScreenImage, ScreenImage>(model, options);
 
-    return await APIManager.getImpl(APIScreenImage.name, OP.ShowImage).runner(<APIScreenImage>model);
+    return await APIManager.getImpl(APIScreenImage.name, OP.ShowImageWidget).runner(<APIScreenImage>model);
   }
 
   export async function removeImage(id: string, options: ScreenImage, isAsync: boolean = false) {
@@ -525,7 +525,7 @@ export namespace api {
 
     paramCompatible<APIScreenImage, ScreenImage>(model, options);
 
-    const proxy = APIManager.getImpl(APIScreenImage.name, OP.RemoveImage);
+    const proxy = APIManager.getImpl(APIScreenImage.name, OP.RemoveImageWidget);
     proxy && (await proxy.runner(<APIScreenImage>model));
   }
 
