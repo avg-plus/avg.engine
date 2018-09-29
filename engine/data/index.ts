@@ -3,6 +3,7 @@
 export * from './archive';
 export * from './avatar';
 export * from './avg-data';
+export * from './camera-data';
 export * from './character';
 export * from './dialogue-choice';
 export * from './dialogue';

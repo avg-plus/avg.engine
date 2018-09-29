@@ -4,6 +4,7 @@ export * from './api-animate-character';
 export * from './api-animate-scene';
 export * from './api-archive';
 export * from './api-call-script';
+export * from './api-camera';
 export * from './api-character';
 export * from './api-dialogue-choices';
 export * from './api-dialogue';

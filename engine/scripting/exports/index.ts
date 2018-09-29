@@ -2,6 +2,7 @@
 
 export * from './audio';
 export * from './avg-exported-api';
+export * from './camera';
 export * from './character';
 export * from './dialog';
 export * from './scene';
