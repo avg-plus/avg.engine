@@ -50,7 +50,7 @@ export class EngineAPI_Audio extends AVGExportedAPI {
    * @param {string} title - The title of the book.
    * @param {string} author - The author of the book.
    */
-  public async resumeBGM(options?: Sound) {
+  public static async resumeBGM(options?: Sound) {
     let model = new APISound();
     model.data.track = SoundTrack.BGM;
 

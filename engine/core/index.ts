@@ -9,6 +9,7 @@ export * from './i18n';
 export * from './id-generator';
 export * from './input';
 export * from './lite-event';
+export * from './measurement-unit';
 export * from './remote';
 export * from './resource';
 export * from './sandbox';

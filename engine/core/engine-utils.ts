@@ -26,7 +26,7 @@ export class EngineUtils {
     return styles;
   }
 
-  public static isUndefined(v: any) {
+  public static isNullOrUndefined(v: any) {
     return v === undefined || v === null;
   }
 

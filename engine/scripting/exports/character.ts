@@ -22,7 +22,7 @@ export class EngineAPI_Character extends AVGExportedAPI {
     model.data.avatar = Object.assign(model.data.avatar, options.avatar);
 
     model.data.avatar.file = ResourceData.from(filename, ResourcePath.Characters).filename;
-    if (EngineUtils.isUndefined(model.data.avatar.renderer)) {
+    if (EngineUtils.isNullOrUndefined(model.data.avatar.renderer)) {
       model.data.avatar.renderer = new Renderer();
     }
 

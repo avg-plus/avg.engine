@@ -171,43 +171,43 @@ export namespace api {
     proxy && (await proxy.runner(<APIDialogue>model));
   }
 
-  // export async function showCharacter(index: number, filename: string, options?: Avatar) {
-  //   let model = new APICharacter();
-  //   model.data.index = index;
+  export async function showCharacter(index: number, filename: string, options?: Avatar) {
+    let model = new APICharacter();
+    model.data.slot = index;
 
-  //   // model.data.avatar = new Avatar();
-  //   Object.assign(model.data.avatar, options);
+    // model.data.avatar = new Avatar();
+    Object.assign(model.data.avatar, options);
 
-  //   model.data.avatar.file = ResourceData.from(filename, ResourcePath.Characters).filename;
-  //   if (EngineUtils.isUndefined(model.data.avatar.renderer)) {
-  //     model.data.avatar.renderer = new Renderer();
-  //   }
+    model.data.avatar.file = ResourceData.from(filename, ResourcePath.Characters).filename;
+    if (EngineUtils.isNullOrUndefined(model.data.avatar.renderer)) {
+      model.data.avatar.renderer = new Renderer();
+    }
 
-  //   const proxy = APIManager.getImpl(APICharacter.name, OP.ShowCharacter);
-  //   proxy && (await proxy.runner(<APICharacter>model));
-  // }
+    const proxy = APIManager.getImpl(APICharacter.name, OP.ShowCharacter);
+    proxy && (await proxy.runner(<APICharacter>model));
+  }
 
   // export async function animateCharacter(index: number, animateName: string, options: any) {
   //   const model = new APIAnimateCharacter();
-  //   model.index = index;
+  //   // model.data = index;
   //   model.animateName = animateName;
 
   //   const proxy = APIManager.getImpl(APICharacter.name, OP.ShowCharacter);
   //   // proxy && (await proxy.runner(<APICharacter>model));
   // }
 
-  // export async function hideCharacter(index: number = -1) {
-  //   if (!index) {
-  //     index = -1;
-  //   }
+  export async function hideCharacter(index: number = -1) {
+    if (!index) {
+      index = -1;
+    }
 
-  //   let model = new APICharacter();
-  //   model.data.index = index;
+    let model = new APICharacter();
+    model.data.slot = index;
 
-  //   paramCompatible<APICharacter, Avatar>(model, {});
-  //   const proxy = APIManager.getImpl(APICharacter.name, OP.HideCharacter);
-  //   proxy && (await proxy.runner(<APICharacter>model));
-  // }
+    paramCompatible<APICharacter, Avatar>(model, {});
+    const proxy = APIManager.getImpl(APICharacter.name, OP.HideCharacter);
+    proxy && (await proxy.runner(<APICharacter>model));
+  }
 
   export async function showChoices(
     choices: Array<string>,

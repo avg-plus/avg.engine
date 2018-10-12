@@ -1,4 +1,5 @@
 import { AVGData } from "./avg-data";
+import { AVGMeasurementUnit } from "../core/measurement-unit";
 
 export class ScreenPosition {
   public static TopLeft = "topleft"; // 左上
@@ -91,17 +92,31 @@ export class ScreenWidget {
   }
 
   public set position(value: string) {
-    // Ignore spaces
-    this._position = value.replace(" ", "").toLowerCase();
 
-    // If custom position
-    let regex = /\((\d+%?),(\d+%?)\)/;
-    let matches = this._position.match(regex);
+    // const units = AVGMeasurementUnit.fromString(value);
 
-    if (matches) {
-      this.x = matches[1] + (matches[1].substr(-1) === "%" ? "" : "px");
-      this.y = matches[2] + (matches[2].substr(-1) === "%" ? "" : "px");
-    }
+    // if (units) {
+    //   if (units.getLeft()) {
+    //     this.x = units.getLeft().getStringValue();
+    //   }
+
+    //   if (units.getRight()) {
+    //     this.y = units.getRight().getStringValue();
+    //   }
+    // }
+
+
+    // // Ignore spaces
+    // this._position = value.replace(" ", "").toLowerCase();
+
+    // // If custom position
+    // let regex = /\((\d+%?),(\d+%?)\)/;
+    // let matches = this._position.match(regex);
+
+    // if (matches) {
+    //   this.x = matches[1] + (matches[1].substr(-1) === "%" ? "" : "px");
+    //   this.y = matches[2] + (matches[2].substr(-1) === "%" ? "" : "px");
+    // }
   }
 
   public animation: WidgetAnimation = new WidgetAnimation();
