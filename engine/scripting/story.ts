@@ -1,9 +1,11 @@
+import { AVGEngineError } from "./../core/engine-errors";
 import * as vm from "vm";
 
 import { AVGNativeFS } from "../core/native-modules/avg-native-fs";
 import { AVGScriptUnit } from "../scripting/script-unit";
 import { Sandbox } from "../core/sandbox";
 import { Transpiler } from "../scripting/transpiler";
+import { i18n } from "../core";
 
 export class AVGStory {
   private static sanbox: Sandbox = new Sandbox();
@@ -12,7 +14,7 @@ export class AVGStory {
   private _cursor: number = 0;
   private _code: string;
   private _compiled: string;
-  private _scriptFile: string;
+  public static TracingScriptFile: string;
 
   // private static _scriptingHandle: Promise<{}> = null;
   private static _scriptingResolver = null;
@@ -20,6 +22,8 @@ export class AVGStory {
   constructor() {}
 
   public async loadFromFile(filename: string) {
+    AVGStory.TracingScriptFile = filename;
+
     const response = await AVGNativeFS.readFileSync(filename);
 
     this.loadFromString(response);
@@ -41,9 +45,9 @@ export class AVGStory {
 
   public async run() {
     return new Promise((resolve, reject) => {
-      AVGStory._scriptingResolver = resolve;
-
       try {
+        AVGStory._scriptingResolver = resolve;
+
         AVGStory.sanbox.done = function() {
           console.log("Script execute done");
           resolve();
@@ -57,7 +61,11 @@ export class AVGStory {
           return result;
         };
 
-        evalInContext(this._compiled, AVGStory.sanbox);
+        try {
+          evalInContext(this._compiled, AVGStory.sanbox);
+        } catch (err) {
+          throw err;
+        }
 
         // Run in Chrome and Node.js
         // let script = new vm.Script(this._compiled);
@@ -65,9 +73,7 @@ export class AVGStory {
         //   displayErrors: true
         // });
       } catch (err) {
-        const errMessage = "AVG Script errror : " + err;
-        reject(errMessage);
-        // alert(errMessage);
+        AVGEngineError.emit(i18n.lang.SCRIPTING_AVS_RUNTIME_EXCEPTION, err, {});
       }
     });
   }
