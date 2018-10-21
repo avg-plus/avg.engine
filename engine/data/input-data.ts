@@ -17,6 +17,6 @@ export class InputData extends AVGData {
   public minLength: number = 0;
   public maxLength: number = 255;
   public allowCancel: boolean = false;
-  public okButtonText: string = i18n.get("INPUT_OK_BUTTON_TEXT");
-  public cancelButtonText: string = i18n.get("INPUT_CANCEL_BUTTON_TEXT");
+  public okButtonText: string = i18n.lang.INPUT_OK_BUTTON_TEXT;
+  public cancelButtonText: string = i18n.lang.INPUT_CANCEL_BUTTON_TEXT;
 }

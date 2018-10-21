@@ -2,29 +2,44 @@ import { EngineUtils } from "./engine-utils";
 
 export enum UnitType {
   Percent = "%",
-  Pixel = "px"
+  Pixel = "px",
+  Custom = ""
 }
 
-const VectorRegex = /(\((\d+(?:%|px)),(\d+(?:%|px))\))/;
-const ScalarRegex = /^(?:(\d+)(%|px)$)/;
+// Match Rules:
+// '(42%,50%)', '(10%,50px)', '(42px,50px)', '(center, top)' ...
+const VectorRegex = /^(\((\-?\d+(?:%|px)|(?:[a-z]+)),(\-?\d+(?:%|px)|(?:[a-z]+))\))$/;
 
-export class MeasurementNumeric {
+// Match Rules:
+// '42%', '35px', 'center' ..
+const ScalarRegex = /^(?:(\-?\d+)(%|px)|^([a-z]+)$)$/;
+
+export class MeasurementUnitPart {
+  private value: string = "";
+  private unit: UnitType = UnitType.Percent;
+
   constructor(value: string) {
     if (!value) {
       return null;
     }
     const matches = value.match(ScalarRegex);
     if (!EngineUtils.isNullOrUndefined(matches)) {
-      this.value = Number.parseInt(matches[1]);
-      this.unit = matches[2] === "%" ? UnitType.Percent : UnitType.Pixel;
+      // Is custom
+      if (matches[3]) {
+        this.value = matches[3];
+        this.unit = UnitType.Custom;
+      } else {
+        this.value = matches[1];
+        this.unit = matches[2] === "%" ? UnitType.Percent : UnitType.Pixel;
+      }
     }
   }
 
-  public getValue() {
-    return this.value;
+  public getNumbericValue() {
+    return Number.parseInt(this.value);
   }
 
-  public getStringValue() {
+  public getValue() {
     return this.value + this.unit;
   }
 
@@ -36,23 +51,24 @@ export class MeasurementNumeric {
     return this.unit === UnitType.Pixel;
   }
 
-  public value: number = 0;
-  public unit: UnitType = UnitType.Percent;
+  public isCustomUnit() {
+    return !this.isPercent() && !this.isPixel();
+  }
 }
 
 export class AVGMeasurementUnit {
-  private left: MeasurementNumeric;
-  private right: MeasurementNumeric;
+  private left: MeasurementUnitPart;
+  private right: MeasurementUnitPart;
 
   constructor(left: string, right?: string) {
     if (left) {
       left = left || left.trim();
-      this.left = new MeasurementNumeric(left);
+      this.left = new MeasurementUnitPart(left);
     }
 
     if (right) {
       right = right.trim();
-      this.right = new MeasurementNumeric(right);
+      this.right = new MeasurementUnitPart(right);
     }
   }
 
@@ -75,8 +91,20 @@ export class AVGMeasurementUnit {
     return null;
   }
 
+  public static isValidPair(value: string) {
+    return this.fromString(value) !== null;
+  }
+
   public isPairUnit() {
-    return !this.left && !this.right;
+    return this.left && this.right;
+  }
+
+  public getValue() {
+    if (this.isPairUnit()) {
+      return `(${this.left.getValue()},${this.right.getValue()})`;
+    }
+
+    return this.left.getValue();
   }
 
   public getLeft() {

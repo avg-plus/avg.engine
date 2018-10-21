@@ -81,7 +81,7 @@ export class WidgetAnimation {
 
 export class ScreenWidget {
   private _widgetType: ScreenWidgetType;
-  private _position: string = ScreenPosition.Center;
+  private _position: string = new AVGMeasurementUnit("0%", "0%").getValue();
 
   public id: string;
   public x: string;
@@ -92,19 +92,19 @@ export class ScreenWidget {
   }
 
   public set position(value: string) {
+    const units = AVGMeasurementUnit.fromString(value);
 
-    // const units = AVGMeasurementUnit.fromString(value);
+    if (units) {
+      this.x = units.getLeft() ? units.getLeft().getValue() : "0%";
+      this.y = units.getRight() ? units.getRight().getValue() : "0%";
 
-    // if (units) {
-    //   if (units.getLeft()) {
-    //     this.x = units.getLeft().getStringValue();
-    //   }
-
-    //   if (units.getRight()) {
-    //     this.y = units.getRight().getStringValue();
-    //   }
-    // }
-
+      // If not a pair, make it a pair
+      if (!units.isPairUnit()) {
+        this._position = new AVGMeasurementUnit(units.getLeft().getValue(), "0%").getValue();
+      } else {
+        this._position = units.getValue();
+      }
+    }
 
     // // Ignore spaces
     // this._position = value.replace(" ", "").toLowerCase();

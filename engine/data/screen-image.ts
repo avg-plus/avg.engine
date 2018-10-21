@@ -6,15 +6,15 @@ import { AVGMeasurementUnit } from "../core/measurement-unit";
 export class ScreenImage extends ScreenWidget {
   public file: ResourceData;
 
-  private _size: string; // (640, 480), (50%, 30%), 50%
+  private _size?: string; // (640, 480), (50%, 30%), 50%
 
-  public width: string;
-  public height: string;
-  public scale: number;
+  public width?: string;
+  public height?: string;
+  public scale?: number;
 
   public renderer?: Renderer = new Renderer();
 
-  public mergeToRenderer(renderer: Renderer) {
+  public mergeToRenderer?(renderer: Renderer) {
     renderer.x = renderer.x || this.x;
     renderer.y = renderer.y || this.y;
     renderer.width = renderer.width || this.width;
@@ -29,24 +29,15 @@ export class ScreenImage extends ScreenWidget {
 
     if (units) {
       if (units.getLeft()) {
-        this.width = units.getLeft().getStringValue();
+        this.width = units.getLeft().getValue();
       }
 
       if (units.getRight()) {
-        this.height = units.getRight().getStringValue();
+        this.height = units.getRight().getValue();
       }
+
+      this._size = units.getValue();
     }
-
-    // this._size = value.replace(" ", "");
-
-    // let regex = /\((\d+),(\d+)\)|(\d+%)/; // (320,160);  50%
-    // let matches = this._size.match(regex);
-
-    // if (matches && matches.length === 4) {
-    //   this.width = matches[1];
-    //   this.height = matches[2];
-    //   // this.scale = matches[3];
-    // }
   }
 
   public get size(): string {

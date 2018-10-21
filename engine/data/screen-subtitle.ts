@@ -1,11 +1,19 @@
-import { AVGData } from './avg-data';
-import { ScreenWidget, ScreenWidgetType } from './screen-widget';
+import { AVGData } from "./avg-data";
+import { ScreenWidget, ScreenWidgetType } from "./screen-widget";
+import { Renderer } from "./renderer";
 
 export class Subtitle extends ScreenWidget {
-    public id: string;
-    public text: string;
+  public id: string;
+  public text: string;
 
-    constructor() {
-        super(ScreenWidgetType.Text);
-    }
+  public mergeToRenderer(renderer: Renderer) {
+    renderer.x = renderer.x || this.x;
+    renderer.y = renderer.y || this.y;
+
+    return renderer;
+  }
+
+  constructor() {
+    super(ScreenWidgetType.Text);
+  }
 }

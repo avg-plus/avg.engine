@@ -17,9 +17,10 @@ export class EngineAPI_Character extends AVGExportedAPI {
     let model = new APICharacter();
     // model.data.slot = index;
 
-    // model.data.avatar = new Avatar();
-    model.data = Object.assign(model.data, options);    
-    model.data.avatar = Object.assign(model.data.avatar, options.avatar);
+    model.data.avatar = new Avatar();
+    
+    model.data = Object.assign(model.data, options);
+    // model.data.avatar = Object.assign(model.data.avatar, options.avatar);
 
     model.data.avatar.file = ResourceData.from(filename, ResourcePath.Characters).filename;
     if (EngineUtils.isNullOrUndefined(model.data.avatar.renderer)) {

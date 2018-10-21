@@ -173,7 +173,7 @@ export namespace api {
 
   export async function showCharacter(index: number, filename: string, options?: Avatar) {
     let model = new APICharacter();
-    model.data.slot = index;
+    // model.data.slot = index;
 
     // model.data.avatar = new Avatar();
     Object.assign(model.data.avatar, options);
@@ -202,7 +202,7 @@ export namespace api {
     }
 
     let model = new APICharacter();
-    model.data.slot = index;
+    // model.data.slot = index;
 
     paramCompatible<APICharacter, Avatar>(model, {});
     const proxy = APIManager.getImpl(APICharacter.name, OP.HideCharacter);
