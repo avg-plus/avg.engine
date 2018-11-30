@@ -1,4 +1,4 @@
-import { Sound, SoundBGM } from "./sound";
+import { Sound } from "./sound";
 import { Subtitle } from "./screen-subtitle";
 import { ScreenImage } from "./screen-image";
 import { Avatar } from "./avatar";

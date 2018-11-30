@@ -17,9 +17,9 @@ export class AVGStory {
   public static TracingScriptFile: string;
 
   // private static _scriptingHandle: Promise<{}> = null;
-  private static _scriptingResolver = null;
-  private static _scriptingEvalInContext = null;
-  constructor() {}
+  // private static _scriptingResolver = null;
+  // private static _scriptingEvalInContext = null;
+  constructor() { }
 
   public async loadFromFile(filename: string) {
     AVGStory.TracingScriptFile = filename;
@@ -46,12 +46,22 @@ export class AVGStory {
   public async run() {
     return new Promise((resolve, reject) => {
       try {
-        AVGStory._scriptingResolver = resolve;
+        // AVGStory._scriptingResolver = resolve;
 
-        AVGStory.sanbox.done = function() {
-          console.log("Script execute done");
-          resolve();
-        };
+
+        // 1. 每个实例用不同的 done
+        // 2. 记录 story stack
+
+        // AVGStory.sanbox.done = () => {
+        //   console.log("Script execute done:", AVGStory.TracingScriptFile);
+        //   console.log("storyQueue:", Sandbox.storyQueue);
+        //   resolve();
+        // };
+
+        // setTimeout(() => {
+        // resolve();
+        // }, 3000);
+
         // Universal
         const evalInContext = (js, context) => {
           const result = (() => {
@@ -62,12 +72,20 @@ export class AVGStory {
         };
 
         try {
-          evalInContext(this._compiled, AVGStory.sanbox);
+
+          const context = {
+            ...AVGStory.sanbox,
+            done: () => {
+              resolve();
+            }
+          };
+
+          evalInContext(this._compiled, context);
         } catch (err) {
           throw err;
         }
 
-        // Run in Chrome and Node.js
+        // Run in Node.js
         // let script = new vm.Script(this._compiled);
         // script.runInNewContext(vm.createContext(AVGStory.sanbox), {
         //   displayErrors: true

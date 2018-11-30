@@ -9,7 +9,6 @@ import {
   ResourceData,
   Timer,
   Variable,
-  SoundBGM,
   Effect,
   ScreenPosition,
   ScreenWidgetType,
@@ -81,7 +80,7 @@ import { Transpiler } from "..";
 // }
 
 export namespace api {
-  
+
   /**
    * Show dialogue box
    *
@@ -142,7 +141,7 @@ export namespace api {
       console.log("model options", model);
 
       const proxy = APIManager.getImpl(APIDialogue.name, OP.ShowText);
-      proxy && (await proxy.runner(<APIDialogue>model));
+      return await proxy.runner(<APIDialogue>model);
     };
     // options = mergeDeep(new Dialogue(), options);
 
@@ -168,7 +167,7 @@ export namespace api {
     paramCompatible<APIDialogue, Dialogue>(model, {});
 
     const proxy = APIManager.getImpl(APIDialogue.name, OP.HideText);
-    proxy && (await proxy.runner(<APIDialogue>model));
+    return await proxy.runner(<APIDialogue>model);
   }
 
   export async function showCharacter(index: number, filename: string, options?: Avatar) {
@@ -279,94 +278,94 @@ export namespace api {
     return await APIManager.getImpl(APIScene.name, OP.RemoveScene).runner(<APIScene>model);
   }
 
-  export async function playBGM(filename: string, options?: SoundBGM) {
-    let model = new APISound();
-    model.data = new SoundBGM();
-    model.data.track = SoundTrack.BGM;
+  // export async function playBGM(filename: string, options?: SoundBGM) {
+  //   let model = new APISound();
+  //   model.data = new SoundBGM();
+  //   model.data.track = SoundTrack.BGM;
 
-    paramCompatible<APISound, SoundBGM>(model, options, {
-      field: "file",
-      value: ResourceData.from(filename, ResourcePath.BGM)
-    });
+  //   paramCompatible<APISound, SoundBGM>(model, options, {
+  //     field: "file",
+  //     value: ResourceData.from(filename, ResourcePath.BGM)
+  //   });
 
-    const proxy = APIManager.getImpl(APISound.name, OP.PlayBGM);
-    proxy && (await proxy.runner(<APISound>model));
-  }
+  //   const proxy = APIManager.getImpl(APISound.name, OP.PlayBGM);
+  //   proxy && (await proxy.runner(<APISound>model));
+  // }
 
-  export async function stopBGM(options?: Sound) {
-    let model = new APISound();
-    model.data.track = SoundTrack.BGM;
+  // export async function stopBGM(options?: Sound) {
+  //   let model = new APISound();
+  //   model.data.track = SoundTrack.BGM;
 
-    paramCompatible<APISound, SoundBGM>(model, options);
+  //   paramCompatible<APISound, SoundBGM>(model, options);
 
-    const proxy = APIManager.getImpl(APISound.name, OP.StopBGM);
-    proxy && (await proxy.runner(<APISound>model));
-  }
+  //   const proxy = APIManager.getImpl(APISound.name, OP.StopBGM);
+  //   proxy && (await proxy.runner(<APISound>model));
+  // }
 
-  export async function pauseBGM(options?: Sound) {
-    let model = new APISound();
-    model.data.track = SoundTrack.BGM;
+  // export async function pauseBGM(options?: Sound) {
+  //   let model = new APISound();
+  //   model.data.track = SoundTrack.BGM;
 
-    paramCompatible<APISound, SoundBGM>(model, options);
+  //   paramCompatible<APISound, SoundBGM>(model, options);
 
-    const proxy = APIManager.getImpl(APISound.name, OP.PauseBGM);
-    proxy && (await proxy.runner(<APISound>model));
-  }
+  //   const proxy = APIManager.getImpl(APISound.name, OP.PauseBGM);
+  //   proxy && (await proxy.runner(<APISound>model));
+  // }
 
-  /**
-   * Represents a book.
-   * @constructor
-   * @param {string} title - The title of the book.
-   * @param {string} author - The author of the book.
-   */
-  export async function resumeBGM(options?: Sound) {
-    let model = new APISound();
-    model.data.track = SoundTrack.BGM;
+  // /**
+  //  * Represents a book.
+  //  * @constructor
+  //  * @param {string} title - The title of the book.
+  //  * @param {string} author - The author of the book.
+  //  */
+  // export async function resumeBGM(options?: Sound) {
+  //   let model = new APISound();
+  //   model.data.track = SoundTrack.BGM;
 
-    paramCompatible<APISound, SoundBGM>(model, options);
+  //   paramCompatible<APISound, SoundBGM>(model, options);
 
-    const proxy = APIManager.getImpl(APISound.name, OP.ResumeBGM);
-    proxy && (await proxy.runner(<APISound>model));
-  }
+  //   const proxy = APIManager.getImpl(APISound.name, OP.ResumeBGM);
+  //   proxy && (await proxy.runner(<APISound>model));
+  // }
 
-  export async function playVoice(filename: string, options?: Sound) {
-    let model = new APISound();
-    model.data.track = SoundTrack.Voice;
+  // export async function playVoice(filename: string, options?: Sound) {
+  //   let model = new APISound();
+  //   model.data.track = SoundTrack.Voice;
 
-    paramCompatible<APISound, Sound>(model, options, {
-      field: "file",
-      value: ResourceData.from(filename, ResourcePath.Voice)
-    });
+  //   paramCompatible<APISound, Sound>(model, options, {
+  //     field: "file",
+  //     value: ResourceData.from(filename, ResourcePath.Voice)
+  //   });
 
-    const proxy = APIManager.getImpl(APISound.name, OP.PlayVoice);
-    proxy && (await proxy.runner(<APISound>model));
-  }
+  //   const proxy = APIManager.getImpl(APISound.name, OP.PlayVoice);
+  //   proxy && (await proxy.runner(<APISound>model));
+  // }
 
-  export async function playSE(filename: string, options?: Sound) {
-    let model = new APISound();
-    model.data.track = SoundTrack.Voice;
+  // export async function playSE(filename: string, options?: Sound) {
+  //   let model = new APISound();
+  //   model.data.track = SoundTrack.Voice;
 
-    paramCompatible<APISound, Sound>(model, options, {
-      field: "file",
-      value: ResourceData.from(filename, ResourcePath.SE)
-    });
+  //   paramCompatible<APISound, Sound>(model, options, {
+  //     field: "file",
+  //     value: ResourceData.from(filename, ResourcePath.SE)
+  //   });
 
-    const proxy = APIManager.getImpl(APISound.name, OP.PlaySE);
-    proxy && (await proxy.runner(<APISound>model));
-  }
+  //   const proxy = APIManager.getImpl(APISound.name, OP.PlaySE);
+  //   proxy && (await proxy.runner(<APISound>model));
+  // }
 
-  export async function playBGS(filename: string, options?: Sound) {
-    let model = new APISound();
-    model.data.track = SoundTrack.Voice;
+  // export async function playBGS(filename: string, options?: Sound) {
+  //   let model = new APISound();
+  //   model.data.track = SoundTrack.Voice;
 
-    paramCompatible<APISound, Sound>(model, options, {
-      field: "file",
-      value: ResourceData.from(filename, ResourcePath.BGS)
-    });
+  //   paramCompatible<APISound, Sound>(model, options, {
+  //     field: "file",
+  //     value: ResourceData.from(filename, ResourcePath.BGS)
+  //   });
 
-    const proxy = APIManager.getImpl(APISound.name, OP.PlayBGS);
-    proxy && (await proxy.runner(<APISound>model));
-  }
+  //   const proxy = APIManager.getImpl(APISound.name, OP.PlayBGS);
+  //   proxy && (await proxy.runner(<APISound>model));
+  // }
 
   export async function wait(time: number, options: Timer) {
     if (Sandbox.isSkipMode) {
@@ -406,7 +405,7 @@ export namespace api {
     proxy && (await proxy.runner(<APIEffect>model));
   }
 
-  export async function animateScene(index: number, animateName: string, options: any) {}
+  export async function animateScene(index: number, animateName: string, options: any) { }
 
   export async function getVariable(name: string): Promise<any> {
     return Promise.resolve(APIVariable.get(name));
@@ -483,12 +482,21 @@ export namespace api {
   }
 
   export async function call(file: string) {
+
+
     let model = new APICallScript();
     model.scriptFile = ResourceData.from(file, ResourcePath.Scripts).filename;
+    console.log("api call:", model)
 
-    let story = new AVGStory();
-    await story.loadFromFile(model.scriptFile);
-    return await story.run();
+
+    // let story = new AVGStory();
+    // await story.loadFromFile(model.scriptFile);
+    // await story.run();
+
+    const r = await APIManager.getImpl(APICallScript.name, OP.CallScript).runner(<APICallScript>model);
+    console.log("r:", r);
+
+    return r;
   }
 
   export async function showImage(file: string, options: ScreenImage, isAsync: boolean = false) {
@@ -533,15 +541,15 @@ export namespace api {
     Setting[key] = value;
   }
 
-  export async function transitionTo(color: string, opacity: number, duration: number) {
-    const api = new APITransitionTo();
-    api.color = color || "#FFFFFF";
-    api.opacity = opacity;
-    api.duration = duration || 1000;
+  // export async function transitionTo(color: string, opacity: number, duration: number) {
+  //   const api = new APITransitionTo();
+  //   api.color = color || "#FFFFFF";
+  //   api.opacity = opacity;
+  //   api.duration = duration || 1000;
 
-    const proxy = APIManager.getImpl(APITransitionTo.name, OP.TransitionTo);
-    proxy && (await proxy.runner(<APITransitionTo>api));
-  }
+  //   const proxy = APIManager.getImpl(APITransitionTo.name, OP.TransitionTo);
+  //   proxy && (await proxy.runner(<APITransitionTo>api));
+  // }
 
   export async function startSkip() {
     Sandbox.isSkipMode = true;

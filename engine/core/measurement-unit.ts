@@ -8,11 +8,11 @@ export enum UnitType {
 
 // Match Rules:
 // '(42%,50%)', '(10%,50px)', '(42px,50px)', '(center, top)' ...
-const VectorRegex = /^(\((\-?\d+(?:%|px)|(?:[a-z]+)),(\-?\d+(?:%|px)|(?:[a-z]+))\))$/;
+const VectorRegex = /^(\(([+-]?[0-9]*[.]?[0-9]+(?:%|px)|(?:[a-z]+)),([+-]?[0-9]*[.]?[0-9]+(?:%|px)|(?:[a-z]+))\))$/;
 
 // Match Rules:
 // '42%', '35px', 'center' ..
-const ScalarRegex = /^(?:(\-?\d+)(%|px)|^([a-z]+)$)$/;
+const ScalarRegex = /^(?:([+-]?[0-9]*[.]?[0-9]+)(%|px)|^([a-z]+)$)$/;
 
 export class MeasurementUnitPart {
   private value: string = "";

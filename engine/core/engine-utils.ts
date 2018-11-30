@@ -64,6 +64,15 @@ export class EngineUtils {
     return filters;
   }
 
+
+  public static makeWidgetID(id: string, type?: string) {
+    if (type) {
+      return `widgets-generated-${type}-${id}`;
+    } else {
+      return `widgets-generated-${id}`;
+    }
+  };
+
   public static countTo(
     from: number,
     to: number,

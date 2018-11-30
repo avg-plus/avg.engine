@@ -7,12 +7,14 @@ import { api, SelectedDialogueChoice } from "../scripting/api";
 import { plugins } from "../scripting/api/api-plugins";
 import { Runtime } from "../data/runtime";
 import { AVGExportedAPI } from "../scripting/exports/avg-exported-api";
+import { AVGStory } from "../scripting/story";
 
 export class Sandbox {
   public done: () => void;
   public console = console;
   public api = (global["api"] = api);
   public $data = (global["$data"] = {});
+  public static storyQueue: AVGStory[] = [];
 
   AVGEngineError = (global["AVGEngineError"] = AVGEngineError);
 

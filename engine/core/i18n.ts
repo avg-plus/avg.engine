@@ -9,7 +9,7 @@ export class i18n {
 
     SCRIPTING_TRANSPILER_EXCEPTION: "脚本解释器错误",
     SCRIPTING_AVS_RUNTIME_EXCEPTION: "脚本运行时错误",
-    SCRIPTING_API_IVALID_ARGUMENTS: "非法 API 参数"
+    SCRIPTING_API_IVALID_ARGUMENTS: "非法 API 参数",
   };
 
   public static load(lang) {

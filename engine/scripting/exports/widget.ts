@@ -17,10 +17,8 @@ import { ResourceData } from "../../data/resource-data";
 import { ResourcePath } from "../../core/resource";
 import { paramCompatible } from "../../core/utils";
 import { APIHtmlWidget, HtmlWidgetResult } from "../api/api-html-widget-params";
-
-const makeWidgetID = (id: string) => {
-  return `widgets-generated-${id}`;
-};
+import { EngineUtils } from "../../core/engine-utils";
+import { Sandbox } from "../../core/sandbox";
 
 @APIExport("widget", EngineAPI_Widget)
 export class EngineAPI_Widget extends AVGExportedAPI {
@@ -31,7 +29,7 @@ export class EngineAPI_Widget extends AVGExportedAPI {
     Object.assign(model.data, options);
 
     // model.data.id = "Text_" + IDGenerator.generate();
-    model.data.id = makeWidgetID(id);
+    model.data.id = EngineUtils.makeWidgetID(id);
 
     model.data.text = text;
     model.data.position = options.position || ScreenPosition.Center;
@@ -52,7 +50,7 @@ export class EngineAPI_Widget extends AVGExportedAPI {
 
   public static async animateText(id: string, animation: WidgetAnimation) {
     let model = new APIScreenSubtitle();
-    model.data.id = makeWidgetID(id);
+    model.data.id = EngineUtils.makeWidgetID(id);
 
     const proxy = APIManager.getImpl(APIScreenSubtitle.name, OP.AnimateTextWidget);
     proxy && (await proxy.runner(<APIScreenSubtitle>model));
@@ -60,21 +58,10 @@ export class EngineAPI_Widget extends AVGExportedAPI {
 
   public static async updateText(id: string, text: string) {
     let model = new APIScreenSubtitle();
-    model.data.id = makeWidgetID(id);
+    model.data.id = EngineUtils.makeWidgetID(id);
     model.data.text = text;
 
     const proxy = APIManager.getImpl(APIScreenSubtitle.name, OP.UpdateTextWidget);
-
-    proxy && (await proxy.runner(<APIScreenSubtitle>model));
-  }
-
-  public static async removeText(id: string, options?: { animation?: WidgetAnimation }, isAsync: boolean = false) {
-    let model = new APIScreenSubtitle();
-    model.isAsync = isAsync;
-    model.data.id = makeWidgetID(id) || undefined;
-    model.data.animation = options ? options.animation || undefined : undefined;
-
-    const proxy = APIManager.getImpl(APIScreenSubtitle.name, OP.RemoveTextWidget);
 
     proxy && (await proxy.runner(<APIScreenSubtitle>model));
   }
@@ -86,7 +73,7 @@ export class EngineAPI_Widget extends AVGExportedAPI {
     Object.assign(model.data, options);
 
     // model.data.id = "Image_" + IDGenerator.generate();
-    model.data.id = makeWidgetID(id);
+    model.data.id = EngineUtils.makeWidgetID(id);
 
     model.data.file = ResourceData.from(file, ResourcePath.Images);
     model.data.position = options.position || ScreenPosition.Center;
@@ -100,19 +87,38 @@ export class EngineAPI_Widget extends AVGExportedAPI {
     return <ScreenImageResult>(
       await APIManager.getImpl(APIScreenImage.name, OP.ShowImageWidget).runner(<APIScreenImage>model)
     );
+
   }
+
+  public static async removeText(id: string, options?: { animation?: WidgetAnimation }, isAsync: boolean = false) {
+    let model = new APIScreenSubtitle();
+
+    if (id) {
+      model.isAsync = isAsync;
+      model.data.id = EngineUtils.makeWidgetID(id) || undefined;
+      model.data.animation = options ? options.animation || undefined : undefined;
+    }
+
+    const proxy = APIManager.getImpl(APIScreenSubtitle.name, OP.RemoveTextWidget);
+
+    proxy && (await proxy.runner(<APIScreenSubtitle>model));
+  }
+
 
   public static async removeImage(id: string, options: ScreenImage, isAsync: boolean = false) {
     let model = new APIScreenImage();
 
-    model.isAsync = isAsync;
-    model.data.id = makeWidgetID(id);
+    if (id) {
 
-    model.data.animation = new WidgetAnimation();
-    model.data.animation.name = ScreenWidgetAnimation.Leave_Hide;
+      model.isAsync = isAsync;
+      model.data.id = EngineUtils.makeWidgetID(id);
 
-    if (!model.data.animation.options) {
-      model.data.animation.options = new WidgetAnimation_HideOptions();
+      model.data.animation = new WidgetAnimation();
+      model.data.animation.name = ScreenWidgetAnimation.Leave_Hide;
+
+      if (!model.data.animation.options) {
+        model.data.animation.options = new WidgetAnimation_HideOptions();
+      }
     }
 
     paramCompatible<APIScreenImage, ScreenImage>(model, options);
@@ -124,7 +130,7 @@ export class EngineAPI_Widget extends AVGExportedAPI {
   public static async html(id: string, html: string) {
     let model = new APIHtmlWidget();
     model.data.html = html;
-    model.data.id = makeWidgetID(id);
+    model.data.id = EngineUtils.makeWidgetID(id);
 
     return <HtmlWidgetResult>(
       await APIManager.getImpl(APIScreenImage.name, OP.ShowHtmlWidget).runner(<APIHtmlWidget>model)

@@ -8,29 +8,42 @@ import { Renderer } from "../../data/renderer";
 import { APIManager } from "../api-manager";
 import { OP } from "../../const/op";
 import { APIAnimateCharacter } from "../api/api-animate-character";
-import { paramCompatible } from "../../core/utils";
+import { paramCompatible, mergeDeep } from "../../core/utils";
 import { Character } from "../../data/character";
 
 @APIExport("character", EngineAPI_Character)
 export class EngineAPI_Character extends AVGExportedAPI {
-  public static async show(filename: string, options?: Character) {
+  public static async show(id: string, filename: string, options?: Character) {
     let model = new APICharacter();
-    // model.data.slot = index;
-
+    model.id = EngineUtils.makeWidgetID(id);
     model.data.avatar = new Avatar();
-    
-    model.data = Object.assign(model.data, options);
-    // model.data.avatar = Object.assign(model.data.avatar, options.avatar);
+
+    model.data = mergeDeep(model.data, options);
 
     model.data.avatar.file = ResourceData.from(filename, ResourcePath.Characters).filename;
     if (EngineUtils.isNullOrUndefined(model.data.avatar.renderer)) {
       model.data.avatar.renderer = new Renderer();
     }
 
-    console.log(model);
-
     const proxy = APIManager.getImpl(APICharacter.name, OP.ShowCharacter);
-    proxy && (await proxy.runner(<APICharacter>model));
+    return await proxy.runner(<APICharacter>model);
+  }
+
+  public static async update(id: string, filename: string, options?: Character) {
+
+    let model = new APICharacter();
+    model.id = EngineUtils.makeWidgetID(id);
+    model.data.avatar = new Avatar();
+    model.data = mergeDeep(model.data, options);
+
+    model.data.avatar.file = ResourceData.from(filename, ResourcePath.Characters).filename;
+
+    if (options && options.renderer && options.renderer.filters) {
+      model.data.avatar.renderer.filters = options.renderer.filters;
+    }
+
+    const proxy = APIManager.getImpl(APICharacter.name, OP.UpdateCharacter);
+    return await proxy.runner(<APICharacter>model);
   }
 
   public static async animate(id: string, animateName: string, options: any) {
@@ -42,16 +55,23 @@ export class EngineAPI_Character extends AVGExportedAPI {
     proxy && (await proxy.runner(<APIAnimateCharacter>model));
   }
 
-  public static async hide(id: string) {
-    // if (!index) {
-    //   index = -1;
-    // }
+  public static async hide(id: string | string[]) {
 
-    let model = new APICharacter();
-    // model.data.slot = index;
+    let ids = [];
+    if (Array.isArray(id)) {
+      ids = id;
+    } else {
+      ids = [id];
+    }
 
-    paramCompatible<APICharacter, Avatar>(model, {});
-    const proxy = APIManager.getImpl(APICharacter.name, OP.HideCharacter);
-    proxy && (await proxy.runner(<APICharacter>model));
+    ids.map(async v => {
+      let model = new APICharacter();
+      model.id = EngineUtils.makeWidgetID(v);
+
+      const proxy = APIManager.getImpl(APICharacter.name, OP.HideCharacter);
+      return await proxy.runner(<APICharacter>model);
+    })
+
   }
+
 }

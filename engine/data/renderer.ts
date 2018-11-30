@@ -11,5 +11,5 @@ export class Renderer {
   // public offset_x: string = "0%"; // Only in percent
   // public offset_y: string = "0%"; // Only in percent
   public scale: number = 1;
-  public filter: Filter[] = [];
+  public filters: Filter[] = [];
 }

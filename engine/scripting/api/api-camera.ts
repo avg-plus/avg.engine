@@ -1,8 +1,13 @@
+import { CameraShakeData } from './../../data/camera-data';
 import { AVGScriptUnit } from "../script-unit";
 import { CameraData, CameraDirectorLayers } from "../../data";
 
-export class APICamera extends AVGScriptUnit {
+export class APICameraMove extends AVGScriptUnit {
   public layer: CameraDirectorLayers = CameraDirectorLayers.All;
   public duration: number = 1000;
   public data: CameraData = new CameraData();
+}
+
+export class APICameraShake extends AVGScriptUnit {
+  public data: CameraShakeData = new CameraShakeData();
 }

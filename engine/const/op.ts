@@ -2,21 +2,29 @@ export class OP {
   public static ShowText = "ShowText";
   public static HideText = "HideText";
   public static ShowCharacter = "ShowCharacter";
+  public static UpdateCharacter = "UpdateCharacter";
   public static AnimateCharacter = "AnimateCharacter";
   public static HideCharacter = "HideCharacter";
   public static ShowChioce = "ShowChoice";
   public static HideChioce = "HideChoice";
-  public static PlayBGM = "PlayBGM";
-  public static StopBGM = "StopBGM";
-  public static PauseBGM = "PauseBGM";
-  public static ResumeBGM = "ResumeBGM";
-  public static PlayVoice = "PlayVoice";
-  public static PlayBGS = "PlayBGS";
-  public static PlaySE = "PlaySE";
+  public static PlayAudio = "PlayAudio";
+  public static PauseAudio = "PauseAudio";
+  public static ResumeAudio = "ResumeAudio";
+  public static StopAudio = "StopAudio";
+  public static SetVolume = "SetVolume";
+
+  // public static PlayBGM = "PlayBGM";
+  // public static StopBGM = "StopBGM";
+  // public static PauseBGM = "PauseBGM";
+  // public static ResumeBGM = "ResumeBGM";
+  // public static PlayVoice = "PlayVoice";
+  // public static PlayBGS = "PlayBGS";
+  // public static PlaySE = "PlaySE";
   public static LoadScene = "LoadScene";
   public static RemoveScene = "RemoveScene";
   public static AnimateScene = "AnimateScene";
   public static Wait = "Wait";
+  public static CallScript = "CallScript";
   public static PlayEffect = "PlayEffect";
   public static StopEffect = "StopEffect";
   public static GotoTitleView = "GotoTitleView";
@@ -34,4 +42,5 @@ export class OP {
   public static StartSkip = "StartSkip";
   public static StopSkip = "StopSkip";
   public static MoveCamera = "MoveCamera";
+  public static ShakeCamera = "ShakeCamera";
 }

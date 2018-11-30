@@ -6,7 +6,6 @@ import { ResourcePath } from "../../core/resource";
 import { ResourceData } from "../../data/resource-data";
 import { APIManager } from "../api-manager";
 import { OP } from "../../const/op";
-import { SoundBGM } from "../../data/sound";
 import { APISound } from "../api/api-sound";
 import { SoundTrack } from "../../const/model";
 

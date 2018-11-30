@@ -24,12 +24,14 @@
     "url": "https://github.com/AngryPowman/avg.engine.git"
   },
   "dependencies": {
+    "@types/joi": "^14.0.0",
     "browser-path": "^0.0.1",
     "browserfs": "^1.4.3",
     "escodegen": "^1.9.1",
     "esprima": "^4.0.0",
     "estraverse": "^4.2.0",
-    "esutils": "^2.0.2"
+    "esutils": "^2.0.2",
+    "joi": "^14.0.6"
   },
   "devDependencies": {
     "@types/escodegen": "^0.0.6",

@@ -62,13 +62,17 @@ export class Transpiler {
               throw BreakException;
             }
           });
-        } catch (error) {}
+        } catch (error) { }
 
         if (calleeObj && calleeObj.name === "api") {
           isRegisteredCallee = true;
         }
 
-        return calleeObj && node.type === "CallExpression" && calleeObj.name && isRegisteredCallee;
+        if (isRegisteredCallee) {
+          return calleeObj && node.type === "CallExpression" && calleeObj.name && isRegisteredCallee;
+        }
+
+        return false;
       };
 
       // Fix esprima bug that leads to an error with wrong character index
@@ -135,7 +139,7 @@ export class Transpiler {
         +(async() => {
           try { 
             ${asyncTransformCode}
-            this.done(); 
+            this.done();
           } catch (err) {
             AVGEngineError.emit("${i18n.lang.SCRIPTING_AVS_RUNTIME_EXCEPTION}", err, {
               file: "${this._file}"
@@ -174,5 +178,5 @@ export class Transpiler {
     });
   }
 
-  private static _compile_error() {}
+  private static _compile_error() { }
 }
