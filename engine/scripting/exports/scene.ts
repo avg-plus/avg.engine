@@ -49,6 +49,11 @@ export class EngineAPI_Scene extends AVGExportedAPI {
 
     let proxy = APIManager.getImpl(APIScene.name, OP.LoadScene);
     if (proxy) {
+      Sandbox.runtime.update(OP.LoadScene, {
+        index: index,
+        filename: filename,
+        options: options
+      });
       return <SceneHandle>await proxy.runner(<APIScene>model);
     } else {
       return null;
@@ -59,6 +64,9 @@ export class EngineAPI_Scene extends AVGExportedAPI {
     let model = new APIScene();
     model.index = index;
 
+    Sandbox.runtime.update(OP.RemoveScene, {
+      index: index
+    });
     return <SceneHandle>await APIManager.getImpl(APIScene.name, OP.RemoveScene).runner(<APIScene>model);
   }
 

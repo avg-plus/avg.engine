@@ -223,10 +223,10 @@ export namespace api {
     let result: SelectedDialogueChoice;
     const proxy = APIManager.getImpl(APIDialogueChoice.name, OP.ShowChioce);
     if (isNull(proxy) && AVGGame.isLoading()) {
-      result = Sandbox.runtime.choices[AVGArchives.loadChoiceCount++];
+      // result = Sandbox.runtime.choices[AVGArchives.loadChoiceCount++];
     } else {
       result = <SelectedDialogueChoice>await proxy.runner(<APIDialogueChoice>model);
-      Sandbox.recordChoice(result);
+      // Sandbox.recordChoice(result);
     }
 
     return result;
@@ -497,6 +497,7 @@ export namespace api {
     // await story.loadFromFile(model.scriptFile);
     // await story.run();
 
+    Sandbox.runtime.update(OP.CallScript, { script: file });
     const r = await APIManager.getImpl(APICallScript.name, OP.CallScript).runner(<APICallScript>model);
     console.log("r:", r);
 

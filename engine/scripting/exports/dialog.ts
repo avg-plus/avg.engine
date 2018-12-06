@@ -29,10 +29,10 @@ export class EngineAPI_Dialog extends AVGExportedAPI {
     let result: SelectedDialogueChoice;
     const proxy = APIManager.getImpl(APIDialogueChoice.name, OP.ShowChioce);
     if (isNull(proxy) && AVGGame.isLoading()) {
-      result = Sandbox.runtime.choices[AVGArchives.loadChoiceCount++];
+      // result = Sandbox.runtime.choices[AVGArchives.loadChoiceCount++];
     } else {
       result = <SelectedDialogueChoice>await proxy.runner(<APIDialogueChoice>model);
-      Sandbox.recordChoice(result);
+      // Sandbox.recordChoice(result);
     }
 
     return result;

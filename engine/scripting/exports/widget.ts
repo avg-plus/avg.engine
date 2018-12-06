@@ -48,6 +48,13 @@ export class EngineAPI_Widget extends AVGExportedAPI {
       model.data.animation.options.duration = 0;
     }
 
+    Sandbox.runtime.update(OP.ShowTextWidget, {
+      id: id,
+      text: text,
+      options: options,
+      isAsync: isAsync,
+      op: OP.ShowTextWidget
+    });
     return <ScreenSubtitleResult>(
       await APIManager.getImpl(APIScreenSubtitle.name, OP.ShowTextWidget).runner(<APIScreenSubtitle>model)
     );
@@ -95,6 +102,13 @@ export class EngineAPI_Widget extends AVGExportedAPI {
 
     // paramCompatible<APIScreenImage, ScreenImage>(model, options);
 
+    Sandbox.runtime.update(OP.ShowImageWidget, {
+      id: id,
+      file: file,
+      options: options,
+      isAsync: isAsync,
+      op: OP.ShowImageWidget
+    });
     return <ScreenImageResult>(
       await APIManager.getImpl(APIScreenImage.name, OP.ShowImageWidget).runner(<APIScreenImage>model)
     );
@@ -117,6 +131,9 @@ export class EngineAPI_Widget extends AVGExportedAPI {
       }
     }
 
+    Sandbox.runtime.update(OP.RemoveTextWidget, {
+      id: id
+    });
     const proxy = APIManager.getImpl(APIScreenSubtitle.name, OP.RemoveTextWidget);
     proxy && (await proxy.runner(<APIScreenSubtitle>model));
   }
@@ -148,6 +165,9 @@ export class EngineAPI_Widget extends AVGExportedAPI {
       }
     }
 
+    Sandbox.runtime.update(OP.RemoveImageWidget, {
+      id: id
+    });
     const proxy = APIManager.getImpl(APIScreenImage.name, OP.RemoveImageWidget);
     proxy && (await proxy.runner(<APIScreenImage>model));
   }

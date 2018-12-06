@@ -23,6 +23,10 @@ export class AVGArchives {
     this._archives[index] = archive;
   }
 
+  public static isLoading(): boolean {
+    return this._isLoading;
+  }
+
   public static saveArchive(index: number, thumb: string) {
     let archive: Archive = new Archive();
     archive.timestamp = new Date().getTime();
@@ -31,6 +35,7 @@ export class AVGArchives {
     archive.runtime = Sandbox.runtime;
 
     console.log(archive.runtime);
+    console.log(JSON.stringify(archive.runtime));
     // this._archives[index] = archive;
     // this.saveToFile(index, archive);
   }

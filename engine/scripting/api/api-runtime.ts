@@ -1,6 +1,6 @@
 import { AVGScriptUnit } from "../script-unit";
 import { Subtitle } from "../../data/screen-subtitle";
-import { Runtime, AVGMusicState } from "../../data/runtime";
+// import { Runtime, AVGMusicState } from "../../data/runtime";
 import { ScreenImage } from "../../data/screen-image";
 import { Sound } from "../../data/sound";
 import { Dialogue, Avatar, Character, Sandbox } from "../..";

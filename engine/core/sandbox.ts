@@ -31,7 +31,7 @@ export class Sandbox {
   public static skipOptions: SkipOptions = {};
 
   public static runtime: Runtime = new Runtime();
-
+  
   public static recordChoice(selected: SelectedDialogueChoice) {
     this.runtime.choices.push(selected);
   }

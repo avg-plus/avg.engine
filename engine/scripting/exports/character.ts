@@ -10,6 +10,7 @@ import { OP } from "../../const/op";
 import { APIAnimateCharacter } from "../api/api-animate-character";
 import { paramCompatible, mergeDeep } from "../../core/utils";
 import { Character } from "../../data/character";
+import { Sandbox } from "../../core/sandbox";
 
 @APIExport("character", EngineAPI_Character)
 export class EngineAPI_Character extends AVGExportedAPI {
@@ -25,6 +26,11 @@ export class EngineAPI_Character extends AVGExportedAPI {
       model.data.avatar.renderer = new Renderer();
     }
 
+    Sandbox.runtime.update(OP.ShowCharacter, {
+      id: id,
+      filename: filename,
+      options: options
+    });
     const proxy = APIManager.getImpl(APICharacter.name, OP.ShowCharacter);
     return await proxy.runner(<APICharacter>model);
   }
@@ -68,6 +74,9 @@ export class EngineAPI_Character extends AVGExportedAPI {
       let model = new APICharacter();
       model.id = EngineUtils.makeWidgetID(v);
 
+      Sandbox.runtime.update(OP.HideCharacter, {
+        id: v
+      });
       const proxy = APIManager.getImpl(APICharacter.name, OP.HideCharacter);
       return await proxy.runner(<APICharacter>model);
     })
