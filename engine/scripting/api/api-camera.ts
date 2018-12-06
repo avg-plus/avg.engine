@@ -11,3 +11,9 @@ export class APICameraMove extends AVGScriptUnit {
 export class APICameraShake extends AVGScriptUnit {
   public data: CameraShakeData = new CameraShakeData();
 }
+
+export class APICameraTransitionTo extends AVGScriptUnit {
+  public color: string = "#FFFFFF";
+  public opacity: number = 1;
+  public duration: number = 1000;
+}

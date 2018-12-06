@@ -8,6 +8,7 @@ import { APIManager } from "../api-manager";
 import { OP } from "../../const/op";
 import { APISound } from "../api/api-sound";
 import { SoundTrack } from "../../const/model";
+import { Sandbox } from "../..";
 
 @APIExport("scene", EngineAPI_Scene)
 export class EngineAPI_Scene extends AVGExportedAPI {
@@ -40,6 +41,11 @@ export class EngineAPI_Scene extends AVGExportedAPI {
     // options.duration = options.duration;
     // options.transition = options.transition || "";
     Object.assign(model.data, options);
+
+    // 跳过模式处理，忽略时间
+    if (Sandbox.isSkipMode && Sandbox.skipOptions.scenes === true) {
+      model.data.duration = 0;
+    }
 
     let proxy = APIManager.getImpl(APIScene.name, OP.LoadScene);
     if (proxy) {

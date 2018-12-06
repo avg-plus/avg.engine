@@ -9,18 +9,19 @@ import { OP } from "../../const/op";
 @APIExport("flow", EngineAPI_Flow)
 export class EngineAPI_Flow extends AVGExportedAPI {
 
-  public static async wait(time: number, options: Timer) {
+  public static async wait(time: number /*, options: Timer*/) {
     if (Sandbox.isSkipMode) {
       return;
     }
 
     let model = new APITimer();
-    paramCompatible<APITimer, Timer>(model, options, {
-      field: "time",
-      value: time
-    });
+    model.data.time = time;
+    // paramCompatible<APITimer, Timer>(model, {}, {
+    //   field: "time",
+    //   value: time
+    // });
 
     const proxy = APIManager.getImpl(APITimer.name, OP.Wait);
-    return await proxy.runner(<APITimer>model);
+    await proxy.runner(<APITimer>model);
   }
 }

@@ -56,7 +56,6 @@ import { ResourcePath } from "../../core/resource";
 import { APIScreenImage, ScreenImageResult } from "./api-screen-image";
 import { ScreenImage } from "../../data/screen-image";
 import { IDGenerator } from "../../core/id-generator";
-import { APITransitionTo } from "./api-transition-to";
 import { APIAnimateCharacter } from "./api-animate-character";
 import { isNull } from "util";
 import { EngineUtils } from "../../core/engine-utils";
@@ -394,16 +393,21 @@ export namespace api {
     proxy && (await proxy.runner(<APIGotoTitleView>model));
   }
 
-  export async function effect(effectName: string, options: any) {
-    let model = new APIEffect();
-    // model.index = index;
-    model.data.effectName = effectName;
+  // export async function effect(effectName: string, options: any) {
+  //   let model = new APIEffect();
+  //   // model.index = index;
+  //   model.data.effectName = effectName;
 
-    paramCompatible<APIEffect, Effect>(model, options);
+  //   paramCompatible<APIEffect, Effect>(model, options);
+    
+  //   // 跳过模式处理，忽略时间
+  //   if (Sandbox.isSkipMode && Sandbox.skipOptions.scenes === true) {
+  //     model.data.duration = 0;
+  //   }
 
-    const proxy = APIManager.getImpl(APIEffect.name, OP.PlayEffect);
-    proxy && (await proxy.runner(<APIEffect>model));
-  }
+  //   const proxy = APIManager.getImpl(APIEffect.name, OP.PlayEffect);
+  //   proxy && (await proxy.runner(<APIEffect>model));
+  // }
 
   export async function animateScene(index: number, animateName: string, options: any) { }
 

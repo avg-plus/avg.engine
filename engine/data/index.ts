@@ -19,6 +19,7 @@ export * from './screen-subtitle';
 export * from './screen-widget-html';
 export * from './screen-widget';
 export * from './scripting-result';
+export * from './skip-options';
 export * from './sound';
 export * from './timer';
 export * from './variable';

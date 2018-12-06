@@ -43,6 +43,11 @@ export class EngineAPI_Widget extends AVGExportedAPI {
 
     // paramCompatible<APIScreenSubtitle, Subtitle>(model, options);
 
+    // 跳过模式处理，跳过不执行动画
+    if (Sandbox.isSkipMode && Sandbox.skipOptions.widgets === true) {
+      model.data.animation.options.duration = 0;
+    }
+
     return <ScreenSubtitleResult>(
       await APIManager.getImpl(APIScreenSubtitle.name, OP.ShowTextWidget).runner(<APIScreenSubtitle>model)
     );
@@ -82,6 +87,12 @@ export class EngineAPI_Widget extends AVGExportedAPI {
     model.data.animation.name = model.data.animation.name || ScreenWidgetAnimation.Enter_Appear;
     model.data.animation.options = model.data.animation.options || new WidgetAnimation_FadeInOptions();
 
+
+    // 跳过模式处理，跳过不执行动画
+    if (Sandbox.isSkipMode && Sandbox.skipOptions.widgets === true) {
+      model.data.animation.options.duration = 0;
+    }
+
     // paramCompatible<APIScreenImage, ScreenImage>(model, options);
 
     return <ScreenImageResult>(
@@ -99,8 +110,14 @@ export class EngineAPI_Widget extends AVGExportedAPI {
       model.data.animation = options ? options.animation || undefined : undefined;
     }
 
-    const proxy = APIManager.getImpl(APIScreenSubtitle.name, OP.RemoveTextWidget);
+    // 跳过模式处理，跳过不执行动画
+    if (Sandbox.isSkipMode && Sandbox.skipOptions.widgets === true) {
+      if (options && options.animation && options.animation.options) {
+        model.data.animation.options.duration = 0;
+      }
+    }
 
+    const proxy = APIManager.getImpl(APIScreenSubtitle.name, OP.RemoveTextWidget);
     proxy && (await proxy.runner(<APIScreenSubtitle>model));
   }
 
@@ -122,6 +139,14 @@ export class EngineAPI_Widget extends AVGExportedAPI {
     }
 
     paramCompatible<APIScreenImage, ScreenImage>(model, options);
+
+
+    // 跳过模式处理，跳过不执行动画
+    if (Sandbox.isSkipMode && Sandbox.skipOptions.widgets === true) {
+      if (options && options.animation && options.animation.options) {
+        model.data.animation.options.duration = 0;
+      }
+    }
 
     const proxy = APIManager.getImpl(APIScreenImage.name, OP.RemoveImageWidget);
     proxy && (await proxy.runner(<APIScreenImage>model));

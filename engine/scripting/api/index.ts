@@ -19,6 +19,5 @@ export * from './api-screen-subtitle';
 export * from './api-sound';
 export * from './api-timer';
 export * from './api-title-view';
-export * from './api-transition-to';
 export * from './api-variable';
 export * from './exports';

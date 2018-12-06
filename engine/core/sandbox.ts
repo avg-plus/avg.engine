@@ -1,3 +1,4 @@
+import { SkipOptions } from './../data/skip-options';
 import { AVGEngineError } from "./engine-errors";
 import { Character } from "../data/character";
 import { AVGScriptUnit } from "../scripting/script-unit";
@@ -26,10 +27,8 @@ export class Sandbox {
   /*
     - API Exports
   */
-  // public text = (global["text"] = EngineAPI_Text);
-  // public plugins = (global["plugins"] = plugins);
-
   public static isSkipMode: boolean = false; // Will skip all dialogues
+  public static skipOptions: SkipOptions = {};
 
   public static runtime: Runtime = new Runtime();
 
