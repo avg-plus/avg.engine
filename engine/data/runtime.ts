@@ -1,4 +1,4 @@
-import { Sound, SoundBGM } from "./sound";
+import { Sound } from "./sound";
 import { Subtitle } from "./screen-subtitle";
 import { ScreenImage } from "./screen-image";
 import { Avatar } from "./avatar";
@@ -18,15 +18,15 @@ export class AVGMusicState {
 
 export class Runtime {
 
-    public screenSubtitles: Array<Subtitle> = new Array<Subtitle>();
+    // public screenSubtitles: Array<Subtitle> = new Array<Subtitle>();
 
-    public screenImages: Array<ScreenImage> = new Array<ScreenImage>();
+    // public screenImages: Array<ScreenImage> = new Array<ScreenImage>();
 
-    public bgm: AVGMusicState;
+    // public bgm: AVGMusicState;
 
-    public dialogue: Dialogue;
+    // public dialogue: Dialogue;
     
-    public characters: Array<Character> = new Array<Character>(5);
+    // public characters: Array<Character> = new Array<Character>(5);
 
     public choices: Array<SelectedDialogueChoice> = new Array<SelectedDialogueChoice>();
 

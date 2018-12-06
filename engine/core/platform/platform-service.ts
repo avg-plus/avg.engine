@@ -43,4 +43,8 @@ export class PlatformService {
       this._platform === GameRunningPlatform.Linux
     );
   }
+
+  public static isWindowsDesktop() {
+    return this._platform === GameRunningPlatform.Windows ;
+  }
 }

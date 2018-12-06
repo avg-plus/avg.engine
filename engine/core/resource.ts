@@ -4,6 +4,7 @@ import { AVGNativeFS } from "../core/native-modules/avg-native-fs";
 
 export enum ResourcePath {
   // Audio
+  Audio,
   BGM,
   BGS,
   SE,
@@ -68,6 +69,7 @@ export class Resource {
       [ResourcePath.Images, AVGNativePath.join(this._assetsRoot, "graphics/images")],
       [ResourcePath.Characters, AVGNativePath.join(this._assetsRoot, "graphics/characters")],
       [ResourcePath.Scripts, AVGNativePath.join(this._assetsRoot, "scripts")],
+      [ResourcePath.Audio, AVGNativePath.join(this._assetsRoot, "audio")],
 
       // Data
       [ResourcePath.Masks, AVGNativePath.join(this._dataRoot, "masks")],

@@ -29,8 +29,10 @@ export class AVGArchives {
     archive.progressAt = APIManager.getCurrentAPILine();
     archive.thumbnail = thumb;
     archive.runtime = Sandbox.runtime;
-    this._archives[index] = archive;
-    this.saveToFile(index, archive);
+
+    console.log(archive.runtime);
+    // this._archives[index] = archive;
+    // this.saveToFile(index, archive);
   }
 
   public static loadArchive(index: number) {

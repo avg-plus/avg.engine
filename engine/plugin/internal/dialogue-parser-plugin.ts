@@ -1,3 +1,4 @@
+import { APIDialogueChoice } from './../../scripting/api/api-dialogue-choices';
 import { Dialogue } from "../../data";
 import { AVGPlugin } from "../avg-plugin";
 import { PluginInfo } from "../plugin-info";
@@ -23,6 +24,12 @@ export class DialogueParserPlugin extends AVGInternalPlugin {
     dialogue.name = DialogueParserPlugin.parseContent(dialogue.name);
   }
 
+  public onBeforeShowChoices(data: APIDialogueChoice) {
+    data.choices.map(v => {
+      v.title = DialogueParserPlugin.parseContent(v.title);
+    })
+  }
+
   public static parseContent(text: string) {
     // [b][/b] Bold
     // [color=red][/color] Change text color
@@ -31,6 +38,10 @@ export class DialogueParserPlugin extends AVGInternalPlugin {
     if (!text) {
       return "";
     }
+
+    // Replace spaces to '&nbsp;'
+    // text = text.replace(/ /g, "&nbsp;");
+    text = text.replace(/\n/g, "<br>");
 
     // Grammar: ${variable}
     let variableRegex = /\${(.*)}/;

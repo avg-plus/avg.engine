@@ -1,3 +1,4 @@
+import { AVGGame } from './../game';
 import { PlatformService } from "../platform";
 // const path = require("path");
 import * as path from "path";
@@ -7,6 +8,7 @@ export class AVGNativePath {
     // if (PlatformService.isDesktop()) {
     //   return path.join(paths);
     // } else {
+
     var parts = [];
     for (var i = 0, l = paths.length; i < l; i++) {
       if (!paths[i]) {

@@ -1,9 +1,10 @@
-import { Dialogue } from "../index";
+import { Dialogue, APIDialogueChoice } from "../index";
 import { PluginBase } from "./plugin-base";
 import { PluginInfo } from "./plugin-info";
 
 export enum AVGPluginHooks {
-  OnBeforeShowDialogue = "onBeforeShowDialogue"
+  OnBeforeShowDialogue = "onBeforeShowDialogue",
+  OnBeforeShowChoices = "onBeforeShowChoices"
 }
 
 function Plugin(info: { name: string; version: string; description: string }) {
@@ -22,6 +23,9 @@ export class AVGPlugin implements PluginBase {
 
   // > 显示对话前
   protected onBeforeShowDialogue(dialogue: Dialogue) {}
+
+  // > 显示选项前  
+  protected onBeforeShowChoices(dialogue: APIDialogueChoice) {}  
 
   // > 显示对话后
   protected onBeforeHideDialogue() {}

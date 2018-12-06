@@ -1,87 +1,105 @@
-import { AVGScriptUnit, RunnerFunction } from './script-unit';
-import { AVGArchives } from '../core/game-archives';
-import { AVGGame } from '..';
+import { AVGScriptUnit, RunnerFunction } from "./script-unit";
+import { AVGArchives } from "../core/game-archives";
+import { AVGGame, Sandbox } from "..";
 
-
-export type OP_Runner = { op: string, runner: RunnerFunction };
+export type OP_Runner = { op: string; runner: RunnerFunction };
 export type OP_RunnerContainer = Array<OP_Runner>;
 export type APITable = Map<string, OP_RunnerContainer>;
 
 export class APIManager {
+  private static _apis: APITable = new Map<string, OP_RunnerContainer>();
 
-    private static _apis: APITable = new Map<string, OP_RunnerContainer>();
+  private static _currentAPILine: number = 0;
 
-    private static _currentAPILine: number = 0;
+  private static _exportedClasses: Map<string, any> = new Map<string, any>();
 
-    public static extendImpl<T extends AVGScriptUnit>(typename: string, op: string, implRunner: RunnerFunction): void {
+  public static registerExportClass(name: string, t: any) {
+    this._exportedClasses.set(name, t);
+  }
 
-        if (!op) {
-            throw new Error('Invalid OP or runmer');
-        }
+  public static registeredClasses(): Map<string, any> {
+    return this._exportedClasses;
+  }
 
-        if (!this._apis) {
-            this._apis = new Map<string, OP_RunnerContainer>();
-        }
+  public static injectExports() {
+    this.registeredClasses().forEach((value, key) => {
+      Sandbox[key] = global[key] = value;
+    });
+  }
 
-        if (!implRunner) {
-            implRunner = (): Promise<AVGScriptUnit> => { return null; }
-        }
+  public static init() {
+    this.injectExports();
+  }
 
-        let opData = this.tryGetOP(typename, op);
-        if (opData) {
-            opData.runner = implRunner;
-        } else {
-            let container = this.tryCreateOPContainer(typename);
-            container.push({ op: op, runner: implRunner })
-
-            this._apis.set(typename, container);
-        }
-
-        console.log(`Registered API proxy: ${typename}::${op}`);
+  public static extendImpl<T extends AVGScriptUnit>(typename: string, op: string, implRunner: RunnerFunction): void {
+    if (!op) {
+      throw new Error("Invalid OP or runmer");
     }
 
-    public static getImpl(typename: string, op: string): OP_Runner {
-        this._currentAPILine++;
-        AVGArchives.postAPICall(this._currentAPILine);
-
-        if (AVGGame.isLoading()) {
-            return null;
-        } else {
-            return this.tryGetOP(typename, op);
-        }
+    if (!this._apis) {
+      this._apis = new Map<string, OP_RunnerContainer>();
     }
 
-    private static tryCreateOPContainer(typename: string) {
-        let container = this._apis.get(typename);
-        if (!container) {
-            container = new Array<OP_Runner>();
-            this._apis.set(typename, container);
-        }
-
-        return container;
-    }
-
-    private static tryGetOP(typename: string, op: string): OP_Runner {
-        const container = this._apis.get(typename);
-        if (!container) {
-            return null;
-        }
-
-        for (const opData of container) {
-            if (opData.op === op) {
-                return opData;
-            }
-        }
-
+    if (!implRunner) {
+      implRunner = (): Promise<AVGScriptUnit> => {
         return null;
+      };
     }
 
-    public static getCurrentAPILine() {
-        return this._currentAPILine;
+    let opData = this.tryGetOP(typename, op);
+    if (opData) {
+      opData.runner = implRunner;
+    } else {
+      let container = this.tryCreateOPContainer(typename);
+      container.push({ op: op, runner: implRunner });
+
+      this._apis.set(typename, container);
     }
 
-    public static resetCurrentAPILine() {
-        this._currentAPILine = 0;
+    // console.log(`Registered API proxy: ${typename}::${op}`);
+  }
+
+  public static getImpl(typename: string, op: string): OP_Runner {
+    this._currentAPILine++;
+    AVGArchives.postAPICall(this._currentAPILine);
+
+    if (AVGGame.isLoading()) {
+      return null;
+    } else {
+      return this.tryGetOP(typename, op);
     }
+  }
+
+  private static tryCreateOPContainer(typename: string) {
+    let container = this._apis.get(typename);
+    if (!container) {
+      container = new Array<OP_Runner>();
+      this._apis.set(typename, container);
+    }
+
+    return container;
+  }
+
+  private static tryGetOP(typename: string, op: string): OP_Runner {
+    const container = this._apis.get(typename);
+    if (!container) {
+      return null;
+    }
+
+    for (const opData of container) {
+      if (opData.op === op) {
+        return opData;
+      }
+    }
+
+    return null;
+  }
+
+  public static getCurrentAPILine() {
+    return this._currentAPILine;
+  }
+
+  public static resetCurrentAPILine() {
+    this._currentAPILine = 0;
+  }
 }
-

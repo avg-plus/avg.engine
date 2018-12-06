@@ -1,37 +1,43 @@
+import { AVGEngineError } from "./../core/engine-errors";
 // import * as fs from "fs";
 import * as esprima from "esprima";
 import * as escodegen from "escodegen";
 import * as estree from "estree";
 import { AVGNativeFS } from "../core/native-modules";
+import { AVGExportedAPI } from "./exports/avg-exported-api";
+import { APIManager } from "./api-manager";
+import { i18n } from "../core";
 
 export enum TranspilerError {
   None
 }
 
 export class Transpiler {
+  private static _file: string = "";
   static Error = {
     UnexpectedReservedKeyword: "UnexpectedReservedKeywordError: "
   };
 
   public static async transpile(file: string) {
+    this._file = file;
     const raw = await this._read(file);
     if (raw) {
       let compiled = this._preprocesser(raw);
     }
   }
 
-  public static transpileFromCode(code: string): string {
+  public static transpileFromCode(code: string, fromFile?: string): string {
     return this._preprocesser(code);
   }
 
   private static _preprocesser(code: string) {
-    if (code.indexOf("await ") >= 0) {
-      throw Transpiler.Error.UnexpectedReservedKeyword + "await";
-    }
+    // if (code.indexOf("await ") >= 0) {
+    //   throw Transpiler.Error.UnexpectedReservedKeyword + "await";
+    // }
 
-    if (code.indexOf("async ") >= 0) {
-      throw Transpiler.Error.UnexpectedReservedKeyword + "async";
-    }
+    // if (code.indexOf("async ") >= 0) {
+    //   throw Transpiler.Error.UnexpectedReservedKeyword + "async";
+    // }
 
     return this._transpile(code);
   }
@@ -40,78 +46,116 @@ export class Transpiler {
     let generated = code;
     let loc_pos: number[] = [];
 
-    const isAPICall = node => {
-      const callee = node.callee;
-      const calleeObj = (<any>callee).object;
+    try {
+      const isAPICall = node => {
+        const callee = node.callee;
+        const calleeObj = (<any>callee).object;
 
-      return (
-        calleeObj &&
-        node.type === "CallExpression" &&
-        calleeObj.name &&
-        (calleeObj.name === "api" || calleeObj.name === "plugins")
+        let isRegisteredCallee = false;
+
+        var BreakException = {};
+
+        try {
+          APIManager.registeredClasses().forEach((value, key) => {
+            if (key === calleeObj.name) {
+              isRegisteredCallee = true;
+              throw BreakException;
+            }
+          });
+        } catch (error) { }
+
+        if (calleeObj && calleeObj.name === "api") {
+          isRegisteredCallee = true;
+        }
+
+        if (isRegisteredCallee) {
+          return calleeObj && node.type === "CallExpression" && calleeObj.name && isRegisteredCallee;
+        }
+
+        return false;
+      };
+
+      // Fix esprima bug that leads to an error with wrong character index
+      // I dont know why this issue will appear
+      // code = "if(1) {" + code + "\n}";
+
+      // 'async' keyword transform
+      console.time("Compile Script Elapsed");
+      console.log("Starting async keyword transform AST generate ...");
+      let asyncTransformAST = esprima.parse(code, { range: false, attachComment: false }, (node, meta) => {
+        if (node.type === "ArrowFunctionExpression") {
+          node.async = true;
+        }
+      });
+
+      console.log("Regenerating async keyword transform code ...");
+      let asyncTransformCode = escodegen.generate(asyncTransformAST, {
+        // comment: false,
+        format: {
+          compact: false,
+          quotes: "double",
+          newline: "\n",
+          semicolons: true,
+          space: "",
+          preserveBlankLines: false,
+          safeConcatenation: true,
+          indent: {
+            style: "                     " // Dont remove this, it fix something strange
+          }
+        }
+      });
+
+      // Add 'await' keyword before every api calls
+      let program = esprima.parse(
+        asyncTransformCode,
+        {
+          range: true,
+          attachComment: false
+        },
+        (node, meta) => {
+          if (node.type === "CallExpression" && node.callee && isAPICall(node)) {
+            const pos = node.callee.range[0];
+            loc_pos.push(pos);
+          }
+        }
       );
-    };
 
-    // Fix esprima bug that leads to an error with wrong character index
-    // I dont know why this issue will appear
-    // code = "if(1) {" + code + "\n}";
+      const keyword = "await ";
+      for (let pos of loc_pos.reverse()) {
+        if (pos > 0) {
+          const a_part = asyncTransformCode.slice(0, pos);
+          const b_part = asyncTransformCode.slice(pos);
 
-    // 'async' keyword transform
-    console.time("Compile Script Elapsed");
-    console.log("Starting async keyword transform AST generate ...");
-    let asyncTransformAST = esprima.parse(code, { range: false, attachComment: false }, (node, meta) => {
-      if (node.type === "ArrowFunctionExpression") {
-        node.async = true;
-      }
-    });
-
-    console.log("Regenerating async keyword transform code ...");
-    let asyncTransformCode = escodegen.generate(asyncTransformAST, {
-      format: {
-        compact: false,
-        quotes: "double",
-        newline: "\n",
-        semicolons: true,
-        space: "",
-        preserveBlankLines: false,
-        safeConcatenation: true,
-        indent: {
-          style: "                     " // Dont remove this, it fix something strange
+          asyncTransformCode = [a_part, keyword, b_part].join("");
+        } else {
+          asyncTransformCode = [keyword, asyncTransformCode].join("");
         }
       }
-    });
 
-    // Add 'await' keyword before every api calls
-    let program = esprima.parse(
-      asyncTransformCode,
-      {
-        range: true,
-        attachComment: false
-      },
-      (node, meta) => {
-        if (node.type === "CallExpression" && node.callee && isAPICall(node)) {
-          const pos = node.callee.range[0];
-          loc_pos.push(pos);
-        }
-      }
-    );
+      // console.log("Regenerate code:", asyncTransformCode);
+      console.timeEnd("Compile Script Elapsed");
 
-    const keyword = "await ";
-    for (let pos of loc_pos.reverse()) {
-      if (pos > 0) {
-        const a_part = asyncTransformCode.slice(0, pos);
-        const b_part = asyncTransformCode.slice(pos);
+      generated = `
+        +(async() => {
+          try { 
+            ${asyncTransformCode}
+            this.done();
+          } catch (err) {
+            AVGEngineError.emit("${i18n.lang.SCRIPTING_AVS_RUNTIME_EXCEPTION}", err, {
+              file: "${this._file}"
+            });
+          }
+        })();`;
 
-        asyncTransformCode = a_part + keyword + b_part;
-      } else {
-        asyncTransformCode = keyword + asyncTransformCode;
-      }
+      return generated;
+    } catch (err) {
+      console.log(err);
+      AVGEngineError.emit(i18n.lang.SCRIPTING_TRANSPILER_EXCEPTION, err.description, {
+        code: generated,
+        index: err.index,
+        lineNumber: err.lineNumber
+      });
     }
-
-    // console.log("Regenerate code:", asyncTransformCode);
-    console.timeEnd("Compile Script Elapsed");
-
-    return `+(async() => {try { ${asyncTransformCode} \n this.done(); } catch (err) { console.error('Game runtime errors', err);}})();`;
   }
 
   private static async _read(file: string): Promise<string> {
@@ -134,5 +178,5 @@ export class Transpiler {
     });
   }
 
-  private static _compile_error() {}
+  private static _compile_error() { }
 }
