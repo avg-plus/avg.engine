@@ -61,6 +61,14 @@ export class EngineAPI_Audio extends AVGExportedAPI {
     proxy && (await proxy.runner(<APISound>model));
   }
 
+  public static async getTracks(): Promise<string[]> {
+
+    let model = new APISound();
+
+    const proxy = APIManager.getImpl(APISound.name, OP.GetAllTracks);
+    return <string[]>await proxy.runner(<APISound>model);
+  }
+
   public static async setVolume(track: string, value: number) {
     Setting.setVolume(track, value);
     

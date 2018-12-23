@@ -6,3 +6,6 @@ export class Effect extends AVGData {
     public strength?: number;
 }
 
+export class SnowEffect extends Effect {
+    
+}

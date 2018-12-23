@@ -16,7 +16,7 @@ import { APIScreenImage, ScreenImageResult } from "../api/api-screen-image";
 import { ResourceData } from "../../data/resource-data";
 import { ResourcePath } from "../../core/resource";
 import { paramCompatible } from "../../core/utils";
-import { APIHtmlWidget, HtmlWidgetResult } from "../api/api-html-widget-params";
+import { APIHtmlWidget, HtmlWidgetResult } from "../api/api-html-widget";
 import { EngineUtils } from "../../core/engine-utils";
 import { Sandbox } from "../../core/sandbox";
 
@@ -157,8 +157,11 @@ export class EngineAPI_Widget extends AVGExportedAPI {
     model.data.html = html;
     model.data.id = EngineUtils.makeWidgetID(id);
 
-    return <HtmlWidgetResult>(
-      await APIManager.getImpl(APIScreenImage.name, OP.ShowHtmlWidget).runner(<APIHtmlWidget>model)
-    );
+    const proxy = APIManager.getImpl(APIHtmlWidget.name, OP.ShowHtmlWidget);
+    proxy && (await proxy.runner(<APIHtmlWidget>model));
+
+    // return <HtmlWidgetResult>(
+    //   await APIManager.getImpl(APIHtmlWidget.name, OP.ShowHtmlWidget).runner(<APIHtmlWidget>model)
+    // );
   }
 }

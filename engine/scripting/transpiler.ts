@@ -132,11 +132,11 @@ export class Transpiler {
         }
       }
 
-      // console.log("Regenerate code:", asyncTransformCode);
       console.timeEnd("Compile Script Elapsed");
 
       generated = `
         +(async() => {
+          // setTimeout(function() { throw new Error("Execution time limit reached!") }, 2000);
           try { 
             ${asyncTransformCode}
             this.done();
@@ -149,7 +149,7 @@ export class Transpiler {
 
       return generated;
     } catch (err) {
-      console.log(err);
+      // console.log(err);
       AVGEngineError.emit(i18n.lang.SCRIPTING_TRANSPILER_EXCEPTION, err.description, {
         code: generated,
         index: err.index,

@@ -96,10 +96,14 @@ export class EngineAPI_Camera extends AVGExportedAPI {
     }
   }
 
-
   public static async effect(effectName: string, options: any) {
+
+    const schema = joi.object().keys({
+      effectName: joi.string().required(),
+    })
+
+
     let model = new APIEffect();
-    // model.index = index;
     model.data.effectName = effectName;
 
     paramCompatible<APIEffect, Effect>(model, options);
@@ -113,5 +117,9 @@ export class EngineAPI_Camera extends AVGExportedAPI {
 
     const proxy = APIManager.getImpl(APIEffect.name, OP.PlayEffect);
     proxy && (await proxy.runner(<APIEffect>model));
+  }
+
+  public static async stopEffect(effectName: string) {
+
   }
 }

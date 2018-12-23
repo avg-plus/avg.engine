@@ -1,3 +1,4 @@
+import { AVGGame } from '..';
 import { AVGEngineError } from "./../core/engine-errors";
 import * as vm from "vm";
 
@@ -10,14 +11,14 @@ import { i18n } from "../core";
 export class AVGStory {
   private static sanbox: Sandbox = new Sandbox();
 
-  private _scriptUnits: Array<AVGScriptUnit> = [];
-  private _cursor: number = 0;
+  // private _scriptUnits: Array<AVGScriptUnit> = [];
+  // private _cursor: number = 0;
   private _code: string;
   private _compiled: string;
   public static TracingScriptFile: string;
 
   // private static _scriptingHandle: Promise<{}> = null;
-  // private static _scriptingResolver = null;
+  private static _scriptingResolver = null;
   // private static _scriptingEvalInContext = null;
   constructor() { }
 
@@ -38,29 +39,21 @@ export class AVGStory {
     this._compiled = Transpiler.transpileFromCode(this._code);
   }
 
-  public UnsafeTerminate() {
+  public static UnsafeTerminate() {
     // AVGStory.sanbox._shouldForceTerminate = true;
     // AVGStory._scriptingEvalInContext.call(AVGStory.sanbox);
+
+    // AVGStory._scriptingResolver();
+  }
+
+  public async stop() {
+    AVGStory._scriptingResolver = null;
   }
 
   public async run() {
     return new Promise((resolve, reject) => {
       try {
         // AVGStory._scriptingResolver = resolve;
-
-
-        // 1. 每个实例用不同的 done
-        // 2. 记录 story stack
-
-        // AVGStory.sanbox.done = () => {
-        //   console.log("Script execute done:", AVGStory.TracingScriptFile);
-        //   console.log("storyQueue:", Sandbox.storyQueue);
-        //   resolve();
-        // };
-
-        // setTimeout(() => {
-        // resolve();
-        // }, 3000);
 
         // Universal
         const evalInContext = (js, context) => {
@@ -73,10 +66,12 @@ export class AVGStory {
 
         try {
 
+          AVGStory.sanbox.game = AVGGame.getInstance();
           const context = {
             ...AVGStory.sanbox,
             done: () => {
-              resolve();
+              if (resolve)
+                resolve();
             }
           };
 
