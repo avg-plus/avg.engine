@@ -35,6 +35,7 @@ export class EngineAPI_Character extends AVGExportedAPI {
     model.id = EngineUtils.makeWidgetID(id);
     model.data.avatar = new Avatar();
     model.data = mergeDeep(model.data, options);
+    model.data.position = options.position;
 
     model.data.avatar.file = ResourceData.from(filename, ResourcePath.Characters).filename;
 
