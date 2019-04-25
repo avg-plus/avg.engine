@@ -25,9 +25,17 @@ export enum GameRunningType {
   Loading
 }
 
+// 游戏是否加载完成
+export enum GameStatus {
+  Loading,    // 正在加载
+  Loaded      // 已进入主场景
+}
+
 export class AVGGame {
   private static DEFAULT_ENTRY_SCRIPT = "start.avs";
   private static _runningType: GameRunningType = GameRunningType.Normal;
+  private static _gameStatus: GameStatus = GameStatus.Loading;
+
   private static _instance: AVGGame;
   public static _entryStory: AVGStory = new AVGStory();
 
@@ -44,6 +52,14 @@ export class AVGGame {
 
   constructor(platform?: GameRunningPlatform, name?: string, screen?: Screen) {
     console.log("Game instance initialized.");
+  }
+
+  public static setGameStatus(status: GameStatus) {
+    this._gameStatus = status;
+  }
+
+  public static getGameStatus(): GameStatus {
+    return this._gameStatus;
   }
 
   public watch(event: string, cb: (data: any) => void) {

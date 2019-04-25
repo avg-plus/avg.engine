@@ -1,19 +1,44 @@
 import { AVGGame } from './../game';
 import { PlatformService } from "../platform";
-// const path = require("path");
-import * as path from "path";
+import { AVGNativeFSImpl } from 'app/common/filesystem/avg-native-fs-impl';
+import urljoin from "urljoin";
 
 export class AVGNativePath {
-  public static join(...paths: string[]): string {
-    // if (PlatformService.isDesktop()) {
-    //   return path.join(paths);
-    // } else {
 
-    var parts = [];
+
+  public static isHttpURL(url: string): boolean {
+    if (!url) {
+      return false;
+    }
+
+    return url.startsWith("http://") || url.startsWith("https://");
+  }
+
+  // 同时支持本地路径和HTTP URL
+  public static join(...paths: string[]): string {
+
+    if (!paths || paths.length === 0) {
+      return "";
+    }
+
+    let parts = [];
+
+    if (AVGNativePath.isHttpURL(paths[0])) {
+      for (let i = 0; i < paths.length - 1; ++i) {
+        if (!paths[i].endsWith("/")) {
+          paths[i] += "/";
+        }
+      }
+
+      const fullURL = urljoin(paths).join("");
+      return fullURL;
+    }
+
     for (var i = 0, l = paths.length; i < l; i++) {
       if (!paths[i]) {
         continue;
       }
+
       parts = parts.concat(paths[i].split("/"));
     }
 

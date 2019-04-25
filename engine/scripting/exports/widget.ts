@@ -87,7 +87,6 @@ export class EngineAPI_Widget extends AVGExportedAPI {
     model.data.animation.name = model.data.animation.name || ScreenWidgetAnimation.Enter_Appear;
     model.data.animation.options = model.data.animation.options || new WidgetAnimation_FadeInOptions();
 
-
     // 跳过模式处理，跳过不执行动画
     if (Sandbox.isSkipMode && Sandbox.skipOptions.widgets === true) {
       model.data.animation.options.duration = 0;
@@ -98,7 +97,34 @@ export class EngineAPI_Widget extends AVGExportedAPI {
     return <ScreenImageResult>(
       await APIManager.getImpl(APIScreenImage.name, OP.ShowImageWidget).runner(<APIScreenImage>model)
     );
+  }
 
+  public static async updateImage(id: string, file: string, options: ScreenImage, isAsync: boolean = false) {
+    let model = new APIScreenImage();
+    model.isAsync = isAsync;
+    model.data = new ScreenImage();
+    Object.assign(model.data, options);
+
+    // model.data.id = "Image_" + IDGenerator.generate();
+    model.data.id = EngineUtils.makeWidgetID(id);
+
+    model.data.file = ResourceData.from(file, ResourcePath.Images);
+    model.data.position = options.position || ScreenPosition.Center;
+    model.data.size = options.size || "100%";
+    model.data.animation = model.data.animation || new WidgetAnimation();
+    model.data.animation.name = model.data.animation.name || ScreenWidgetAnimation.Enter_Appear;
+    model.data.animation.options = model.data.animation.options || new WidgetAnimation_FadeInOptions();
+
+    // 跳过模式处理，跳过不执行动画
+    if (Sandbox.isSkipMode && Sandbox.skipOptions.widgets === true) {
+      model.data.animation.options.duration = 0;
+    }
+
+    // paramCompatible<APIScreenImage, ScreenImage>(model, options);
+
+    return <ScreenImageResult>(
+      await APIManager.getImpl(APIScreenImage.name, OP.UpdateImageWidget).runner(<APIScreenImage>model)
+    );
   }
 
   public static async removeText(id: string, options?: { animation?: WidgetAnimation }, isAsync: boolean = false) {
@@ -121,12 +147,10 @@ export class EngineAPI_Widget extends AVGExportedAPI {
     proxy && (await proxy.runner(<APIScreenSubtitle>model));
   }
 
-
   public static async removeImage(id: string, options: ScreenImage, isAsync: boolean = false) {
     let model = new APIScreenImage();
 
     if (id) {
-
       model.isAsync = isAsync;
       model.data.id = EngineUtils.makeWidgetID(id);
 
@@ -139,7 +163,6 @@ export class EngineAPI_Widget extends AVGExportedAPI {
     }
 
     paramCompatible<APIScreenImage, ScreenImage>(model, options);
-
 
     // 跳过模式处理，跳过不执行动画
     if (Sandbox.isSkipMode && Sandbox.skipOptions.widgets === true) {
