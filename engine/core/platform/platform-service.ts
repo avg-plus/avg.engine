@@ -1,5 +1,5 @@
 import { GameRunningPlatform } from "../../const/game-running-platform";
-import { game, AVGGame } from "../game";
+import { AVGGame } from "../game";
 
 export class PlatformService {
   private static _platform: GameRunningPlatform;

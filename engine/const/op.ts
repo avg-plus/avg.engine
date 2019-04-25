@@ -11,6 +11,7 @@ export class OP {
   public static PauseAudio = "PauseAudio";
   public static ResumeAudio = "ResumeAudio";
   public static StopAudio = "StopAudio";
+  public static GetAllTracks = "GetAllTracks";
   public static SetVolume = "SetVolume";
 
   // public static PlayBGM = "PlayBGM";

@@ -1,3 +1,4 @@
+import { AVGGame } from './game';
 import { SkipOptions } from './../data/skip-options';
 import { AVGEngineError } from "./engine-errors";
 import { Character } from "../data/character";
@@ -9,6 +10,7 @@ import { plugins } from "../scripting/api/api-plugins";
 import { Runtime } from "../data/runtime";
 import { AVGExportedAPI } from "../scripting/exports/avg-exported-api";
 import { AVGStory } from "../scripting/story";
+import { EventEmitter } from "events";
 
 export class Sandbox {
   public done: () => void;
@@ -18,6 +20,7 @@ export class Sandbox {
   public static storyQueue: AVGStory[] = [];
 
   AVGEngineError = (global["AVGEngineError"] = AVGEngineError);
+  public game = (global["game"]);
 
   public static inject(name: string, t: any) {
     Sandbox[name] = global[name] = t;
