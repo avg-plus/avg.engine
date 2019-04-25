@@ -34,10 +34,8 @@ export class Runtime {
 
     private _scenes = {};
 
-    private _widgets: {};
-
-    // private _
-
+    private _widgets = {};
+    
     public update(op: string, model: any) {
         if (AVGArchives.isLoading()) {
             return;
@@ -70,6 +68,14 @@ export class Runtime {
         }
     }
 
+    public fill(json) {
+        this._script = json.script;
+        this._characters = json._characters;
+        this._scenes = json._scenes;
+        this._widgets = json._widgets;
+        this.choices = json.choices;
+    }
+
     public load() {
         //  load character
         for (let id in this._characters) {
@@ -95,8 +101,5 @@ export class Runtime {
                     break;
             }
         }
-
-        //  load script
-        api.call(this._script);
     }
 }

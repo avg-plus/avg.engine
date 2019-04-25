@@ -7,6 +7,7 @@ export class Archive extends AVGData {
     public timestamp: number;
     public thumbnail: string;
     public runtime: Runtime;
+    public data = {};
 
     constructor(json: any = null) {
         super();
@@ -16,6 +17,7 @@ export class Archive extends AVGData {
             this.timestamp = json.timestamp;
             this.thumbnail = json.thumbnail;
             this.runtime = json.runtime;
+            this.data = json.data;
         }
     }
 }

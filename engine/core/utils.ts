@@ -24,6 +24,12 @@ export function mergeDeep(target, source) {
   return output;
 }
 
+export function deepCopy(target, source) {
+  let json = JSON.stringify(source);
+  json = JSON.parse(json);
+  return Object.assign(target, json);
+}
+
 export function paramCompatible<T extends AVGScriptUnit, U extends AVGData>(
   model: T,
   options?: any,

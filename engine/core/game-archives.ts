@@ -3,11 +3,13 @@ import { AVGGame, GameRunningType } from "./game";
 import { APIManager } from "../scripting/api-manager";
 import { Sandbox } from "./sandbox";
 import { AVGNativePath, AVGNativeFS } from "./native-modules";
+import { Runtime } from "../data";
+import { mergeDeep, deepCopy } from "./utils";
 
 export class AVGArchives {
   private static _archiveFilePath: string = "./archives";
 
-  private static _archives: Array<Archive>;
+  private static _archives: Array<Archive> = new Array<Archive>();
   private static _selectedArchive: number;
   private static _isLoading: boolean = false;
 
@@ -20,6 +22,7 @@ export class AVGArchives {
   private static appendArchive(index: number, archiveString: string) {
     let archiveJson: any = JSON.parse(archiveString);
     let archive: Archive = new Archive(archiveJson);
+    // this._archives.push(archive);
     this._archives[index] = archive;
   }
 
@@ -33,9 +36,9 @@ export class AVGArchives {
     archive.progressAt = APIManager.getCurrentAPILine();
     archive.thumbnail = thumb;
     archive.runtime = Sandbox.runtime;
+    archive.data = global["$data"];
 
-    console.log(archive.runtime);
-    console.log(JSON.stringify(archive.runtime));
+    this.appendArchive(0, JSON.stringify(archive));
     // this._archives[index] = archive;
     // this.saveToFile(index, archive);
   }
@@ -48,8 +51,11 @@ export class AVGArchives {
     this._selectedArchive = index;
     this._isLoading = true;
     this.loadChoiceCount = 0;
-    AVGGame.setRunningType(GameRunningType.Loading);
-    Sandbox.runtime = this._archives[index].runtime;
+    // AVGGame.setRunningType(GameRunningType.Loading);
+    Sandbox.runtime = deepCopy(Sandbox.runtime, this._archives[index].runtime);
+    // AVGGame.getInstance().start();
+    Sandbox.runtime.load();
+    global["$data"] = deepCopy(global["$data"], this._archives[index].data);
     return true;
   }
 

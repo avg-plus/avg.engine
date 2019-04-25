@@ -1,6 +1,8 @@
 import { AVGScriptUnit, RunnerFunction } from "./script-unit";
 import { AVGArchives } from "../core/game-archives";
 import { AVGGame, Sandbox } from "..";
+import { OP } from "../const";
+import { AVGData } from "../data";
 
 export type OP_Runner = { op: string; runner: RunnerFunction };
 export type OP_RunnerContainer = Array<OP_Runner>;
@@ -12,6 +14,8 @@ export class APIManager {
   private static _currentAPILine: number = 0;
 
   private static _exportedClasses: Map<string, any> = new Map<string, any>();
+
+  private static _emptyOP: OP_Runner = {op: 'empty', runner: async function (scriptUnit: AVGScriptUnit): Promise<any> {} }
 
   public static registerExportClass(name: string, t: any) {
     this._exportedClasses.set(name, t);
@@ -63,11 +67,7 @@ export class APIManager {
     this._currentAPILine++;
     AVGArchives.postAPICall(this._currentAPILine);
 
-    if (AVGGame.isLoading()) {
-      return null;
-    } else {
-      return this.tryGetOP(typename, op);
-    }
+    return AVGGame.isLoading() ? this._emptyOP : this.tryGetOP(typename, op);
   }
 
   private static tryCreateOPContainer(typename: string) {
