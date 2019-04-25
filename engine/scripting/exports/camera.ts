@@ -11,8 +11,9 @@ import { CameraData } from "../../data/camera-data";
 import * as joi from "joi";
 import { AVGEngineError } from "../../core/engine-errors";
 import { i18n, Sandbox, APIEffect, Effect, paramCompatible } from "../..";
+import { APIExportName } from '../api-export-name';
 
-@APIExport("camera", EngineAPI_Camera)
+@APIExport(APIExportName.Camera, EngineAPI_Camera)
 export class EngineAPI_Camera extends AVGExportedAPI {
   public static async to(layer: CameraDirectorLayers, data: CameraData, duration: number = 1000) {
     const camera = new APICameraMove();

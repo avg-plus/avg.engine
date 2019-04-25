@@ -6,8 +6,9 @@ import { paramCompatible } from "../../core/utils";
 import { APIManager } from "../api-manager";
 import { OP } from "../../const/op";
 import * as joi from "joi";
+import { APIExportName } from "../api-export-name";
 
-@APIExport("flow", EngineAPI_Flow)
+@APIExport(APIExportName.Flow, EngineAPI_Flow)
 export class EngineAPI_Flow extends AVGExportedAPI {
   private static intervalTables: any = {};
   private static timeoutTables: any = {};

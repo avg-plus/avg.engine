@@ -1,7 +1,8 @@
 import { InputKeys } from './../../core/input';
 import { APIExport, AVGExportedAPI } from "./avg-exported-api";
+import { APIExportName } from '../api-export-name';
 
-@APIExport("hotkey", EngineAPI_Hotkey)
+@APIExport(APIExportName.HotKey, EngineAPI_Hotkey)
 export class EngineAPI_Hotkey extends AVGExportedAPI {
 
   // public static bindHotkey(command: InputKeys, )

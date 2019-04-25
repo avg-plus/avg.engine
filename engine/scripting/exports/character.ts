@@ -11,8 +11,9 @@ import { APIAnimateCharacter } from "../api/api-animate-character";
 import { paramCompatible, mergeDeep } from "../../core/utils";
 import { Character } from "../../data/character";
 import { Sandbox } from "../../core/sandbox";
+import { APIExportName } from "../api-export-name";
 
-@APIExport("character", EngineAPI_Character)
+@APIExport(APIExportName.Character, EngineAPI_Character)
 export class EngineAPI_Character extends AVGExportedAPI {
   public static async show(id: string, filename: string, options?: Character) {
     let model = new APICharacter();
@@ -75,9 +76,9 @@ export class EngineAPI_Character extends AVGExportedAPI {
       let model = new APICharacter();
       model.id = EngineUtils.makeWidgetID(v);
 
-      Sandbox.runtime.update(OP.HideCharacter, {
-        id: v
-      });
+      // Sandbox.runtime.update(OP.HideCharacter, {
+      //   id: v
+      // });
       const proxy = APIManager.getImpl(APICharacter.name, OP.HideCharacter);
       return await proxy.runner(<APICharacter>model);
     })

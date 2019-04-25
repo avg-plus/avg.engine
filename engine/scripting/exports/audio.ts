@@ -8,8 +8,9 @@ import { ResourcePath } from "../../core/resource";
 import { APIManager } from "../api-manager";
 import { OP } from "../../const/op";
 import { Setting } from "../../core";
+import { APIExportName } from "../api-export-name";
 
-@APIExport("audio", EngineAPI_Audio)
+@APIExport(APIExportName.Audio, EngineAPI_Audio)
 export class EngineAPI_Audio extends AVGExportedAPI {
 
   public static async play(track: string, filename: string, options?: Sound) {

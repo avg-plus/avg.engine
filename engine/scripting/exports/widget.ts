@@ -19,8 +19,9 @@ import { paramCompatible } from "../../core/utils";
 import { APIHtmlWidget, HtmlWidgetResult } from "../api/api-html-widget";
 import { EngineUtils } from "../../core/engine-utils";
 import { Sandbox } from "../../core/sandbox";
+import { APIExportName } from "../api-export-name";
 
-@APIExport("widget", EngineAPI_Widget)
+@APIExport(APIExportName.Widget, EngineAPI_Widget)
 export class EngineAPI_Widget extends AVGExportedAPI {
   public static async text(id: string, text: string, options?: Subtitle, isAsync: boolean = false) {
     let model = new APIScreenSubtitle();
@@ -188,9 +189,9 @@ export class EngineAPI_Widget extends AVGExportedAPI {
       }
     }
 
-    Sandbox.runtime.update(OP.RemoveImageWidget, {
-      id: id
-    });
+    // Sandbox.runtime.update(OP.RemoveImageWidget, {
+    //   id: id
+    // });
     const proxy = APIManager.getImpl(APIScreenImage.name, OP.RemoveImageWidget);
     proxy && (await proxy.runner(<APIScreenImage>model));
   }

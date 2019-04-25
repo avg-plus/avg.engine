@@ -9,8 +9,9 @@ import { OP } from "../../const/op";
 import { APISound } from "../api/api-sound";
 import { SoundTrack } from "../../const/model";
 import { Sandbox } from "../..";
+import { APIExportName } from "../api-export-name";
 
-@APIExport("scene", EngineAPI_Scene)
+@APIExport(APIExportName.Scene, EngineAPI_Scene)
 export class EngineAPI_Scene extends AVGExportedAPI {
   /**
    * Load scene with image filename

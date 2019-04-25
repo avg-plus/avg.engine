@@ -1,8 +1,9 @@
 import { SkipOptions } from './../../data/skip-options';
 import { APIExport, AVGExportedAPI } from "./avg-exported-api";
 import { Sandbox } from '../../core/sandbox';
+import { APIExportName } from '../api-export-name';
 
-@APIExport("system", EngineAPI_System)
+@APIExport(APIExportName.System, EngineAPI_System)
 export class EngineAPI_System extends AVGExportedAPI {
 
   public static async enabledSkipMode(options?: SkipOptions) {

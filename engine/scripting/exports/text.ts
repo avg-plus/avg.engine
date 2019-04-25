@@ -17,8 +17,9 @@ import { AVGGame } from "../../core/game";
 import { AVGArchives } from "../../core/game-archives";
 import { Transpiler } from "../transpiler";
 import { AVGExportedAPI, APIExport } from "./avg-exported-api";
+import { APIExportName } from "../api-export-name";
 
-@APIExport("text", EngineAPI_Text)
+@APIExport(APIExportName.Text, EngineAPI_Text)
 export class EngineAPI_Text extends AVGExportedAPI {
   /**
    * Show dialogue box

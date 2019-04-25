@@ -10,8 +10,9 @@ import { AVGArchives } from "../../core/game-archives";
 import { InputData, InputBoxResult } from "../../data/input-data";
 import { APIInputBox } from "../api/api-input-box";
 import { AVGData } from "../../data/avg-data";
+import { APIExportName } from "../api-export-name";
 
-@APIExport("dialog", EngineAPI_Dialog)
+@APIExport(APIExportName.Dialog, EngineAPI_Dialog)
 export class EngineAPI_Dialog extends AVGExportedAPI {
   public static async choices(
     choices: Array<string>,

@@ -1,6 +1,6 @@
 import { AVGScriptUnit, RunnerFunction } from "./script-unit";
 import { AVGArchives } from "../core/game-archives";
-import { AVGGame, Sandbox } from "..";
+import { AVGGame, Sandbox } from "../";
 import { OP } from "../const";
 import { AVGData } from "../data";
 
@@ -19,6 +19,10 @@ export class APIManager {
 
   public static registerExportClass(name: string, t: any) {
     this._exportedClasses.set(name, t);
+  }
+
+  public static getAPIClass(name: string) {
+    return this._exportedClasses.get(name);
   }
 
   public static registeredClasses(): Map<string, any> {

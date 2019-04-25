@@ -3,7 +3,6 @@ import { AVGGame, GameRunningType } from "./game";
 import { APIManager } from "../scripting/api-manager";
 import { Sandbox } from "./sandbox";
 import { AVGNativePath, AVGNativeFS } from "./native-modules";
-import { Runtime } from "../data";
 import { mergeDeep, deepCopy } from "./utils";
 
 export class AVGArchives {
@@ -39,8 +38,8 @@ export class AVGArchives {
     archive.data = global["$data"];
 
     this.appendArchive(0, JSON.stringify(archive));
-    // this._archives[index] = archive;
-    // this.saveToFile(index, archive);
+    this._archives[index] = archive;
+    this.saveToFile(index, archive);
   }
 
   public static loadArchive(index: number) {
@@ -51,7 +50,7 @@ export class AVGArchives {
     this._selectedArchive = index;
     this._isLoading = true;
     this.loadChoiceCount = 0;
-    // AVGGame.setRunningType(GameRunningType.Loading);
+    AVGGame.setRunningType(GameRunningType.Loading);
     Sandbox.runtime = deepCopy(Sandbox.runtime, this._archives[index].runtime);
     // AVGGame.getInstance().start();
     Sandbox.runtime.load();

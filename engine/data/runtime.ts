@@ -1,13 +1,9 @@
 import { AVGScriptUnit } from "../scripting/script-unit";
 import { APIDialogueChoice, SelectedDialogueChoice } from "../scripting/api/api-dialogue-choices";
 import { OP } from "../const/op";
-import { api } from "../scripting/api/exports"
-import { EngineAPI_Character } from "../scripting/exports/character";
-import { Character } from "./character";
-import { EngineAPI_Scene, EngineAPI_Widget } from "../scripting/exports";
-import { Scene } from "./scene";
-import { AVGArchives } from "../core";
-// import {  } from ./sel;
+import { AVGArchives } from "../core/game-archives";
+import { APIManager } from "../scripting";
+import { APIExportName } from "../scripting/api-export-name";
 
 export class RuntimeState {
 
@@ -25,6 +21,10 @@ export class RuntimeState {
 }
 
 export class Runtime {
+
+    public static register() {
+
+    }
 
     public choices: Array<SelectedDialogueChoice> = new Array<SelectedDialogueChoice>();
 
@@ -80,13 +80,13 @@ export class Runtime {
         //  load character
         for (let id in this._characters) {
             let chr = this._characters[id];
-            EngineAPI_Character.show(chr.id, chr.filename, <Character> chr.options);
+            APIManager.getAPIClass(APIExportName.Character).show(chr.id, chr.filename, chr.options);
         }
 
         //  load scene
         for (let index in this._scenes) {
             let scene = this._scenes[index];
-            EngineAPI_Scene.load(scene.index, scene.filename, <Scene> scene.options);
+            APIManager.getAPIClass(APIExportName.Scene).load(scene.index, scene.filename, scene.options);
         }
 
         //  load widget
@@ -94,10 +94,10 @@ export class Runtime {
             let widget = this._widgets[id];
             switch (widget.op) {
                 case OP.ShowTextWidget:
-                    EngineAPI_Widget.text(widget.id, widget.text, widget.options, widget.isAsync);
+                    APIManager.getAPIClass(APIExportName.Widget).text(widget.id, widget.text, widget.options, widget.isAsync);
                     break;
                 case OP.ShowImageWidget:
-                    EngineAPI_Widget.image(widget.id, widget.filename, widget.options, widget.isAsync);
+                    APIManager.getAPIClass(APIExportName.Widget).image(widget.id, widget.filename, widget.options, widget.isAsync);
                     break;
             }
         }
