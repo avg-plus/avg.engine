@@ -83,7 +83,7 @@ export class Setting {
 
     public static parseFromSettings(settings: string) {
         try {
-            this.settings = JSON.parse(settings);
+            Setting.settings = JSON.parse(settings);
             console.log(`Loaded settings: `, this.settings);
         } catch (err) {
             console.error(`Load settings failed:`, err);

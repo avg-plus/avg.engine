@@ -3,10 +3,7 @@
   "scripts": {
     "start": "npm run build:watch",
     "build": "tsc -p tsconfig.json",
-    "build:watch": "tsc -p tsconfig.json -w",
-    "prepublishOnly": "cp ./package.json ./dist",
-    "prepare": "npm run build",
-    "test": "cp test/*.avs dist/test && node ./dist/test/app.js"
+    "build:watch": "tsc -p tsconfig.json -w"
   },
   "version": "0.1.17",
   "main": "./engine/index.js",
@@ -32,7 +29,8 @@
     "estraverse": "^4.2.0",
     "esutils": "^2.0.2",
     "events": "^3.0.0",
-    "joi": "^14.0.6"
+    "joi": "^14.0.6",
+    "urljoin": "^0.1.5"
   },
   "devDependencies": {
     "@types/escodegen": "^0.0.6",

@@ -43,6 +43,10 @@ export class Transpiler {
   }
 
   private static _transpile(code: string) {
+    if (!code) {
+      return "";
+    }
+
     let generated = code;
     let loc_pos: number[] = [];
 
