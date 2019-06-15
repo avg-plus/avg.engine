@@ -1,6 +1,6 @@
-import { EngineAPI_Flow } from './flow';
+import { EngineAPI_Flow } from "./flow";
 
-import { APICameraShake, APICameraTransitionTo } from './../api/api-camera';
+import { APICameraShake, APICameraTransitionTo } from "./../api/api-camera";
 import { CameraDirectorLayers, CameraShakeData } from "./../../data/camera-data";
 import { APIExport, AVGExportedAPI } from "./avg-exported-api";
 import { APIManager } from "../api-manager";
@@ -30,21 +30,40 @@ export class EngineAPI_Camera extends AVGExportedAPI {
   }
 
   public static async shake(options: CameraShakeData) {
-
     const schema = joi.object().keys({
-      horizontal: joi.number().min(0).default(10),
-      vertical: joi.number().min(0).default(10),
-      rotation: joi.number().min(0).default(5),
-      duration: joi.number().min(1).default(1000).required(),
-      count: joi.number().allow(["infinite"]).min(-1).not(0).max(999999).default(5).required(),
-    })
+      horizontal: joi
+        .number()
+        .min(0)
+        .default(10),
+      vertical: joi
+        .number()
+        .min(0)
+        .default(10),
+      rotation: joi
+        .number()
+        .min(0)
+        .default(5),
+      duration: joi
+        .number()
+        .min(1)
+        .default(1000)
+        .required(),
+      count: joi
+        .number()
+        .allow(["infinite"])
+        .min(-1)
+        .not(0)
+        .max(999999)
+        .default(5)
+        .required()
+    });
 
     const validateResult = super.APIParametersValidate(schema, options);
 
     const api = new APICameraShake();
     api.data = validateResult;
 
-    // 跳过模式处理，跳过不执行镜头抖动  
+    // 跳过模式处理，跳过不执行镜头抖动
     if (Sandbox.isSkipMode && Sandbox.skipOptions.cameras === true) {
       api.data.duration = 0;
       return;
@@ -54,9 +73,7 @@ export class EngineAPI_Camera extends AVGExportedAPI {
     proxy && (await proxy.runner(<APICameraShake>api));
   }
 
-  public static async stopShake() {
-
-  }
+  public static async stopShake() {}
 
   public static async transitionTo(color: string, opacity: number, duration: number) {
     const api = new APICameraTransitionTo();
@@ -75,13 +92,26 @@ export class EngineAPI_Camera extends AVGExportedAPI {
   }
 
   public static async flash(color: string, opacity: number, duration: number, count: number = 1) {
-
     const schema = joi.object().keys({
       color: joi.string().required(),
-      opacity: joi.number().min(0).default(255).required(),
-      duration: joi.number().min(1).default(50).required(),
-      count: joi.number().allow(["infinite"]).min(-1).not(0).max(999999).default(1),
-    })
+      opacity: joi
+        .number()
+        .min(0)
+        .default(255)
+        .required(),
+      duration: joi
+        .number()
+        .min(1)
+        .default(50)
+        .required(),
+      count: joi
+        .number()
+        .allow(["infinite"])
+        .min(-1)
+        .not(0)
+        .max(999999)
+        .default(1)
+    });
 
     const validateResult = super.APIParametersValidate(schema, { color, opacity, duration, count });
     if (validateResult) {
@@ -97,11 +127,9 @@ export class EngineAPI_Camera extends AVGExportedAPI {
   }
 
   public static async effect(effectName: string, options: any) {
-
     const schema = joi.object().keys({
-      effectName: joi.string().required(),
-    })
-
+      effectName: joi.string().required()
+    });
 
     let model = new APIEffect();
     model.data.effectName = effectName;
@@ -119,7 +147,5 @@ export class EngineAPI_Camera extends AVGExportedAPI {
     proxy && (await proxy.runner(<APIEffect>model));
   }
 
-  public static async stopEffect(effectName: string) {
-
-  }
+  public static async stopEffect(effectName: string) {}
 }

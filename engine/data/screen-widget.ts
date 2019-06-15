@@ -83,9 +83,11 @@ export class ScreenWidget {
   private _widgetType: ScreenWidgetType;
   private _position: string = new AVGMeasurementUnit("0%", "0%").getValue();
 
-  public id: string;
-  public x: string;
-  public y: string;
+  public name: string;
+  private x: number;
+  private y: number;
+  public xUnit: string;
+  public yUnit: string;
 
   public get position() {
     return this._position;
@@ -95,12 +97,15 @@ export class ScreenWidget {
     const units = AVGMeasurementUnit.fromString(value);
 
     if (units) {
-      this.x = units.getLeft() ? units.getLeft().getValue() : "0%";
-      this.y = units.getRight() ? units.getRight().getValue() : "0%";
+      this.xUnit = units.getLeft() ? units.getLeft().getValue() : "0%";
+      this.yUnit = units.getRight() ? units.getRight().getValue() : "0%";
 
       // If not a pair, make it a pair
       if (!units.isPairUnit()) {
-        this._position = new AVGMeasurementUnit(units.getLeft().getValue(), "0%").getValue();
+        this._position = new AVGMeasurementUnit(
+          units.getLeft().getValue(),
+          "0%"
+        ).getValue();
       } else {
         this._position = units.getValue();
       }

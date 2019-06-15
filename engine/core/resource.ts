@@ -35,6 +35,10 @@ export class Resource {
   private static _dataRoot: string;
 
   public static init(assetsRoot: string, dataRoot: string) {
+    if (!assetsRoot || !dataRoot) {
+      alert();
+    }
+
     this._assetsRoot = assetsRoot;
     this._dataRoot = dataRoot;
 
@@ -65,9 +69,18 @@ export class Resource {
       [ResourcePath.BGS, AVGNativePath.join(this._assetsRoot, "audio/bgs")],
       [ResourcePath.SE, AVGNativePath.join(this._assetsRoot, "audio/se")],
       [ResourcePath.Voice, AVGNativePath.join(this._assetsRoot, "audio/voice")],
-      [ResourcePath.Backgrounds, AVGNativePath.join(this._assetsRoot, "graphics/backgrounds")],
-      [ResourcePath.Images, AVGNativePath.join(this._assetsRoot, "graphics/images")],
-      [ResourcePath.Characters, AVGNativePath.join(this._assetsRoot, "graphics/characters")],
+      [
+        ResourcePath.Backgrounds,
+        AVGNativePath.join(this._assetsRoot, "graphics/backgrounds")
+      ],
+      [
+        ResourcePath.Images,
+        AVGNativePath.join(this._assetsRoot, "graphics/images")
+      ],
+      [
+        ResourcePath.Characters,
+        AVGNativePath.join(this._assetsRoot, "graphics/characters")
+      ],
       [ResourcePath.Scripts, AVGNativePath.join(this._assetsRoot, "scripts")],
       [ResourcePath.Audio, AVGNativePath.join(this._assetsRoot, "audio")],
 

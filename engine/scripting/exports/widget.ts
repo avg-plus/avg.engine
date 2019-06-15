@@ -29,7 +29,7 @@ export class EngineAPI_Widget extends AVGExportedAPI {
     Object.assign(model.data, options);
 
     // model.data.id = "Text_" + IDGenerator.generate();
-    model.data.id = EngineUtils.makeWidgetID(id);
+    model.data.name = EngineUtils.makeWidgetID(id);
 
     model.data.text = text;
     model.data.position = options.position || ScreenPosition.Center;
@@ -55,7 +55,7 @@ export class EngineAPI_Widget extends AVGExportedAPI {
 
   public static async animateText(id: string, animation: WidgetAnimation) {
     let model = new APIScreenSubtitle();
-    model.data.id = EngineUtils.makeWidgetID(id);
+    model.data.name = EngineUtils.makeWidgetID(id);
 
     const proxy = APIManager.getImpl(APIScreenSubtitle.name, OP.AnimateTextWidget);
     proxy && (await proxy.runner(<APIScreenSubtitle>model));
@@ -63,7 +63,7 @@ export class EngineAPI_Widget extends AVGExportedAPI {
 
   public static async updateText(id: string, text: string) {
     let model = new APIScreenSubtitle();
-    model.data.id = EngineUtils.makeWidgetID(id);
+    model.data.name = EngineUtils.makeWidgetID(id);
     model.data.text = text;
 
     const proxy = APIManager.getImpl(APIScreenSubtitle.name, OP.UpdateTextWidget);
@@ -78,7 +78,7 @@ export class EngineAPI_Widget extends AVGExportedAPI {
     Object.assign(model.data, options);
 
     // model.data.id = "Image_" + IDGenerator.generate();
-    model.data.id = EngineUtils.makeWidgetID(id);
+    model.data.name = EngineUtils.makeWidgetID(id);
 
     model.data.file = ResourceData.from(file, ResourcePath.Images);
     model.data.position = options.position || ScreenPosition.Center;
@@ -106,7 +106,7 @@ export class EngineAPI_Widget extends AVGExportedAPI {
     Object.assign(model.data, options);
 
     // model.data.id = "Image_" + IDGenerator.generate();
-    model.data.id = EngineUtils.makeWidgetID(id);
+    model.data.name = EngineUtils.makeWidgetID(id);
 
     model.data.file = ResourceData.from(file, ResourcePath.Images);
     model.data.position = options.position || ScreenPosition.Center;
@@ -132,7 +132,7 @@ export class EngineAPI_Widget extends AVGExportedAPI {
 
     if (id) {
       model.isAsync = isAsync;
-      model.data.id = EngineUtils.makeWidgetID(id) || undefined;
+      model.data.name = EngineUtils.makeWidgetID(id) || undefined;
       model.data.animation = options ? options.animation || undefined : undefined;
     }
 
@@ -152,7 +152,7 @@ export class EngineAPI_Widget extends AVGExportedAPI {
 
     if (id) {
       model.isAsync = isAsync;
-      model.data.id = EngineUtils.makeWidgetID(id);
+      model.data.name = EngineUtils.makeWidgetID(id);
 
       model.data.animation = new WidgetAnimation();
       model.data.animation.name = ScreenWidgetAnimation.Leave_Hide;
@@ -178,7 +178,7 @@ export class EngineAPI_Widget extends AVGExportedAPI {
   public static async html(id: string, html: string) {
     let model = new APIHtmlWidget();
     model.data.html = html;
-    model.data.id = EngineUtils.makeWidgetID(id);
+    model.data.name = EngineUtils.makeWidgetID(id);
 
     const proxy = APIManager.getImpl(APIHtmlWidget.name, OP.ShowHtmlWidget);
     proxy && (await proxy.runner(<APIHtmlWidget>model));

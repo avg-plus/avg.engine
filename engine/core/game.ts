@@ -1,24 +1,19 @@
-import { EngineAPI_Camera } from './../scripting/exports/camera';
-import { EngineAPI_Flow } from './../scripting/exports/flow';
-import * as fs from "fs";
-import { EventEmitter } from 'events';
+import { EngineAPI_Camera } from "./../scripting/exports/camera";
+import { EngineAPI_Flow } from "./../scripting/exports/flow";
+import { EventEmitter } from "events";
 
 import { AVGStory } from "../scripting/story";
-import { AVGScriptUnit } from "../scripting/script-unit";
 import { GameRunningPlatform } from "../const/game-running-platform";
 
 // import * as path from 'path';
 import { AVGNativePath } from "../core/native-modules/avg-native-path";
 import { Screen } from "../const/model";
 import { Transition } from "./transition";
-import { PluginManager, PlatformService, AVGNativeFS } from "../index";
-import { Setting } from "./setting";
-import { Resource, ResourcePath } from "./resource";
-import { AVGArchives } from "./game-archives";
+import { PluginManager } from "../index";
 
-import { EngineAPI_Text } from './../scripting/exports/text';
-import { EngineAPI_Scene } from './../scripting/exports/scene';
-import { EngineAPI_Audio } from './../scripting/exports/audio';
+import { EngineAPI_Text } from "./../scripting/exports/text";
+import { EngineAPI_Scene } from "./../scripting/exports/scene";
+import { EngineAPI_Audio } from "./../scripting/exports/audio";
 
 export enum GameRunningType {
   Normal,
@@ -27,8 +22,8 @@ export enum GameRunningType {
 
 // 游戏是否加载完成
 export enum GameStatus {
-  Loading,    // 正在加载
-  Loaded      // 已进入主场景
+  Loading, // 正在加载
+  Loaded // 已进入主场景
 }
 
 export class AVGGame {
@@ -42,15 +37,13 @@ export class AVGGame {
   // Game global message
   private _events = new EventEmitter();
   private _scriptDir: string;
-  private _transition: Transition;
-  private _runningPlatform: GameRunningPlatform;
 
   private _screen: Screen = {
     width: 1366,
     height: 768
   };
 
-  constructor(platform?: GameRunningPlatform, name?: string, screen?: Screen) {
+  constructor() {
     console.log("Game instance initialized.");
   }
 
@@ -82,9 +75,7 @@ export class AVGGame {
     return this._instance;
   }
 
-  public setRunningPlatform(platform: GameRunningPlatform) {
-    this._runningPlatform = platform;
-  }
+  public setRunningPlatform(platform: GameRunningPlatform) {}
 
   public setResolution(screen: Screen) {
     this._screen = screen;
@@ -120,7 +111,9 @@ export class AVGGame {
     // PluginManager.loadScripts(scripts);
 
     let scriptDir = this._scriptDir || "./";
-    entryScript = entryScript || AVGNativePath.join(scriptDir, AVGGame.DEFAULT_ENTRY_SCRIPT);
+    entryScript =
+      entryScript ||
+      AVGNativePath.join(scriptDir, AVGGame.DEFAULT_ENTRY_SCRIPT);
 
     await AVGGame._entryStory.loadFromFile(entryScript);
     await AVGGame._entryStory.run();
@@ -140,7 +133,7 @@ export class AVGGame {
 
     (await EngineAPI_Audio.getTracks()).map(track => {
       EngineAPI_Audio.stop(track);
-    })
+    });
 
     await await EngineAPI_Camera.transitionTo("black", 0, 0);
   }

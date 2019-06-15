@@ -20,7 +20,7 @@ export class AVGEngineError {
   }
 
   public static emit(type, error: string, data?: any) {
-    console.error("An exception is emitted:", type, error, data)
+    console.error("An exception is emitted:", type, error, data);
     this._cb({
       type,
       desc: error,

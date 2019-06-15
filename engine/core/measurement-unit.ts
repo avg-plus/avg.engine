@@ -7,12 +7,12 @@ export enum UnitType {
 }
 
 // Match Rules:
-// '(42%,50%)', '(10%,50px)', '(42px,50px)', '(center, top)' ...
-const VectorRegex = /^(\(([+-]?[0-9]*[.]?[0-9]+(?:%|px)|(?:[a-z]+)),([+-]?[0-9]*[.]?[0-9]+(?:%|px)|(?:[a-z]+))\))$/;
+// '(33,60)', '(42%,50%)', '(10%,50px)', '(42px,50px)', '(center, top)' ...
+const VectorRegex = /^(\(([+-]?[0-9]*[.]?[0-9]+(?:%|px)?|(?:[a-z]+)),([+-]?[0-9]*[.]?[0-9]+(?:%|px)?|(?:[a-z]+))\))$/;
 
 // Match Rules:
-// '42%', '35px', 'center' ..
-const ScalarRegex = /^(?:([+-]?[0-9]*[.]?[0-9]+)(%|px)|^([a-z]+)$)$/;
+// '96', '42%', '35px', 'center' ..
+const ScalarRegex = /^(?:([+-]?[0-9]*[.]?[0-9]+)(%|px)?|^([a-z]+)$)$/;
 
 export class MeasurementUnitPart {
   private value: string = "";
@@ -30,7 +30,19 @@ export class MeasurementUnitPart {
         this.unit = UnitType.Custom;
       } else {
         this.value = matches[1];
-        this.unit = matches[2] === "%" ? UnitType.Percent : UnitType.Pixel;
+        switch (matches[2]) {
+          case "%":
+            this.unit = UnitType.Percent;
+            break;
+          case "px":
+            this.unit = UnitType.Percent;
+            break;
+          default:
+            this.unit = UnitType.Custom;
+            break;
+        }
+
+        // this.unit = matches[2] === "%" ? UnitType.Percent : UnitType.Pixel;
       }
     }
   }

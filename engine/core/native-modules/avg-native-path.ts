@@ -1,6 +1,3 @@
-import { AVGGame } from './../game';
-import { PlatformService } from "../platform";
-import { AVGNativeFSImpl } from 'app/common/filesystem/avg-native-fs-impl';
 import urljoin from "urljoin";
 
 export class AVGNativePath {

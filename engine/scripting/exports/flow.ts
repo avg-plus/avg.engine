@@ -6,6 +6,7 @@ import { paramCompatible } from "../../core/utils";
 import { APIManager } from "../api-manager";
 import { OP } from "../../const/op";
 import * as joi from "joi";
+import { APICallScript, ResourceData, ResourcePath } from "../..";
 
 @APIExport("flow", EngineAPI_Flow)
 export class EngineAPI_Flow extends AVGExportedAPI {
@@ -46,11 +47,13 @@ export class EngineAPI_Flow extends AVGExportedAPI {
    * @memberof EngineAPI_Flow
    */
   public static setInterval(id: string, handler: () => void, ms: number) {
-
     const schema = joi.object().keys({
       id: joi.string().required(),
       handler: joi.func().required(),
-      ms: joi.number().min(1).required(),
+      ms: joi
+        .number()
+        .min(1)
+        .required()
     });
 
     const result = super.APIParametersValidate(schema, { id, handler, ms });
@@ -59,7 +62,7 @@ export class EngineAPI_Flow extends AVGExportedAPI {
 
     this.intervalTables[result.id] = setInterval(handler, result.ms);
 
-    return this.intervalTables[result.id];    
+    return this.intervalTables[result.id];
   }
   /**
    * 清除周期定时器
@@ -91,11 +94,13 @@ export class EngineAPI_Flow extends AVGExportedAPI {
    * @memberof EngineAPI_Flow
    */
   public static async setTimeout(id: string, handler: () => void, ms: number) {
-
     const schema = joi.object().keys({
       id: joi.string().required(),
       handler: joi.func().required(),
-      ms: joi.number().min(1).required(),
+      ms: joi
+        .number()
+        .min(1)
+        .required()
     });
 
     const result = super.APIParametersValidate(schema, { id, handler, ms });
@@ -128,13 +133,22 @@ export class EngineAPI_Flow extends AVGExportedAPI {
 
   public static async clearAllIntervals() {
     for (const v in this.intervalTables) {
-      clearInterval(this.intervalTables[v])
+      clearInterval(this.intervalTables[v]);
     }
   }
 
   public static async clearAllTimeouts() {
     for (const v in this.intervalTables) {
-      clearInterval(this.timeoutTables[v])
+      clearInterval(this.timeoutTables[v]);
     }
+  }
+
+  public static async call(file: string) {
+    let model = new APICallScript();
+    model.scriptFile = ResourceData.from(file, ResourcePath.Scripts).filename;
+
+    const r = await APIManager.getImpl(APICallScript.name, OP.CallScript).runner(<APICallScript>model);
+
+    return r;
   }
 }
