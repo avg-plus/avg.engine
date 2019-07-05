@@ -5,12 +5,12 @@ const fs = require('fs');
 const index = require('create-index');
 const shelljs = require('shelljs');
 
-gulp.task('compile', () => {
-    shelljs.exec('yarn run build');
-});
+// gulp.task('compile', () => {
+//     shelljs.exec('yarn run build');
+// });
 
 
-gulp.task('create-index', () => {
+gulp.task('create-index', (done) => {
     console.log('Creating indexing files ...');
 
     globby(['engine/**/', '!engine/'], {}).then((matches) => {
@@ -27,30 +27,30 @@ gulp.task('create-index', () => {
 
 });
 
-gulp.task('publish', ['create-index', 'compile'], () => {
+// gulp.task('publish', ['create-index', 'compile'], () => {
 
-    console.log(`Patching new version ...`);
-    shelljs.exec('npm version patch --force');
+//     console.log(`Patching new version ...`);
+//     shelljs.exec('npm version patch --force');
 
-    console.log(`Writing publish package.json ...`);
-    const package = fs.readFileSync('./package.json');
-    const packageConfig = JSON.parse(package);
+//     console.log(`Writing publish package.json ...`);
+//     const package = fs.readFileSync('./package.json');
+//     const packageConfig = JSON.parse(package);
 
-    const distPackageConfig = {};
+//     const distPackageConfig = {};
 
-    distPackageConfig.name = packageConfig.name;
-    distPackageConfig.version = packageConfig.version;
-    distPackageConfig.author = packageConfig.author;
-    distPackageConfig.license = packageConfig.license;
-    distPackageConfig.repository = packageConfig.repository;
-    distPackageConfig.dependencies = packageConfig.dependencies;
-    distPackageConfig.main = './engine/index.js';
+//     distPackageConfig.name = packageConfig.name;
+//     distPackageConfig.version = packageConfig.version;
+//     distPackageConfig.author = packageConfig.author;
+//     distPackageConfig.license = packageConfig.license;
+//     distPackageConfig.repository = packageConfig.repository;
+//     distPackageConfig.dependencies = packageConfig.dependencies;
+//     distPackageConfig.main = './engine/index.js';
 
-    fs.writeFileSync('dist/package.json', JSON.stringify(distPackageConfig, null, 2));
+//     fs.writeFileSync('dist/package.json', JSON.stringify(distPackageConfig, null, 2));
 
-    shelljs.exec('cp README.md dist/');
-    shelljs.exec('cd dist && npm publish');
-});
+//     shelljs.exec('cp README.md dist/');
+//     shelljs.exec('cd dist && npm publish');
+// });
 
 function generateExports(files, saveDir, isDir = false) {
     let exportData = '';

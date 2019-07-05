@@ -3,6 +3,7 @@
   "scripts": {
     "start": "npm run build:watch",
     "build": "tsc -p tsconfig.json",
+    "create-index": "gulp create-index",
     "build:watch": "tsc -p tsconfig.json -w"
   },
   "version": "0.1.17",
@@ -43,7 +44,7 @@
     "eslint-config-prettier": "^4.3.0",
     "eslint-plugin-prettier": "^3.1.0",
     "globby": "^6.1.0",
-    "gulp": "^3.9.1",
+    "gulp": "^4.0.2",
     "node-bin-setup": "^1.0.6",
     "prettier-eslint": "^8.8.2",
     "shelljs": "^0.7.8",
